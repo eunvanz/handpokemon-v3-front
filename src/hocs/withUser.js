@@ -71,7 +71,7 @@ export default ({
   });
 
   const mapDispatchToProps = dispatch => ({
-    userAction: {
+    userActions: {
       receiveUser: user => dispatch(receiveUser(user)),
       clearUser: () => dispatch(clearUser()),
       signInUserWithToken: token => dispatch(signInUserWithToken(token)),

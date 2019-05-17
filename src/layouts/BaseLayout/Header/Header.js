@@ -4,7 +4,13 @@ import { PageHeader, Affix, Button } from 'antd';
 import './Header.less';
 import imgLogo from '../../../imgs/logo.png';
 
-const HeaderView = ({ user, goTo, onClickLogout }) => {
+const HeaderView = ({
+  user,
+  history,
+  onClickLogout,
+  isOpenDrawer,
+  onToggleDrawer
+}) => {
   const getExtraComponent = useCallback(() => {
     const component = [];
     if (user) {
@@ -13,7 +19,7 @@ const HeaderView = ({ user, goTo, onClickLogout }) => {
           type='primary'
           key='sign-up'
           icon='setting'
-          onClick={() => goTo('/setting')}
+          onClick={() => history.push('/setting')}
         />
       );
       component.push(
@@ -30,7 +36,7 @@ const HeaderView = ({ user, goTo, onClickLogout }) => {
           type='primary'
           key='sign-up'
           icon='user-add'
-          onClick={() => goTo('/sign-up')}
+          onClick={() => history.push('/sign-up')}
         />
       );
       component.push(
@@ -38,18 +44,36 @@ const HeaderView = ({ user, goTo, onClickLogout }) => {
           type='primary'
           key='sign-in'
           icon='login'
-          onClick={() => goTo('/sign-in')}
+          onClick={() => history.push('/sign-in')}
         />
       );
     }
     return component;
   }, []);
 
+  const onClickToggleDrawer = useCallback(() => {
+    onToggleDrawer(!isOpenDrawer);
+  }, [isOpenDrawer]);
+
   return (
     <Affix offsetTop={0}>
       <PageHeader
         className='hp-header'
-        title={<img src={imgLogo} alt='로고' height={30} />}
+        title={[
+          <Button
+            key='menu-btn'
+            type='primary'
+            icon={isOpenDrawer ? 'menu-fold' : 'menu-unfold'}
+            onClick={onClickToggleDrawer}
+          />,
+          <img
+            key='logo'
+            className='logo'
+            src={imgLogo}
+            alt='로고'
+            height={30}
+          />
+        ]}
         extra={getExtraComponent()}
       />
     </Affix>

@@ -1,5 +1,25 @@
+@import '~antd/lib/style/themes/default.less';
+
 .hp-base-layout {
   &.ant-layout {
     min-height: 100vh;
+  }
+  &.hide-drawer {
+    .hp-sidebar {
+      left: -250px;
+    }
+  }
+  .hp-content-layout {
+    transition: padding-left 0.3s;
+  }
+}
+
+@media screen and (min-width: @screen-md) {
+  .hp-base-layout {
+    &.show-drawer {
+      .hp-content-layout {
+        padding-left: 250px;
+      }
+    }
   }
 }

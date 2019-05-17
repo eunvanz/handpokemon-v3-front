@@ -4,12 +4,17 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import './App.less';
 import BaseLayout from './layouts/BaseLayout';
+import { SignUp } from './routes';
 
 const App = ({ store }) => {
   return (
     <Provider store={store}>
       <Router>
-        <BaseLayout />
+        <BaseLayout>
+          <Switch>
+            <Route path='/sign-up' component={SignUp} />
+          </Switch>
+        </BaseLayout>
       </Router>
     </Provider>
   );
