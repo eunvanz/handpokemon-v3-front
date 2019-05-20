@@ -1,0 +1,46 @@
+@import '~antd/lib/style/themes/default.less';
+
+.mon-card {
+  cursor: pointer;
+  font-size: 16px;
+  .ant-card-cover {
+    padding: 6px;
+  }
+  .ant-card-body {
+    padding: 6px;
+    .cost-section {
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .attr-section {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .mon-card {
+    font-size: 12px;
+    .grade-tag {
+      &.basic::before {
+        content: 'B' !important;
+      }
+      &.special::before {
+        content: 'S' !important;
+      }
+      &.rare::before {
+        content: 'R' !important;
+      }
+      &.s-rare::before {
+        content: 'S' !important;
+      }
+      &.elite::before {
+        content: 'E' !important;
+      }
+      &.legend::before {
+        content: 'L' !important;
+      }
+    }
+  }
+}

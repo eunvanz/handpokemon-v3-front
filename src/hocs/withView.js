@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchView, clearView, receiveView } from '../store/view';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 // {
-//   service,
+//   request,
 //   key,
 //   isRequired,
 //   isPersistent,
@@ -13,10 +13,10 @@ export default (options = []) => ComposedComponent => {
   class withView extends React.PureComponent {
     componentDidMount() {
       options.forEach(item => {
-        const { service, preventRefresh, key } = item;
-        if (service) {
+        const { request, preventRefresh, key } = item;
+        if (request) {
           if (!preventRefresh || (!this.props[key] && preventRefresh)) {
-            this.props.viewActions.fetchView({ service, key });
+            this.props.viewActions.fetchView({ request, key });
           }
         }
       });
@@ -54,7 +54,7 @@ export default (options = []) => ComposedComponent => {
 
   const mapDispatchToProps = dispatch => ({
     viewActions: {
-      fetchView: ({ service, key }) => dispatch(fetchView({ service, key })),
+      fetchView: ({ request, key }) => dispatch(fetchView({ request, key })),
       clearView: key => dispatch(clearView(key)),
       receiveView: (key, state) => dispatch(receiveView(key, state))
     }

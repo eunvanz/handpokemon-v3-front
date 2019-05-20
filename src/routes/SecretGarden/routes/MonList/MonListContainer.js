@@ -4,10 +4,19 @@ import { compose } from 'redux';
 import MonListView from './MonListView';
 import withView from '../../../../hocs/withView';
 import { getAllMons } from '../../../../api/requestMon';
+import withUser from '../../../../hocs/withUser';
+import withCodes from '../../../../hocs/withCodes';
 
 class MonListContainer extends PureComponent {
+  _handleOnClickItem = monId => {
+    const { history } = this.props;
+    history.push(`/secret-garden/create-mon/${monId}`);
+  };
+
   render() {
-    return <MonListView {...this.props} />;
+    return (
+      <MonListView onClickItem={this._handleOnClickItem} {...this.props} />
+    );
   }
 }
 
@@ -15,9 +24,13 @@ const wrappedMonListView = compose(
   withView([
     {
       key: 'monList',
-      service: getAllMons
+      request: getAllMons,
+      isRequired: true,
+      isPersistent: true
     }
-  ])
-)(MonListView);
+  ]),
+  withUser({ isAdminRequired: true }),
+  withCodes
+)(MonListContainer);
 
 export default wrappedMonListView;

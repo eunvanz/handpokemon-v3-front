@@ -19,6 +19,10 @@ const AdminLayout = ({ children, history }) => {
       <Card
         tabList={[
           {
+            key: '/secret-garden/mon-list',
+            tab: '손켓몬 목록'
+          },
+          {
             key: '/secret-garden/create-mon/new',
             tab: '손켓몬 등록'
           },

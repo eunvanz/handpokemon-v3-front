@@ -10,3 +10,8 @@ export const CreateMonImage = Loadable({
   loader: () => import('./CreateMonImage'),
   loading: SpinContainer
 });
+
+export const MonList = Loadable({
+  loader: () => import('./MonList'),
+  loading: SpinContainer
+});

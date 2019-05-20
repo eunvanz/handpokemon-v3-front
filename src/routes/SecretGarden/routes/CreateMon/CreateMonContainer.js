@@ -7,6 +7,7 @@ import withView from '../../../../hocs/withView';
 import withForm from '../../../../hocs/withForm';
 import withCodes from '../../../../hocs/withCodes';
 import { getMon, postMon, putMon } from '../../../../api/requestMon';
+import MessageModal from '../../../../components/MessageMoal/index';
 import {
   getMonImagesEmptyMon,
   putMonImage
@@ -82,6 +83,11 @@ class CreateMonContainer extends PureComponent {
             return Promise.all(proms);
           })
           .then(() => {
+            MessageModal({
+              type: 'success',
+              title: '저장완료',
+              content: '저장되었습니다.'
+            });
             history.push(`/secret-garden/create-mon/${monId}`);
             this._fetchCandidateMonImages();
           });

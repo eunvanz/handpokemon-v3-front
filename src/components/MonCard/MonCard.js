@@ -1,102 +1,78 @@
 import React, { memo, useCallback, useState } from 'react';
+import { Card } from 'antd';
+import Img from 'react-image';
 import VisibilitySensor from 'react-visibility-sensor';
-import { Card, Icon } from 'antd';
 import { getMonImageUrl } from '../../libs/hpUtils';
-import { COLOR } from '../../constants/styles';
-import { repeat } from '../../libs/commonUtils';
+import './MonCard.less';
+import GradeTag from '../GradeTag';
+import AttrTag from '../AttrTag';
+import Cost from '../Cost/index';
+import imgEmpty from '../../imgs/empty-mon.png';
 
-const MonCard = ({ mon, col, hideInfo }) => {
+const MonCard = ({ mon, col, hideInfo, codes, onClick }) => {
   const [isActiveVisibilitySensor, setIsActiveVisibilitySensor] = useState(
-    false
+    true
   );
 
-  const onChangeVisibility = useCallback(isVisible => {
-    if (isVisible) setIsActiveVisibilitySensor(false);
-  }, []);
+  const onChangeVisibility = useCallback(
+    isVisible => {
+      if (isVisible) setIsActiveVisibilitySensor(false);
+    },
+    [isActiveVisibilitySensor]
+  );
 
   const renderCover = useCallback(() => {
     if (!hideInfo) {
       return (
         <div style={{ position: 'relative' }}>
-          <VisibilitySensor
-            active={isActiveVisibilitySensor}
-            onChange={onChangeVisibility}
-            partialVisibility
-          >
-            {({ isVisible }) => {
-              return (
-                <img
-                  src={
-                    isVisible
-                      ? getMonImageUrl(mon || col)
-                      : 'https://dummyimage.com/250x250/fff/aaa'
-                  }
-                  alt='손켓몬 이미지'
-                  style={{ width: '100%' }}
-                />
-              );
-            }}
-          </VisibilitySensor>
+          <Img
+            src={[imgEmpty, getMonImageUrl(mon || col)]}
+            alt='손켓몬 이미지'
+            style={{ width: '100%' }}
+            unloader={imgEmpty}
+          />
         </div>
       );
     } else {
       // TODO
+      return null;
     }
-  }, [mon, col, hideInfo]);
-
-  const renderCost = useCallback(() => {
-    const mon = mon || col.mon;
-    const { cost } = mon;
-    let result = [];
-    if (!hideInfo) {
-      const rest = cost % 5;
-      let filledColor;
-      let emptyColor;
-      if (cost > 5) {
-        filledColor = COLOR.GOLD;
-        emptyColor = COLOR.DARK_GRAY;
-      } else {
-        filledColor = COLOR.DARK_GRAY;
-        emptyColor = COLOR.LIGHT_GRAY;
-      }
-      let key = 1;
-      repeat(() => {
-        const color = rest - key >= 0 ? filledColor : emptyColor;
-        result.push(
-          <Icon key={key++} type='star' theme='filled' style={{ color }} />
-        );
-      }, 5);
-    } else {
-      let key = 1;
-      repeat(() => {
-        result.push(
-          <Icon
-            key={key++}
-            type='star'
-            theme='filled'
-            style={{ color: COLOR.LIGHT_GRAY }}
-          />
-        );
-      }, 5);
-    }
-    return result;
   }, [mon, col, hideInfo]);
 
   const renderAttr = useCallback(() => {
-    const mon = mon || col.mon;
-    const { gradeCd, mainAttrCd, subAttrCd } = mon;
+    const thisMon = mon || col.mon;
+    const { gradeCd, mainAttrCd, subAttrCd } = thisMon;
+    return (
+      <>
+        <GradeTag gradeCd={gradeCd} />
+        <AttrTag attrCd={mainAttrCd} codes={codes} />
+        {subAttrCd && <AttrTag attrCd={subAttrCd} codes={codes} />}
+      </>
+    );
   }, [mon, col, hideInfo]);
 
   return (
-    <Card hoverable cover={renderCover()}>
-      <p className='text-center' style={{ marginBottom: 0 }}>
-        {renderCost()}
+    // <VisibilitySensor
+    //   active={isActiveVisibilitySensor}
+    //   onChange={onChangeVisibility}
+    //   partialVisibility
+    // >
+    //   {({ isVisible }) => {
+    //     return (
+    <Card
+      hoverable
+      cover={renderCover()}
+      onClick={onClick}
+      className='mon-card'
+    >
+      <p className='cost-section'>
+        <Cost cost={(col ? col.mon : mon)['cost']} />
       </p>
-      <p className='text-center' stype={{ marginBottom: 0 }}>
-        {renderAttr()}
-      </p>
+      <p className='attr-section'>{renderAttr()}</p>
     </Card>
   );
+  // </VisibilitySensor>
+  // );
 };
 
 export default memo(MonCard);

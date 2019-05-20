@@ -3,11 +3,9 @@ import { PageHeader, Affix, Button } from 'antd';
 
 import './Header.less';
 import imgLogo from '../../../imgs/logo.png';
-import { isScreenSize, SCREEN_SIZE } from '../../../libs/screenSize';
 
 const HeaderView = ({
   user,
-  history,
   onClickLogout,
   isOpenDrawer,
   onToggleDrawer,
@@ -74,6 +72,7 @@ const HeaderView = ({
             src={imgLogo}
             alt='로고'
             height={30}
+            onClick={() => onChangeRoute('/')}
           />
         ]}
         extra={getExtraComponent()}

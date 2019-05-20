@@ -27,9 +27,9 @@ export function clearView(key) {
 // ------------------------------------
 export const fetchView = ({ request, key }) => {
   return dispatch => {
-    return request().then(data => {
-      dispatch(receiveView(key, data));
-      return Promise.resolve(data);
+    return request().then(res => {
+      dispatch(receiveView(key, res.data));
+      return Promise.resolve(res.data);
     });
   };
 };

@@ -12,3 +12,33 @@ export const MASTER_CD = {
   MON_ATTRS: '03',
   MON_GRADE: '02'
 };
+
+export const ATTR = {
+  NORMAL: '0301',
+  FIRE: '0302',
+  WATER: '0303',
+  LIGHTNING: '0304',
+  PLANT: '0305',
+  ICE: '0306',
+  FIGHT: '0307',
+  POISON: '0308',
+  EARTH: '0309',
+  AIR: '0310',
+  PSYCHIC: '0311',
+  BUG: '0312',
+  ROCK: '0313',
+  GHOST: '0314',
+  DRAGON: '0315',
+  EVIL: '0316',
+  IRON: '0317',
+  FAIRY: '0318'
+};
+
+export const GRADE = {
+  BASIC: '0201',
+  RARE: '0202',
+  SPECIAL: '0203',
+  S_RARE: '0204',
+  ELITE: '0205',
+  LEGEND: '0206'
+};
