@@ -4,6 +4,6 @@ export default request => {
       return Promise.resolve(res);
     })
     .catch(err => {
-      return Promise.reject(err);
+      return Promise.reject(err.response.data.message);
     });
 };

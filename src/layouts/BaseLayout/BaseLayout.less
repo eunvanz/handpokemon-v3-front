@@ -23,3 +23,21 @@
     }
   }
 }
+
+@media screen and (max-width: @screen-md) {
+  .hp-base-layout {
+    &.show-drawer {
+      .hp-sidebar-mask {
+        position: fixed;
+        top: 64px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 999;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.65);
+        transition: background-color 0.3s;
+      }
+    }
+  }
+}

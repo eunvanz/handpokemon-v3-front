@@ -7,3 +7,8 @@ export const ROLE = {
   USER: '0501',
   ADMIN: '0502'
 };
+
+export const MASTER_CD = {
+  MON_ATTRS: '03',
+  MON_GRADE: '02'
+};

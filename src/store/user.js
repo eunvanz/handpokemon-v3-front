@@ -25,7 +25,7 @@ export function clearUser(user = null) {
 export const signInUserWithToken = () => {
   return dispatch => {
     return signInWithToken().then(res => {
-      return dispatch(receiveUser(res));
+      return dispatch(receiveUser(res.data));
     });
   };
 };
@@ -33,8 +33,8 @@ export const signInUserWithToken = () => {
 export const signInUser = data => {
   return dispatch => {
     return signIn(data).then(res => {
-      const { token, user } = res;
-      localStorage('auth', token);
+      const { token, user } = res.data;
+      localStorage.setItem('auth', token);
       dispatch(receiveUser(user));
       return Promise.resolve(token);
     });

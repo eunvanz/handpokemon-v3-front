@@ -1,86 +1,89 @@
-import React from 'react';
-import { Card, Form, Input } from 'antd';
-import { isDupEmail } from '../../api/requestUser';
-import { createRule } from '../../libs/vaildators';
+import React, { useState, useCallback, memo } from 'react';
+import { Card, Steps, Divider, Button } from 'antd';
+import './SignUp.less';
+import ContentContainer from '../../components/ContentContainer';
+import FirstStep from './FirstStep';
+import SecondStep from './SecondStep';
+import MessageModal from '../../components/MessageMoal/index';
 
-const SignUpView = ({ form }) => {
+const SignUpView = ({ form, checkDupEmail, checkDupNickname }) => {
+  const [step, setStep] = useState(0);
+
+  const onClickStep = useCallback(
+    stepToGo => {
+      let targetFields;
+      if ([0, 1].indexOf(stepToGo) > -1) {
+        if (step === 0) {
+          targetFields = ['email', 'password', 'passwordConfirm', 'nickname'];
+        } else if (step === 1) {
+          targetFields = ['introduce', 'profileImage'];
+        }
+        form.validateFields(targetFields, (err, values) => {
+          if (!err) {
+            setStep(stepToGo);
+          } else {
+            MessageModal({
+              type: 'error',
+              content: '모든 항목을 정확히 작성해주세요'
+            });
+          }
+        });
+      } else {
+      }
+    },
+    [step]
+  );
+
   return (
-    <Card style={{ width: 550, maxWidth: '100%' }}>
-      <h3>회원가입</h3>
-      <Form>
-        <Form.Item label='이메일주소' colon={false} required>
-          {form.getFieldDecorator('email', {
-            rules: createRule({
-              isRequired: true,
-              customValidator: (rule, value, callback) => {
-                isDupEmail(value).then(isDup => {
-                  if (isDup) callback('이미 사용중인 이메일주소입니다.');
-                  else callback();
-                });
-              }
-            }).emailRule
-          })(
-            <Input
-              size='large'
-              type='email'
-              placeholder='아이디로 사용할 이메일주소'
-            />
-          )}
-        </Form.Item>
-        <Form.Item
-          label='비밀번호'
-          colon={false}
-          required
-          extra='비밀번호는 암호화되어 안전하게 보관됩니다.'
+    <ContentContainer>
+      <div className='center-middle-aligner'>
+        <Card
+          className='sign-up-card'
+          title={
+            <div>
+              <h3>손켓몬 트레이너 라이센스 등록</h3>
+              <Steps size='small' current={step}>
+                <Steps.Step title='필수정보 입력' />
+                <Steps.Step title='선택정보 입력' />
+                <Steps.Step title='스타트픽 선택' />
+              </Steps>
+            </div>
+          }
+          style={{ width: 550, maxWidth: '100%' }}
         >
-          {form.getFieldDecorator('password', {
-            rules: createRule({
-              isRequired: true
-            }).passwordRule
-          })(
-            <Input
+          <FirstStep
+            show={step === 0}
+            checkDupEmail={checkDupEmail}
+            checkDupNickname={checkDupNickname}
+            form={form}
+          />
+          <SecondStep show={step === 1} form={form} />
+          <Divider />
+          <div className='text-right'>
+            {step > 0 && (
+              <Button
+                size='large'
+                type='link'
+                icon='arrow-left'
+                onClick={() => onClickStep(step - 1)}
+              >
+                이전단계
+              </Button>
+            )}
+            <Button
+              type='primary'
               size='large'
-              type='password'
-              placeholder='6~20자리의 비밀번호'
-            />
-          )}
-        </Form.Item>
-        <Form.Item label='비밀번호 확인' colon={false} required>
-          {form.getFieldDecorator('passwordConfirm', {
-            rules: createRule({
-              isRequired: true,
-              customValidator: (rule, value, callback) => {
-                if (value && value !== form.getFieldValue('password')) {
-                  callback('입력하신 비밀번호와 다릅니다.');
-                } else {
-                  callback();
-                }
-              }
-            })
-          })(
-            <Input
-              size='large'
-              type='password'
-              placeholder='앞의 비밀번호와 동일한 비밀번호'
-            />
-          )}
-        </Form.Item>
-        <Form.Item label='닉네임' colon={false} required>
-          {form.getFieldDecorator('nickname', {
-            rules: createRule({
-              isRequired: true,
-              customValidator: (rule, value, callback) => {
-                isDupEmail(value).then(isDup => {
-                  if (isDup) callback('이미 사용중인 닉네임입니다.');
-                  else callback();
-                });
-              }
-            })
-          })(<Input size='large' type='email' placeholder='1~8자의 닉네임' />)}
-        </Form.Item>
-      </Form>
-    </Card>
+              icon='arrow-right'
+              onClick={() => onClickStep(step + 1)}
+              style={{ marginLeft: 8 }}
+            >
+              다음단계
+            </Button>
+          </div>
+        </Card>
+      </div>
+    </ContentContainer>
   );
 };
 
-export default SignUpView;
+export default memo(SignUpView);

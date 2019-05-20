@@ -1,32 +1,29 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Spin, Icon } from 'antd';
-// import spinner from '../../imgs/index.gooey-ring-spinner.svg'
-// import spinner from '../../imgs/index.palette-rotating-ring-loader.svg'
 import spinner from '../../imgs/spinner.svg';
 import { isIE, isEdge } from '../../libs/commonUtils';
+import './SpinContainer.less';
 
-const SpinContainer = ({ height = '48vh', size, tip }) => {
+const SpinContainer = () => {
   return (
-    <div
-      style={{ textAlign: 'center', paddingTop: height, paddingBottom: height }}
-    >
-      <Spin
-        size={size}
-        tip={tip}
-        indicator={
-          isIE() || isEdge() ? (
-            <Icon type='loading' />
-          ) : (
-            <img
-              src={spinner}
-              style={{ width: 40, height: 40 }}
-              alt='spinner'
-            />
-          )
-        }
-      />
+    <div className='spin-container'>
+      <div className='center-middle-aligner'>
+        <Spin
+          indicator={
+            isIE() || isEdge() ? (
+              <Icon type='loading' />
+            ) : (
+              <img
+                src={spinner}
+                style={{ width: 40, height: 40 }}
+                alt='spinner'
+              />
+            )
+          }
+        />
+      </div>
     </div>
   );
 };
 
-export default SpinContainer;
+export default memo(SpinContainer);

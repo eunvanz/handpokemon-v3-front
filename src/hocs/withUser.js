@@ -27,12 +27,12 @@ export default ({
     }
 
     componentDidMount() {
-      const { userAction } = this.props;
+      const { userActions } = this.props;
       if (!this.state.isUserLoaded) {
         const authToken = localStorage.getItem('auth');
         if (authToken) {
           // 로그인 시도
-          userAction
+          userActions
             .signInUserWithToken()
             .then(() => {
               this.setState({ isUserLoaded: true });
@@ -51,9 +51,9 @@ export default ({
       const { user } = this.props;
       const { isUserLoaded } = this.state;
       if (!isUserLoaded) return <SpinContainer />;
-      else if (isUserRequired && !user) {
+      else if ((isUserRequired || isAdminRequired) && !user) {
         return <Redirect to='/sign-in' />;
-      } else if (isUserRequired && user) {
+      } else if ((isAdminRequired || isUserRequired) && user) {
         if (isAdminRequired && !isAdminUser(user)) {
           return <Redirect to='/' />;
         } else {

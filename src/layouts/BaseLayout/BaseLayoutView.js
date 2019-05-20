@@ -13,7 +13,8 @@ const BaseLayoutView = ({
   isOpenDrawer,
   children,
   history,
-  onClickLogout
+  onClickLogout,
+  onChangeRoute
 }) => {
   return (
     <Layout
@@ -26,11 +27,12 @@ const BaseLayoutView = ({
         user={user}
         onToggleDrawer={onToggleDrawer}
         onClickLogout={onClickLogout}
+        onChangeRoute={onChangeRoute}
         isOpenDrawer={isOpenDrawer}
         history={history}
       />
       <Layout className='hp-content-layout'>
-        <Sidebar history={history} />
+        <Sidebar history={history} user={user} onChangeRoute={onChangeRoute} />
         <Content>{children}</Content>
       </Layout>
     </Layout>

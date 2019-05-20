@@ -3,13 +3,15 @@ import { PageHeader, Affix, Button } from 'antd';
 
 import './Header.less';
 import imgLogo from '../../../imgs/logo.png';
+import { isScreenSize, SCREEN_SIZE } from '../../../libs/screenSize';
 
 const HeaderView = ({
   user,
   history,
   onClickLogout,
   isOpenDrawer,
-  onToggleDrawer
+  onToggleDrawer,
+  onChangeRoute
 }) => {
   const getExtraComponent = useCallback(() => {
     const component = [];
@@ -19,7 +21,7 @@ const HeaderView = ({
           type='primary'
           key='sign-up'
           icon='setting'
-          onClick={() => history.push('/setting')}
+          onClick={() => onChangeRoute('/setting')}
         />
       );
       component.push(
@@ -36,7 +38,7 @@ const HeaderView = ({
           type='primary'
           key='sign-up'
           icon='user-add'
-          onClick={() => history.push('/sign-up')}
+          onClick={() => onChangeRoute('/sign-up')}
         />
       );
       component.push(
@@ -44,19 +46,19 @@ const HeaderView = ({
           type='primary'
           key='sign-in'
           icon='login'
-          onClick={() => history.push('/sign-in')}
+          onClick={() => onChangeRoute('/sign-in')}
         />
       );
     }
     return component;
-  }, []);
+  }, [user]);
 
   const onClickToggleDrawer = useCallback(() => {
     onToggleDrawer(!isOpenDrawer);
   }, [isOpenDrawer]);
 
   return (
-    <Affix offsetTop={0}>
+    <Affix offsetTop={0} style={{ zIndex: 1000 }}>
       <PageHeader
         className='hp-header'
         title={[
