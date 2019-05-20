@@ -15,3 +15,7 @@ export const getMonImage = id => {
 export const putMonImage = monImage => {
   return makeRequest('put', `mon-images/${monImage.id}`, monImage);
 };
+
+export const getMonImagesEmptyMon = () => {
+  return makeRequest('get', `mon-images/empty-mon`);
+};

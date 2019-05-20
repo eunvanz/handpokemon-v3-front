@@ -1,12 +1,20 @@
-import React, { useCallback, memo, useState } from 'react';
-import { Form, InputNumber, Input, Select, Row, Col } from 'antd';
+import React, { useCallback, memo } from 'react';
+import { Form, InputNumber, Input, Select, Row, Col, Button } from 'antd';
 import { getMasterCdGroup } from '../../../../libs/codeUtils';
 import { MASTER_CD } from '../../../../constants/codes';
-import PictureUploadFormItem from '../../../../components/PictureUploadFormItem';
+import MonImage from './MonImage';
+import SpinContainer from '../../../../components/SpinContainer';
 
-const CreateMonView = ({ form, codes }) => {
-  const [monImages, setMonImages] = useState([]);
-
+const CreateMonView = ({
+  form,
+  codes,
+  monImages,
+  selectedMonImages,
+  onSelectMonImage,
+  isSubmitting,
+  mon,
+  onSubmit
+}) => {
   const setTotal = useCallback(() => {
     setTimeout(() => {
       const stats = ['hp', 'power', 'armor', 'sPower', 'sArmor', 'dex'];
@@ -28,7 +36,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.id : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -39,7 +48,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.name : undefined
             })(<Input />)}
           </Form.Item>
         </Col>
@@ -50,7 +60,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.mainAttrCd : undefined
             })(
               <Select>
                 {getMasterCdGroup(MASTER_CD.MON_ATTRS, codes).map(item => (
@@ -69,7 +80,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.subAttrCd : undefined
             })(
               <Select>
                 {getMasterCdGroup(MASTER_CD.MON_ATTRS, codes).map(item => (
@@ -88,7 +100,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.hp : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -99,7 +112,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.power : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -110,7 +124,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.armor : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -121,7 +136,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.sPower : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -132,7 +148,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.sArmor : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -143,7 +160,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.dex : undefined
             })(<InputNumber onChange={setTotal} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -154,7 +172,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.total : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -165,7 +184,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.height : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -176,7 +196,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.weight : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -187,7 +208,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.point : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -198,18 +220,15 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.cost : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
         <Col xs={24} md={4}>
           <Form.Item label='진화필요레벨'>
             {form.getFieldDecorator('requiredEvolutionLv', {
-              rules: [
-                {
-                  required: true
-                }
-              ]
+              initialValue: mon ? mon.requiredEvolutionLv : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -220,7 +239,8 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.gradeCd : undefined
             })(
               <Select>
                 {getMasterCdGroup(MASTER_CD.MON_GRADE, codes).map(item => (
@@ -239,18 +259,15 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.generation : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
         <Col xs={24} md={4}>
           <Form.Item label='진화전 도감번호'>
             {form.getFieldDecorator('prevMonId', {
-              rules: [
-                {
-                  required: true
-                }
-              ]
+              initialValue: mon ? mon.id : undefined
             })(<InputNumber style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
@@ -261,11 +278,51 @@ const CreateMonView = ({ form, codes }) => {
                 {
                   required: true
                 }
-              ]
+              ],
+              initialValue: mon ? mon.description : undefined
             })(<Input.TextArea rows={2} style={{ width: '100%' }} />)}
           </Form.Item>
         </Col>
+        {mon && (
+          <>
+            <Col xs={24}>
+              <p className='fw-500'>이미지</p>
+            </Col>
+            {mon.monImages &&
+              mon.monImages.map(monImage => (
+                <Col xs={4} key={monImage.id} style={{ marginBottom: 24 }}>
+                  <MonImage item={monImage} />
+                </Col>
+              ))}
+          </>
+        )}
+        <Col xs={24}>
+          <p className='fw-500'>이미지 추가</p>
+        </Col>
+        {!monImages && <SpinContainer />}
+        {monImages &&
+          monImages.map(monImage => (
+            <Col xs={4} key={monImage.id} style={{ marginBottom: 24 }}>
+              <MonImage
+                item={monImage}
+                isSelected={
+                  selectedMonImages.filter(item => item.id === monImage.id)
+                    .length > 0
+                }
+                onSelect={onSelectMonImage}
+                isSelectable
+              />
+            </Col>
+          ))}
       </Row>
+      <Button
+        style={{ marginTop: 24 }}
+        type='primary'
+        loading={isSubmitting}
+        onClick={onSubmit}
+      >
+        {mon ? '수정' : '저장'}
+      </Button>
     </Form>
   );
 };

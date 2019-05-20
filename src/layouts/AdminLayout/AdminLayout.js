@@ -17,7 +17,6 @@ const AdminLayout = ({ children, history }) => {
   return (
     <ContentContainer>
       <Card
-        title='관리자'
         tabList={[
           {
             key: '/secret-garden/create-mon/new',

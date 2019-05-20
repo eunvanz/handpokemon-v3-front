@@ -8,7 +8,7 @@ const SecretGardenView = ({ match, history }) => {
   return (
     <Switch>
       <AdminLayout history={history}>
-        <Route path={`${match.url}/create-mon`} component={CreateMon} />
+        <Route path={`${match.url}/create-mon/:id`} component={CreateMon} />
         <Route
           path={`${match.url}/create-mon-image/:id`}
           component={CreateMonImage}

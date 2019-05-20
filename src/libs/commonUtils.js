@@ -38,3 +38,8 @@ export const dataURItoBlob = dataURI => {
 
   return new Blob([ia], { type: mimeString });
 };
+
+export const repeat = (fn, times) => {
+  fn();
+  times && --times && repeat(fn, times);
+};
