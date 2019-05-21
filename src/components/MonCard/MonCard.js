@@ -1,7 +1,5 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 import { Card } from 'antd';
-import Img from 'react-image';
-import VisibilitySensor from 'react-visibility-sensor';
 import { getMonImageUrl } from '../../libs/hpUtils';
 import './MonCard.less';
 import GradeTag from '../GradeTag';
@@ -9,38 +7,29 @@ import AttrTag from '../AttrTag';
 import Cost from '../Cost/index';
 import imgEmpty from '../../imgs/empty-mon.png';
 
-const MonCard = ({ mon, col, hideInfo, codes, onClick }) => {
-  const [isActiveVisibilitySensor, setIsActiveVisibilitySensor] = useState(
-    true
-  );
-
-  const onChangeVisibility = useCallback(
-    isVisible => {
-      if (isVisible) setIsActiveVisibilitySensor(false);
-    },
-    [isActiveVisibilitySensor]
-  );
-
+const MonCard = ({ mon, hideInfo, codes, onClick }) => {
   const renderCover = useCallback(() => {
     if (!hideInfo) {
       return (
         <div style={{ position: 'relative' }}>
-          <Img
-            src={[imgEmpty, getMonImageUrl(mon || col)]}
+          <img
+            src={getMonImageUrl(mon) || imgEmpty}
             alt='손켓몬 이미지'
             style={{ width: '100%' }}
-            unloader={imgEmpty}
           />
         </div>
       );
     } else {
-      // TODO
-      return null;
+      return (
+        <div style={{ position: 'relative' }}>
+          <img src={imgEmpty} alt='손켓몬 이미지' style={{ width: '100%' }} />
+        </div>
+      );
     }
-  }, [mon, col, hideInfo]);
+  }, [mon, hideInfo]);
 
   const renderAttr = useCallback(() => {
-    const thisMon = mon || col.mon;
+    const thisMon = mon.mon || mon;
     const { gradeCd, mainAttrCd, subAttrCd } = thisMon;
     return (
       <>
@@ -49,16 +38,9 @@ const MonCard = ({ mon, col, hideInfo, codes, onClick }) => {
         {subAttrCd && <AttrTag attrCd={subAttrCd} codes={codes} />}
       </>
     );
-  }, [mon, col, hideInfo]);
+  }, [mon, hideInfo]);
 
   return (
-    // <VisibilitySensor
-    //   active={isActiveVisibilitySensor}
-    //   onChange={onChangeVisibility}
-    //   partialVisibility
-    // >
-    //   {({ isVisible }) => {
-    //     return (
     <Card
       hoverable
       cover={renderCover()}
@@ -66,13 +48,11 @@ const MonCard = ({ mon, col, hideInfo, codes, onClick }) => {
       className='mon-card'
     >
       <p className='cost-section'>
-        <Cost cost={(col ? col.mon : mon)['cost']} />
+        <Cost cost={(mon.mon || mon)['cost']} />
       </p>
       <p className='attr-section'>{renderAttr()}</p>
     </Card>
   );
-  // </VisibilitySensor>
-  // );
 };
 
 export default memo(MonCard);

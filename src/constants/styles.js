@@ -4,7 +4,9 @@ export const COLOR = {
   LIGHT_GRAY: '#dbdbdb',
   DARK_GRAY: '#545454',
   PRIMARY: '#03a9f4',
-  GOLD: '#f9c957'
+  GOLD: '#f9c957',
+  AMBER: '#ff9800',
+  GREEN: '#8bc34a'
 };
 
 export const ATTR_COLOR = {

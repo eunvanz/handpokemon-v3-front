@@ -9,7 +9,10 @@ export const getMonImageUrl = monOrCol => {
     return monOrCol.mon.monImages.filter(
       monImage => monImage.seq === monOrCol.imageSeq
     )[0].url;
-  else return monOrCol.monImages.length > 0 ? monOrCol.monImages[0].url : null;
+  else
+    return monOrCol.monImages.length > 0
+      ? encodeURI(monOrCol.monImages[0].url)
+      : null;
 };
 
 export const getClassNameFromGradeCd = gradeCd => {
