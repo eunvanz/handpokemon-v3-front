@@ -25,8 +25,8 @@ const wrappedMonListView = compose(
     {
       key: 'monList',
       request: getAllMons,
-      isRequired: true,
-      isPersistent: true
+      required: true,
+      persistent: true
     }
   ]),
   withUser({ isAdminRequired: true }),

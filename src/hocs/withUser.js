@@ -74,7 +74,7 @@ export default ({
     userActions: {
       receiveUser: user => dispatch(receiveUser(user)),
       clearUser: () => dispatch(clearUser()),
-      signInUserWithToken: token => dispatch(signInUserWithToken(token)),
+      signInUserWithToken: () => dispatch(signInUserWithToken()),
       signInUser: data => dispatch(signInUser(data))
     }
   });

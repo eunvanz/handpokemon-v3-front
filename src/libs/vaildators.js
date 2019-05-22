@@ -1,11 +1,7 @@
-export const createRule = ({
-  isRequired,
-  requiredMessage,
-  customValidator
-}) => ({
+export const createRule = ({ required, requiredMessage, customValidator }) => ({
   emailRule: [
     {
-      required: isRequired,
+      required,
       message: requiredMessage || '이메일주소를 입력해주세요.'
     },
     {

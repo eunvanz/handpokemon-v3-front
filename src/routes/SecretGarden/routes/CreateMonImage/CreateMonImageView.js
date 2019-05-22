@@ -17,7 +17,7 @@ const CreateMonImageView = ({
     <Form>
       <PictureUploadFormItem
         label='이미지'
-        isRequired
+        required
         form={form}
         name='image'
         max={1}

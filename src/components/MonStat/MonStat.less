@@ -1,15 +1,29 @@
+@import '~antd/lib/style/themes/default.less';
+
 .stat-item {
-  .ant-progress-inner {
-    border-radius: 0;
-  }
-  .ant-progress-bg {
-    border-radius: 0;
-    background-color: #f9c957;
-  }
-  .ant-progress-success-bg {
-    border-radius: 0;
-    .added {
-      background-color: #8bc34a;
+  .ant-progress {
+    margin-bottom: 12px;
+    .ant-progress-inner,
+    .ant-progress-bg,
+    .ant-progress-success-bg {
+      border-radius: 0;
+      height: 6px;
     }
+    .ant-progress-bg {
+      background-color: #f9c957;
+    }
+    .ant-progress-success-bg {
+      .added {
+        background-color: #8bc34a;
+      }
+    }
+    .ant-progress-text {
+      font-weight: 700;
+      color: @primary-color;
+    }
+  }
+  .stat-label {
+    font-weight: 700;
+    margin-bottom: 0;
   }
 }

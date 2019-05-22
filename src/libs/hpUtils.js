@@ -6,7 +6,7 @@ export const isAdminUser = user => {
 
 export const getMonImageUrl = monOrCol => {
   if (monOrCol.mon)
-    return monOrCol.mon.monImages.filter(
+    return monOrCol.monImages.filter(
       monImage => monImage.seq === monOrCol.imageSeq
     )[0].url;
   else

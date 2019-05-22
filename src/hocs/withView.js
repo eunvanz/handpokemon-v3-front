@@ -5,8 +5,8 @@ import SpinContainer from '../components/SpinContainer/SpinContainer';
 // {
 //   request,
 //   key,
-//   isRequired,
-//   isPersistent,
+//   required,
+//   persistent,
 //   preventRefresh
 // } 형태의 배열을 파라미터로 받음
 export default (options = []) => ComposedComponent => {
@@ -24,16 +24,16 @@ export default (options = []) => ComposedComponent => {
 
     componentWillUnmount() {
       options.forEach(item => {
-        const { isPersistent, key } = item;
-        if (!isPersistent) this.props.viewActions.clearView(key);
+        const { persistent, key } = item;
+        if (!persistent) this.props.viewActions.clearView(key);
       });
     }
 
     _isLoadingRequired = () => {
       let isLoading = false;
       options.forEach(item => {
-        const { isRequired, key } = item;
-        if (!this.props[key] && isRequired) isLoading = true;
+        const { required, key } = item;
+        if (!this.props[key] && required) isLoading = true;
       });
       return isLoading;
     };

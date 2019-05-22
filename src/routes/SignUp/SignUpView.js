@@ -5,11 +5,21 @@ import ContentContainer from '../../components/ContentContainer';
 import FirstStep from './FirstStep';
 import SecondStep from './SecondStep';
 import MessageModal from '../../components/MessageMoal/index';
+import ThirdStep from './ThirdStep';
 
-const SignUpView = ({ form, checkDupEmail, checkDupNickname }) => {
+const SignUpView = ({
+  form,
+  checkDupEmail,
+  checkDupNickname,
+  codes,
+  onPick,
+  startPicks,
+  onSubmit
+}) => {
   const [step, setStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
 
-  const onClickStep = useCallback(
+  const handleOnClickStep = useCallback(
     stepToGo => {
       let targetFields;
       if ([0, 1].indexOf(stepToGo) > -1) {
@@ -29,10 +39,16 @@ const SignUpView = ({ form, checkDupEmail, checkDupNickname }) => {
           }
         });
       } else {
+        setStep(stepToGo);
       }
     },
     [step]
   );
+
+  const handleOnClickSubmit = () => {
+    setSubmitting(true);
+    onSubmit();
+  };
 
   return (
     <ContentContainer>
@@ -58,6 +74,13 @@ const SignUpView = ({ form, checkDupEmail, checkDupNickname }) => {
             form={form}
           />
           <SecondStep show={step === 1} form={form} />
+          <ThirdStep
+            show={step === 2}
+            onPick={onPick}
+            startPicks={startPicks}
+            codes={codes}
+            disabled={submitting}
+          />
           <Divider />
           <div className='text-right'>
             {step > 0 && (
@@ -65,20 +88,35 @@ const SignUpView = ({ form, checkDupEmail, checkDupNickname }) => {
                 size='large'
                 type='link'
                 icon='arrow-left'
-                onClick={() => onClickStep(step - 1)}
+                onClick={() => handleOnClickStep(step - 1)}
               >
                 이전단계
               </Button>
             )}
-            <Button
-              type='primary'
-              size='large'
-              icon='arrow-right'
-              onClick={() => onClickStep(step + 1)}
-              style={{ marginLeft: 8 }}
-            >
-              다음단계
-            </Button>
+            {step < 2 && (
+              <Button
+                type='primary'
+                size='large'
+                icon='arrow-right'
+                onClick={() => handleOnClickStep(step + 1)}
+                style={{ marginLeft: 8 }}
+              >
+                다음단계
+              </Button>
+            )}
+            {step === 2 && (
+              <Button
+                type='primary'
+                size='large'
+                icon='check'
+                onClick={handleOnClickSubmit}
+                style={{ marginLeft: 8 }}
+                loading={submitting}
+                disabled={!startPicks}
+              >
+                모험시작
+              </Button>
+            )}
           </div>
         </Card>
       </div>

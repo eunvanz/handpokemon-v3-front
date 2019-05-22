@@ -26,12 +26,17 @@ const MonModal = ({ visible, onCancel, mon, codes }) => {
         </Button>
       ]}
       onCancel={onCancel}
+      centered
     >
-      <Row gutter={12}>
-        <Col span={8} sm={24}>
-          <img src={getMonImageUrl(mon)} alt='손켓몬 이미지' width='100%' />
+      <Row gutter={24}>
+        <Col sm={8} span={24} className='text-center'>
+          <img
+            src={getMonImageUrl(mon)}
+            alt='손켓몬 이미지'
+            style={{ width: '100%', maxWidth: 200 }}
+          />
         </Col>
-        <Col span={16} sm={24}>
+        <Col sm={16} span={24}>
           {!isFlipped && <MonInfo mon={mon} codes={codes} />}
           {isFlipped && <MonStat mon={mon} />}
         </Col>

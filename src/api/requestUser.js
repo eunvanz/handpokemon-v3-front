@@ -5,7 +5,7 @@ export const signIn = ({ email, password }) => {
 };
 
 export const signInWithToken = () => {
-  return makeRequest('post', 'users/token');
+  return makeRequest('get', 'users/token');
 };
 
 export const isDupEmail = email => {
@@ -14,4 +14,8 @@ export const isDupEmail = email => {
 
 export const isDupNickname = nickname => {
   return makeRequest('get', `users/is-dup-nickname/${nickname}`);
+};
+
+export const signUp = user => {
+  return makeRequest('post', 'users', user);
 };

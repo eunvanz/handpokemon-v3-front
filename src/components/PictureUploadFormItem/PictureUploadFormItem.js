@@ -5,7 +5,7 @@ import PictureWall from '../PictureWall';
 const PictureUploadFormItem = ({
   form,
   label,
-  isRequired,
+  required,
   requiredMessage,
   name,
   max,
@@ -21,13 +21,13 @@ const PictureUploadFormItem = ({
   }, []);
 
   return (
-    <Form.Item label={label} colon={false} required={isRequired}>
+    <Form.Item label={label} colon={false} required={required}>
       {form.getFieldDecorator(name, {
         valuePropName: 'fileList',
         getValueFromEvent: normFile,
         rules: [
           {
-            required: isRequired,
+            required: required,
             message: requiredMessage
           }
         ],

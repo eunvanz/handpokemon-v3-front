@@ -42,3 +42,14 @@ export const GRADE = {
   ELITE: '0205',
   LEGEND: '0206'
 };
+
+export const RANK = {
+  SS: '0401',
+  S: '0402',
+  A: '0403',
+  B: '0404',
+  C: '0405',
+  D: '0406',
+  E: '0407',
+  F: '0408'
+};

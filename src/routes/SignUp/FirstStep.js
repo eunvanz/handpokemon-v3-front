@@ -13,7 +13,7 @@ const FirstStep = ({ form, checkDupEmail, checkDupNickname, show }) => {
       >
         {form.getFieldDecorator('email', {
           rules: createRule({
-            isRequired: true,
+            required: true,
             customValidator: (rule, value, callback) => {
               checkDupEmail(value).then(res => {
                 const isDup = res.data;
@@ -42,7 +42,7 @@ const FirstStep = ({ form, checkDupEmail, checkDupNickname, show }) => {
       >
         {form.getFieldDecorator('password', {
           rules: createRule({
-            isRequired: true
+            required: true
           }).passwordRule
         })(
           <Input
@@ -55,7 +55,7 @@ const FirstStep = ({ form, checkDupEmail, checkDupNickname, show }) => {
       <Form.Item label='비밀번호 확인' colon={false} required>
         {form.getFieldDecorator('passwordConfirm', {
           rules: createRule({
-            isRequired: true,
+            required: true,
             customValidator: (rule, value, callback) => {
               if (value && value !== form.getFieldValue('password')) {
                 callback('입력하신 비밀번호와 다릅니다.');
@@ -80,7 +80,7 @@ const FirstStep = ({ form, checkDupEmail, checkDupNickname, show }) => {
       >
         {form.getFieldDecorator('nickname', {
           rules: createRule({
-            isRequired: true,
+            required: true,
             customValidator: (rule, value, callback) => {
               checkDupNickname(value).then(res => {
                 const isDup = res.data;
