@@ -22,12 +22,8 @@ class SignUpContainer extends PureComponent {
       if (!err) {
         // 프로필 사진이 있을경우 업로드
         let requestPostFile;
-        if (
-          values.profileImage &&
-          values.profileImage.fileList &&
-          values.profileImage.fileList[0]
-        ) {
-          const fileObj = values.profileImage.fileList[0].originFileObj;
+        if (values.profileImage && values.profileImage[0]) {
+          const fileObj = values.profileImage[0].originFileObj;
           const formData = new FormData();
           formData.append('file', fileObj);
           requestPostFile = () =>

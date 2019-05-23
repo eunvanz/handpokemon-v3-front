@@ -475,7 +475,7 @@ module.exports = function(webpackEnv) {
                   modifyVars: {
                     '@primary-color': '#03a9f4',
                     '@font-size-base': '14px',
-                    '@border-radius-base': '6px'
+                    '@border-radius-base': '4px'
                   }
                 }
               )

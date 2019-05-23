@@ -49,11 +49,11 @@ const HeaderView = ({
       );
     }
     return component;
-  }, [user]);
+  }, [user, onChangeRoute]);
 
   const onClickToggleDrawer = useCallback(() => {
     onToggleDrawer(!isOpenDrawer);
-  }, [isOpenDrawer]);
+  }, [isOpenDrawer, onChangeRoute]);
 
   return (
     <Affix offsetTop={0} style={{ zIndex: 1000 }}>

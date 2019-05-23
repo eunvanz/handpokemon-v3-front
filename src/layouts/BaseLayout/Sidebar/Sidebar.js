@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, memo } from 'react';
-import { Menu, Icon, List, Avatar } from 'antd';
-import moment from 'moment';
+import { Menu, Icon, List, Avatar, Tag } from 'antd';
 import './Sidebar.less';
+import CreditTag from '../../../components/CreditTag';
 
 const SidebarView = ({ user, history, onChangeRoute }) => {
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname]);
@@ -52,7 +52,10 @@ const SidebarView = ({ user, history, onChangeRoute }) => {
           )}
           <Menu.Item key='/pick' onClick={() => onClickMenuItem('/pick')}>
             <Icon type='experiment' />
-            <span>손켓몬 채집</span>
+            <span>
+              손켓몬 채집
+              {user && <CreditTag credit={user.pickCredit} />}
+            </span>
           </Menu.Item>
           <Menu.Item key='/battle' onClick={() => onClickMenuItem('/battle')}>
             <Icon type='fire' />

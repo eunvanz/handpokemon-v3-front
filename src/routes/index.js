@@ -15,3 +15,8 @@ export const SecretGarden = Loadable({
   loader: () => import('./SecretGarden'),
   loading: SpinContainer
 });
+
+export const Pick = Loadable({
+  loader: () => import('./Pick'),
+  loading: SpinContainer
+});

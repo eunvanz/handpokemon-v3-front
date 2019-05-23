@@ -67,6 +67,7 @@
     "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "react-router-last-location": "^2.0.0-beta.3",
+    "react-transition-group": "^4.0.1",
     "react-visibility-sensor": "^5.0.2",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
