@@ -82,10 +82,10 @@ const MonCard = ({ mon, hideInfo, codes, onClick, withWrapper }) => {
         onClick={onClick ? onClick : () => setShowMonModal(true)}
         className='mon-card'
       >
-        <p className='cost-section'>
+        <div className='cost-section'>
           <Cost cost={(mon.mon || mon)['cost']} />
-        </p>
-        <p className='attr-section'>{renderAttr()}</p>
+        </div>
+        <div className='attr-section'>{renderAttr()}</div>
       </Card>
       <MonModal
         mon={mon}

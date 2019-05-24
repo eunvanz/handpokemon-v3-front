@@ -4,31 +4,26 @@ import { compose } from 'redux';
 import PickView from './PickView';
 import withView from '../../hocs/withView';
 import withCodes from '../../hocs/withCodes';
-import { DUNGEON } from '../../constants/rules';
 import { getPick } from '../../api/requestCollection';
-import { GRADE } from '../../constants/codes';
 import withUser from '../../hocs/withUser';
 
 class PickContainer extends PureComponent {
-  _handleOnSelectDungeon = ({ type, repeatCnt }) => {
-    const { viewActions, userActions } = this.props;
-    const dungeon = DUNGEON[type];
-    const { attrCds } = dungeon;
-    return getPick({
-      gradeCds: [GRADE.BASIC],
-      attrCds,
-      repeatCnt
-    }).then(res => {
+  _handleOnPick = ({ gradeCds, attrCds, repeatCnt }) => {
+    const { viewActions, userActions, prevPickOptions } = this.props;
+    const pickOptions = Object.assign({}, prevPickOptions);
+    if (gradeCds) pickOptions.gradeCds = gradeCds;
+    if (attrCds) pickOptions.attrCds = attrCds;
+    if (repeatCnt) pickOptions.repeatCnt = repeatCnt;
+    viewActions.receiveView('prevPickOptions', pickOptions);
+    return getPick(pickOptions).then(res => {
       viewActions.receiveView('pickedMons', res.data);
-      userActions.signInWithToken();
+      userActions.signInUserWithToken();
       return Promise.resolve();
     });
   };
 
   render() {
-    return (
-      <PickView onSelectDungeon={this._handleOnSelectDungeon} {...this.props} />
-    );
+    return <PickView onPick={this._handleOnPick} {...this.props} />;
   }
 }
 
@@ -36,6 +31,9 @@ const wrappedPickView = compose(
   withView([
     {
       key: 'pickedMons'
+    },
+    {
+      key: 'prevPickOptions'
     }
   ]),
   withCodes,

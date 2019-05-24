@@ -5,11 +5,12 @@ export const isAdminUser = user => {
 };
 
 export const getMonImageUrl = monOrCol => {
-  if (monOrCol.mon)
-    return monOrCol.monImages.filter(
+  if (monOrCol.mon) {
+    const filteredMonImage = monOrCol.monImages.filter(
       monImage => monImage.seq === monOrCol.imageSeq
-    )[0].url;
-  else
+    )[0];
+    if (filteredMonImage) return filteredMonImage.url;
+  } else
     return monOrCol.monImages.length > 0
       ? encodeURI(monOrCol.monImages[0].url)
       : null;

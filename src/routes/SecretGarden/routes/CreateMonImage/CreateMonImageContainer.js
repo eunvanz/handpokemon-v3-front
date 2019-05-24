@@ -94,7 +94,7 @@ class CreateMonImageContainer extends PureComponent {
 }
 
 const wrappedCreateMonView = compose(
-  withUser({ isAdminRequired: true }),
+  withUser({ adminRequired: true }),
   withView([
     {
       key: 'monImage'

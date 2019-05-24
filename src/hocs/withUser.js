@@ -14,9 +14,9 @@ import { isEmpty } from '../libs/commonUtils';
 import { isAdminUser } from '../libs/hpUtils';
 
 export default ({
-  isUserRequired,
-  isAdminRequired,
-  isNoUserRequired
+  required,
+  adminRequired,
+  noUserRequired
 } = {}) => ComposedComponent => {
   class withUser extends PureComponent {
     constructor(props) {
@@ -51,15 +51,15 @@ export default ({
       const { user } = this.props;
       const { isUserLoaded } = this.state;
       if (!isUserLoaded) return <SpinContainer />;
-      else if ((isUserRequired || isAdminRequired) && !user) {
+      else if ((required || adminRequired) && !user) {
         return <Redirect to='/sign-in' />;
-      } else if ((isAdminRequired || isUserRequired) && user) {
-        if (isAdminRequired && !isAdminUser(user)) {
+      } else if ((adminRequired || required) && user) {
+        if (adminRequired && !isAdminUser(user)) {
           return <Redirect to='/' />;
         } else {
           return <ComposedComponent {...this.props} />;
         }
-      } else if (isNoUserRequired && user) {
+      } else if (noUserRequired && user) {
         return <Redirect to='/' />;
       }
       return <ComposedComponent {...this.props} />;

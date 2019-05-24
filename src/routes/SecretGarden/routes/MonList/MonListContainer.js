@@ -29,7 +29,7 @@ const wrappedMonListView = compose(
       persistent: true
     }
   ]),
-  withUser({ isAdminRequired: true }),
+  withUser({ adminRequired: true }),
   withCodes
 )(MonListContainer);
 

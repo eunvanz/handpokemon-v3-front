@@ -3,7 +3,7 @@ import { COLOR } from './styles';
 
 export const DUNGEON = [
   {
-    attrCds: [
+    ATTR_CDS: [
       ATTR.NORMAL,
       ATTR.FIRE,
       ATTR.POISON,
@@ -14,11 +14,11 @@ export const DUNGEON = [
       ATTR.DRAGON,
       ATTR.ICE
     ],
-    name: '동쪽 섬',
-    color: COLOR.INDIGO
+    NAME: '동쪽 섬',
+    COLOR: COLOR.INDIGO
   },
   {
-    attrCds: [
+    ATTR_CDS: [
       ATTR.ROCK,
       ATTR.AIR,
       ATTR.IRON,
@@ -29,12 +29,25 @@ export const DUNGEON = [
       ATTR.FIGHT,
       ATTR.WATER
     ],
-    name: '서쪽 섬',
-    color: COLOR.DEEP_ORANGE
+    NAME: '서쪽 섬',
+    COLOR: COLOR.DEEP_ORANGE
   },
   {
-    attrCds: Object.keys(ATTR).map(key => ATTR[key]),
-    name: '중앙던전',
-    color: COLOR.GRAY
+    ATTR_CDS: Object.keys(ATTR).map(key => ATTR[key]),
+    NAME: '중앙던전',
+    COLOR: COLOR.GRAY
   }
 ];
+
+export const CREDIT = {
+  PICK: {
+    INTERVAL: 1000 * 20,
+    // INTERVAL: 1000 * 60 * 20,
+    MAX: 12
+  },
+  BATTLE: {
+    INTERVAL: 1000 * 20,
+    // INTERVAL: 1000 * 60 * 20,
+    MAX: 12
+  }
+};

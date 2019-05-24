@@ -3,7 +3,7 @@ import { Menu, Icon, List, Avatar, Tag } from 'antd';
 import './Sidebar.less';
 import CreditTag from '../../../components/CreditTag';
 
-const SidebarView = ({ user, history, onChangeRoute }) => {
+const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
   const [selectedKeys, setSelectedKeys] = useState([history.location.pathname]);
 
   useEffect(() => {
@@ -20,7 +20,9 @@ const SidebarView = ({ user, history, onChangeRoute }) => {
       <div className='hp-sidebar'>
         <List.Item.Meta
           className='user-info'
-          avatar={<Avatar src={user ? user.profileImage : null} icon='user' />}
+          avatar={
+            <Avatar src={user ? user.profileImage : null} icon='user' />
+          }
           title={user ? `${user.nickname}님, 안녕?` : '로그인을 해주세요.'}
         />
         <Menu theme='dark' mode='inline'>
@@ -54,12 +56,27 @@ const SidebarView = ({ user, history, onChangeRoute }) => {
             <Icon type='experiment' />
             <span>
               손켓몬 채집
-              {user && <CreditTag credit={user.pickCredit} />}
+              {user && (
+                <CreditTag
+                  credit={user.pickCredit}
+                  lastTime={user.lastPick}
+                  type='PICK'
+                  refreshUser={refreshUser}
+                />
+              )}
             </span>
           </Menu.Item>
           <Menu.Item key='/battle' onClick={() => onClickMenuItem('/battle')}>
             <Icon type='fire' />
             <span>손켓몬 시합</span>
+            {user && (
+              <CreditTag
+                credit={user.battleCredit}
+                lastTime={user.lastBattle}
+                type='BATTLE'
+                refreshUser={refreshUser}
+              />
+            )}
           </Menu.Item>
           <Menu.SubMenu
             key='ranking'

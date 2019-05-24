@@ -1,22 +1,20 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import SelectDungeon from './SelectDungeon';
+import PickResult from './PickResult';
 
-const PickView = ({
-  defaultStep = 0, // 0 - 던전선택, 1 - 채집
-  pickedMons,
-  onSelectDungeon,
-  user,
-  codes
-}) => {
-  const [step, setStep] = useState(defaultStep);
-
+const PickView = ({ pickedMons, onPick, user, codes, history }) => {
   return (
     <div>
-      {step === 0 && (
-        <SelectDungeon
-          onSelectDungeon={onSelectDungeon}
-          user={user}
+      {!pickedMons && (
+        <SelectDungeon onPick={onPick} user={user} codes={codes} />
+      )}
+      {pickedMons && (
+        <PickResult
+          pickedMons={pickedMons}
           codes={codes}
+          onPick={onPick}
+          user={user}
+          history={history}
         />
       )}
     </div>

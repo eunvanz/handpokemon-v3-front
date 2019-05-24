@@ -34,12 +34,18 @@ class BaseLayoutContainer extends PureComponent {
     history.push(route);
   };
 
+  _handleRefreshUser = () => {
+    const { userActions } = this.props
+    userActions.signInUserWithToken()
+  }
+
   render() {
     return (
       <BaseLayoutView
         onToggleDrawer={this._handleOnToggleDrawer}
         onClickLogout={this._handleOnClickLogout}
         onChangeRoute={this._handleOnChangeRoute}
+        refreshUser={this._handleRefreshUser}
         {...this.props}
       />
     );

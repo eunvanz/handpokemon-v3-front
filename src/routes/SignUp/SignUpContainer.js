@@ -85,7 +85,7 @@ class SignUpContainer extends PureComponent {
 }
 
 const wrappedSignUpView = compose(
-  withUser({ isNoUserRequired: true }),
+  withUser({ noUserRequired: true }),
   withRouter,
   withForm,
   withCodes
