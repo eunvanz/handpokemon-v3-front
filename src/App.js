@@ -5,7 +5,7 @@ import { LastLocationProvider } from 'react-router-last-location';
 
 import './App.less';
 import BaseLayout from './layouts/BaseLayout';
-import { SignUp, SignIn, SecretGarden, Pick } from './routes';
+import { SignUp, SignIn, SecretGarden, Pick, Collection } from './routes';
 
 const App = ({ store }) => {
   return (
@@ -18,6 +18,7 @@ const App = ({ store }) => {
               <Route path='/sign-in' component={SignIn} />
               <Route path='/secret-garden' component={SecretGarden} />
               <Route path='/pick' component={Pick} />
+              <Route path='/collection/:id' component={Collection} />
             </Switch>
           </BaseLayout>
         </LastLocationProvider>

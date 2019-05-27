@@ -3,11 +3,14 @@ import { Tag } from 'antd';
 import './LevelTag.less';
 import { COLOR } from '../../constants/styles';
 
-const LevelTag = ({ level, isEvolutable }) => {
+const LevelTag = ({ level, evolutable, old, ...restProps }) => {
   return (
     <Tag
       className='level-tag'
-      color={isEvolutable ? COLOR.DEEP_ORANGE : COLOR.LIGHT_BLUE}
+      color={
+        old ? COLOR.GRAY : evolutable ? COLOR.DEEP_ORANGE : COLOR.LIGHT_BLUE
+      }
+      {...restProps}
     >
       LV. {level}
     </Tag>

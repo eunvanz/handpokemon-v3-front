@@ -20,9 +20,7 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
       <div className='hp-sidebar'>
         <List.Item.Meta
           className='user-info'
-          avatar={
-            <Avatar src={user ? user.profileImage : null} icon='user' />
-          }
+          avatar={<Avatar src={user ? user.profileImage : null} icon='user' />}
           title={user ? `${user.nickname}님, 안녕?` : '로그인을 해주세요.'}
         />
         <Menu theme='dark' mode='inline'>
@@ -36,11 +34,18 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           </Menu.Item>
           {user && (
             <Menu.Item
-              key='/collection'
-              onClick={() => onClickMenuItem('/collection')}
+              key='/collection/user'
+              onClick={() => onClickMenuItem('/collection/user')}
             >
               <Icon type='appstore' />
-              <span>내 콜렉션</span>
+              <span>
+                내 콜렉션
+                {user && (
+                  <Tag className='credit-tag'>
+                    {Number(user.colPoint).toLocaleString()}점
+                  </Tag>
+                )}
+              </span>
             </Menu.Item>
           )}
           {user && (

@@ -10,7 +10,18 @@ import MonModal from '../MonModal';
 import RankTag from '../RankTag';
 import LevelTag from '../LevelTag';
 
-const MonCard = ({ mon, hideInfo, codes, onClick, withWrapper }) => {
+const MonCard = ({
+  mon,
+  hideInfo,
+  codes,
+  onClick,
+  withWrapper,
+  prevMon,
+  mixable,
+  onClickMix,
+  evolutable,
+  onClickEvolute
+}) => {
   const [showMonModal, setShowMonModal] = useState(false);
 
   const renderCover = useCallback(() => {
@@ -70,11 +81,24 @@ const MonCard = ({ mon, hideInfo, codes, onClick, withWrapper }) => {
     return mon.level >= requiredLv;
   }, [mon]);
 
+  const handleOnClickMix = useCallback(
+    mon => {
+      setShowMonModal(false);
+      onClickMix(mon);
+    },
+    [mon]
+  );
+
+  const handleOnClickEvolute = useCallback(mon => {
+    setShowMonModal(false);
+    onClickEvolute(mon);
+  });
+
   return (
     <Wrapper className='mon-card-wrapper'>
       {mon.mon && <RankTag rankCd={mon.rankCd} codes={codes} />}
       {mon.mon && (
-        <LevelTag level={mon.level} isEvolutable={checkIsEvolutable()} />
+        <LevelTag level={mon.level} evolutable={checkIsEvolutable()} />
       )}
       <Card
         hoverable
@@ -92,6 +116,11 @@ const MonCard = ({ mon, hideInfo, codes, onClick, withWrapper }) => {
         visible={showMonModal}
         onCancel={() => setShowMonModal(false)}
         codes={codes}
+        prevMon={prevMon}
+        mixable={mixable}
+        onClickMix={handleOnClickMix}
+        evolutable={evolutable}
+        onClickEvolute={handleOnClickEvolute}
       />
     </Wrapper>
   );

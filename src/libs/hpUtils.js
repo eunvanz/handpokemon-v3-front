@@ -24,3 +24,15 @@ export const getClassNameFromGradeCd = gradeCd => {
   else if (gradeCd === GRADE.ELITE) return 'elite';
   else if (gradeCd === GRADE.LEGEND) return 'legend';
 };
+
+export const proceedPickActions = ({
+  viewActions,
+  userActions,
+  prevUserCollections,
+  pickedMons
+}) => {
+  viewActions.receiveView('prevUserCollections', prevUserCollections);
+  viewActions.receiveView('pickedMons', pickedMons);
+  userActions.signInUserWithToken();
+  userActions.fetchUserCollectionsWithToken();
+};

@@ -10,3 +10,19 @@ export const getPick = ({ repeatCnt, gradeCds, attrCds }) => {
     `collections/pick?repeatCnt=${repeatCnt}&gradeCds=${gradeCds}&attrCds=${attrCds}`
   );
 };
+
+export const getCollectionsByUserId = userId => {
+  return makeRequest('get', `collections/user/${userId}`);
+};
+
+export const getUserCollectionsWithToken = () => {
+  return makeRequest('get', `collections/token`);
+};
+
+export const getMixedCollection = collectionIds => {
+  return makeRequest('get', `collections/mix?collectionIds=${collectionIds}`);
+};
+
+export const getEvolutedCollection = collectionId => {
+  return makeRequest('get', `collections/evolute?collectionId=${collectionId}`);
+};

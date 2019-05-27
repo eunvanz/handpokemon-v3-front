@@ -33,6 +33,11 @@ export const DUNGEON = [
     COLOR: COLOR.DEEP_ORANGE
   },
   {
+    ATTR_CDS: [ATTR.ROCK],
+    NAME: '테스트',
+    COLOR: COLOR.LIME
+  },
+  {
     ATTR_CDS: Object.keys(ATTR).map(key => ATTR[key]),
     NAME: '중앙던전',
     COLOR: COLOR.GRAY

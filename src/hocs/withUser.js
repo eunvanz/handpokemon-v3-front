@@ -7,7 +7,8 @@ import {
   clearUser,
   receiveUser,
   signInUser,
-  signInUserWithToken
+  signInUserWithToken,
+  fetchUserCollectionsWithToken
 } from '../store/user';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 import { isEmpty } from '../libs/commonUtils';
@@ -40,6 +41,9 @@ export default ({
             .catch(() => {
               localStorage.removeItem('auth');
               this.setState({ isUserLoaded: true });
+            })
+            .then(() => {
+              userActions.fetchUserCollectionsWithToken();
             });
         } else {
           this.setState({ isUserLoaded: true });
@@ -75,7 +79,9 @@ export default ({
       receiveUser: user => dispatch(receiveUser(user)),
       clearUser: () => dispatch(clearUser()),
       signInUserWithToken: () => dispatch(signInUserWithToken()),
-      signInUser: data => dispatch(signInUser(data))
+      signInUser: data => dispatch(signInUser(data)),
+      fetchUserCollectionsWithToken: () =>
+        dispatch(fetchUserCollectionsWithToken())
     }
   });
 

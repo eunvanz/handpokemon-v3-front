@@ -1,9 +1,22 @@
 import React, { memo, useState, useCallback } from 'react';
-import { Row, Button } from 'antd';
+import { Row, Button, Col, Tag } from 'antd';
 import ContentContainer from '../../components/ContentContainer/index';
 import MonCard from '../../components/MonCard/index';
+import { COLOR } from '../../constants/styles';
+import LevelUpTag from '../../components/LevelUpTag';
 
-const PickResult = ({ pickedMons, codes, user, onPick, history }) => {
+const PickResult = ({
+  pickedMons,
+  codes,
+  user,
+  onPick,
+  history,
+  onInit,
+  prevUserCollections,
+  prevPickOptions,
+  onClickMix,
+  onClickEvolute
+}) => {
   const [picking, setPicking] = useState(false);
 
   const handleOnClickPick = useCallback(
@@ -14,15 +27,52 @@ const PickResult = ({ pickedMons, codes, user, onPick, history }) => {
     [onPick]
   );
 
+  const getUserCollectionByMonId = useCallback(
+    monId => {
+      return prevUserCollections.filter(col => col.monId === monId)[0];
+    },
+    [prevUserCollections]
+  );
+
   return (
     <ContentContainer>
-      <Row type='flex' justify='space-around' align='middle' gutter={6}>
+      <h2 className='text-center' style={{ marginBottom: 24 }}>
+        야호! 포켓몬을 발견했어!
+        <br />
+        과연 어떤 친구일까?
+      </h2>
+      <Row type='flex' justify='center' gutter={6}>
         {pickedMons.map(mon => (
-          <MonCard mon={mon} codes={codes} withWrapper />
+          <Col xs={8} sm={6} xl={4} key={mon.monId} style={{ marginBottom: 6 }}>
+            <MonCard
+              mon={mon}
+              codes={codes}
+              prevMon={getUserCollectionByMonId(mon.monId)}
+              mixable
+              onClickMix={() => onClickMix(mon)}
+              evolutable
+              onClickEvolute={() => onClickEvolute(mon)}
+            />
+            {getUserCollectionByMonId(mon.monId) && (
+              <LevelUpTag
+                prevLevel={getUserCollectionByMonId(mon.monId).level}
+                level={mon.level}
+              />
+            )}
+            {!getUserCollectionByMonId(mon.monId) && (
+              <div style={{ marginTop: 12, textAlign: 'center' }}>
+                <Tag color={COLOR.DEEP_ORANGE}>NEW</Tag>
+                <p>
+                  콜렉션점수{' '}
+                  <span className='c-primary fw-700'>+{mon.mon.point}</span>
+                </p>
+              </div>
+            )}
+          </Col>
         ))}
       </Row>
-      <div className='text-center'>
-        {user.pickCredit > 0 && (
+      <div className='text-center' style={{ marginTop: 24 }}>
+        {prevPickOptions && user.pickCredit > 0 && (
           <>
             <Button
               type='primary'
@@ -47,16 +97,21 @@ const PickResult = ({ pickedMons, codes, user, onPick, history }) => {
             )}
           </>
         )}
-        {user.pickCredit < 1 && (
+        {(!prevPickOptions || user.pickCredit < 1) && (
           <Button
             type='primary'
             size='large'
-            style={{ marginLeft: 12 }}
-            onClick={() => history.push('/collection')}
+            icon='appstore'
+            onClick={() => history.push('/collection/user')}
           >
             내 콜렉션
           </Button>
         )}
+        <div className='text-center' style={{ marginTop: 16 }}>
+          <Button size='large' onClick={onInit} icon='environment'>
+            지역선택
+          </Button>
+        </div>
       </div>
     </ContentContainer>
   );

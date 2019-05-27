@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { Spin, Icon } from 'antd';
 import { isIE, isEdge } from '../../libs/commonUtils';
-// import spinner from '../../imgs/spinner.svg';
-import fireSpinner from '../../imgs/fire-spinner.svg';
+import spinner from '../../imgs/spinner.svg';
+// import fireSpinner from '../../imgs/fire-spinner.svg';
 
 const Spinner = () => {
   return (
@@ -11,11 +11,7 @@ const Spinner = () => {
         isIE() || isEdge() ? (
           <Icon type='loading' />
         ) : (
-          <img
-            src={fireSpinner}
-            style={{ width: 40, height: 40 }}
-            alt='spinner'
-          />
+          <img src={spinner} style={{ width: 40, height: 40 }} alt='spinner' />
         )
       }
     />

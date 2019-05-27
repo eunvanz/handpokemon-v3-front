@@ -23,6 +23,7 @@ class SignInContainer extends PureComponent {
           .then(() => {
             if (history.length >= 2 && lastLocation) history.go(-1);
             else history.push('/');
+            userActions.fetchUserCollectionsWithToken();
           })
           .catch(err => {
             this.setState({ isLoading: false });

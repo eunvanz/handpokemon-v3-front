@@ -76,11 +76,6 @@ const CreateMonView = ({
         <Col xs={24} md={6}>
           <Form.Item label='부속성'>
             {form.getFieldDecorator('subAttrCd', {
-              rules: [
-                {
-                  required: true
-                }
-              ],
               initialValue: mon ? mon.subAttrCd : undefined
             })(
               <Select>
