@@ -9,7 +9,8 @@ import {
   signInUser,
   signInUserWithToken,
   fetchUserCollectionsWithToken,
-  fetchUserBooksWithToken
+  fetchUserBooksWithToken,
+  fetchUserAchievementsWithToken
 } from '../store/user';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 import { isEmpty } from '../libs/commonUtils';
@@ -42,10 +43,6 @@ export default ({
             .catch(() => {
               localStorage.removeItem('auth');
               this.setState({ isUserLoaded: true });
-            })
-            .then(() => {
-              userActions.fetchUserCollectionsWithToken();
-              userActions.fetchUserBooksWithToken();
             });
         } else {
           this.setState({ isUserLoaded: true });
@@ -84,7 +81,9 @@ export default ({
       signInUser: data => dispatch(signInUser(data)),
       fetchUserCollectionsWithToken: () =>
         dispatch(fetchUserCollectionsWithToken()),
-      fetchUserBooksWithToken: () => dispatch(fetchUserBooksWithToken())
+      fetchUserBooksWithToken: () => dispatch(fetchUserBooksWithToken()),
+      fetchUserAchievementsWithToken: () =>
+        dispatch(fetchUserAchievementsWithToken())
     }
   });
 

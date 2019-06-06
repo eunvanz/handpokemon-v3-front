@@ -44,6 +44,7 @@ class SignUpContainer extends PureComponent {
             userActions.receiveUser(user);
             userActions.fetchUserCollectionsWithToken();
             userActions.fetchUserBooksWithToken();
+            userActions.fetchUserAchievements();
             history.push('/pick');
             MessageModal({
               type: 'success',
