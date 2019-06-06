@@ -8,7 +8,8 @@ import {
   receiveUser,
   signInUser,
   signInUserWithToken,
-  fetchUserCollectionsWithToken
+  fetchUserCollectionsWithToken,
+  fetchUserBooksWithToken
 } from '../store/user';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 import { isEmpty } from '../libs/commonUtils';
@@ -44,6 +45,7 @@ export default ({
             })
             .then(() => {
               userActions.fetchUserCollectionsWithToken();
+              userActions.fetchUserBooksWithToken();
             });
         } else {
           this.setState({ isUserLoaded: true });
@@ -81,7 +83,8 @@ export default ({
       signInUserWithToken: () => dispatch(signInUserWithToken()),
       signInUser: data => dispatch(signInUser(data)),
       fetchUserCollectionsWithToken: () =>
-        dispatch(fetchUserCollectionsWithToken())
+        dispatch(fetchUserCollectionsWithToken()),
+      fetchUserBooksWithToken: () => dispatch(fetchUserBooksWithToken())
     }
   });
 

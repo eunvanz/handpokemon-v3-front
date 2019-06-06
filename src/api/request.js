@@ -1,10 +1,27 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../constants/api';
 
-const token = localStorage.getItem('auth');
-console.log('token', token);
+let axiosInstance = null;
 
-export default axios.create({
-  baseURL: `${API_BASE_URL}/`,
-  headers: { Authorization: token }
-});
+let token = localStorage.getItem('auth');
+
+const _initAxios = () => {
+  token = localStorage.getItem('auth');
+  axiosInstance = axios.create({
+    baseURL: `${API_BASE_URL}/`,
+    headers: {
+      Authorization: token
+    }
+  });
+};
+
+const _hasTokenChanged = () => {
+  return token !== localStorage.getItem('auth');
+};
+
+const getRequestInstance = () => {
+  if (_hasTokenChanged() || !token || !axiosInstance) _initAxios();
+  return axiosInstance;
+};
+
+export default getRequestInstance;

@@ -5,6 +5,7 @@ const PROD_API_BASE_URL = 'https://api.handpokemon.com';
 const DEV_API_BASE_URL = 'http://127.0.0.1:9999';
 
 const LOCAL_API_BASE_URL = 'http://127.0.0.1:9999';
+// const LOCAL_API_BASE_URL = 'http://192.168.219.102:9999';
 // const LOCAL_API_BASE_URL = DEV_API_BASE_URL;
 // const LOCAL_API_BASE_URL = PROD_API_BASE_URL;
 

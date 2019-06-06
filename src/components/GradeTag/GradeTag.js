@@ -1,16 +1,31 @@
 import React, { memo } from 'react';
 import { Tag } from 'antd';
 import classNames from 'classnames';
-import { GRADE_STYLE } from '../../constants/styles';
+import { GRADE_STYLE, COLOR } from '../../constants/styles';
 import { getClassNameFromGradeCd } from '../../libs/hpUtils';
 import './GradeTag.less';
 
-const GradeTag = ({ gradeCd }) => {
+const GradeTag = ({ gradeCd, style, isMock, ...restProps }) => {
   return (
     <Tag
-      className={classNames('grade-tag', getClassNameFromGradeCd(gradeCd))}
-      style={GRADE_STYLE[gradeCd]}
-    />
+      className={classNames(
+        'grade-tag',
+        isMock ? null : getClassNameFromGradeCd(gradeCd)
+      )}
+      style={Object.assign(
+        {},
+        isMock ? null : GRADE_STYLE[gradeCd],
+        style,
+        isMock
+          ? {
+              backgroundColor: COLOR.LIGHT_GRAY
+            }
+          : null
+      )}
+      {...restProps}
+    >
+      {isMock ? <span>&#10240;&#10240;&#10240;</span> : null}
+    </Tag>
   );
 };
 

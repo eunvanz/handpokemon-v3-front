@@ -25,3 +25,8 @@ export const Collection = Loadable({
   loader: () => import('./Collection'),
   loading: SpinContainer
 });
+
+export const Book = Loadable({
+  loader: () => import('./Book'),
+  loading: SpinContainer
+});

@@ -42,12 +42,14 @@ class SignUpContainer extends PureComponent {
             const { user, token } = res.data;
             localStorage.setItem('auth', token);
             userActions.receiveUser(user);
+            userActions.fetchUserCollectionsWithToken();
+            userActions.fetchUserBooksWithToken();
             history.push('/pick');
             MessageModal({
               type: 'success',
               title: '회원가입 완료',
               content:
-                '정식 손켓몬 트레이너가 되었습니다. 손켓몬 채집부터 시작해볼까요?'
+                '정식 포켓몬 트레이너가 되었습니다. 포켓몬 채집부터 시작해볼까요?'
             });
           });
       }

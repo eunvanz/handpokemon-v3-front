@@ -57,7 +57,7 @@ const SignUpView = ({
           className='sign-up-card'
           title={
             <div>
-              <h3>손켓몬 트레이너 라이센스 등록</h3>
+              <h3>포켓몬 트레이너 라이센스 등록</h3>
               <Steps size='small' current={step}>
                 <Steps.Step title='필수정보 입력' />
                 <Steps.Step title='선택정보 입력' />

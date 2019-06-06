@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Card, Col } from 'antd';
+import { Card, Col, Tag } from 'antd';
 import { getMonImageUrl } from '../../libs/hpUtils';
 import './MonCard.less';
 import GradeTag from '../GradeTag';
@@ -20,12 +20,17 @@ const MonCard = ({
   mixable,
   onClickMix,
   evolutable,
-  onClickEvolute
+  onClickEvolute,
+  isMock,
+  overlay,
+  bottomComponent,
+  user,
+  ...restProps
 }) => {
   const [showMonModal, setShowMonModal] = useState(false);
 
   const renderCover = useCallback(() => {
-    if (!hideInfo) {
+    if (!hideInfo && !isMock) {
       return (
         <div style={{ position: 'relative' }}>
           <img
@@ -42,19 +47,31 @@ const MonCard = ({
         </div>
       );
     }
-  }, [mon, hideInfo]);
+  }, [mon, hideInfo, isMock]);
 
   const renderAttr = useCallback(() => {
-    const thisMon = mon.mon || mon;
-    const { gradeCd } = thisMon;
-    return (
-      <>
-        <GradeTag gradeCd={gradeCd} />
-        <AttrTag attrCd={mon.mainAttrCd} codes={codes} />
-        {mon.subAttrCd && <AttrTag attrCd={mon.subAttrCd} codes={codes} />}
-      </>
-    );
-  }, [mon, hideInfo]);
+    if (!isMock) {
+      const thisMon = mon.mon || mon;
+      const { gradeCd } = thisMon;
+      return (
+        <>
+          <GradeTag gradeCd={gradeCd} isMock={isMock} />
+          <AttrTag attrCd={mon.mainAttrCd} codes={codes} isMock={isMock} />
+          {mon.subAttrCd && (
+            <AttrTag attrCd={mon.subAttrCd} codes={codes} isMock={isMock} />
+          )}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <GradeTag isMock={isMock} />
+          <AttrTag isMock={isMock} />
+          <AttrTag isMock={isMock} />
+        </>
+      );
+    }
+  }, [mon, hideInfo, isMock, codes]);
 
   const Wrapper = useMemo(() => {
     if (withWrapper) {
@@ -63,7 +80,7 @@ const MonCard = ({
           xs={8}
           sm={6}
           xl={4}
-          key={mon.id}
+          key={mon ? mon.id : props.key}
           style={{ marginBottom: 6 }}
           {...props}
         >
@@ -73,7 +90,7 @@ const MonCard = ({
     } else {
       return ({ children, ...props }) => <div {...props}>{children}</div>;
     }
-  }, [withWrapper]);
+  }, [withWrapper, restProps.children, mon]);
 
   const checkIsEvolutable = useCallback(() => {
     if (!mon.nextMons || mon.nextMons.length === 0) return false;
@@ -86,18 +103,21 @@ const MonCard = ({
       setShowMonModal(false);
       onClickMix(mon);
     },
-    [mon]
+    [onClickMix, setShowMonModal]
   );
 
-  const handleOnClickEvolute = useCallback(mon => {
-    setShowMonModal(false);
-    onClickEvolute(mon);
-  });
+  const handleOnClickEvolute = useCallback(
+    mon => {
+      setShowMonModal(false);
+      onClickEvolute(mon);
+    },
+    [setShowMonModal, onClickEvolute]
+  );
 
   return (
-    <Wrapper className='mon-card-wrapper'>
-      {mon.mon && <RankTag rankCd={mon.rankCd} codes={codes} />}
-      {mon.mon && (
+    <Wrapper className='mon-card-wrapper' {...restProps}>
+      {!isMock && mon.mon && <RankTag rankCd={mon.rankCd} codes={codes} />}
+      {!isMock && mon.mon && (
         <LevelTag level={mon.level} evolutable={checkIsEvolutable()} />
       )}
       <Card
@@ -106,22 +126,37 @@ const MonCard = ({
         onClick={onClick ? onClick : () => setShowMonModal(true)}
         className='mon-card'
       >
+        {overlay && (
+          <div className='hp-overlay'>
+            {React.cloneElement(overlay, {
+              onShowMonModal: () => setShowMonModal(true)
+            })}
+          </div>
+        )}
         <div className='cost-section'>
-          <Cost cost={(mon.mon || mon)['cost']} />
+          <Cost
+            cost={isMock ? null : (mon.mon || mon)['cost']}
+            isMock={isMock}
+          />
         </div>
         <div className='attr-section'>{renderAttr()}</div>
       </Card>
-      <MonModal
-        mon={mon}
-        visible={showMonModal}
-        onCancel={() => setShowMonModal(false)}
-        codes={codes}
-        prevMon={prevMon}
-        mixable={mixable}
-        onClickMix={handleOnClickMix}
-        evolutable={evolutable}
-        onClickEvolute={handleOnClickEvolute}
-      />
+      {bottomComponent}
+      {!isMock && (
+        <MonModal
+          hideInfo={hideInfo}
+          mon={mon}
+          visible={showMonModal}
+          onCancel={() => setShowMonModal(false)}
+          codes={codes}
+          prevMon={prevMon}
+          mixable={mixable}
+          onClickMix={handleOnClickMix}
+          evolutable={evolutable}
+          onClickEvolute={handleOnClickEvolute}
+          user={user}
+        />
+      )}
     </Wrapper>
   );
 };

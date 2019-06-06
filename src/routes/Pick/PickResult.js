@@ -1,9 +1,12 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import { Row, Button, Col, Tag } from 'antd';
+import { Tween } from 'react-gsap';
+import { Elastic } from 'gsap';
 import ContentContainer from '../../components/ContentContainer/index';
-import MonCard from '../../components/MonCard/index';
 import { COLOR } from '../../constants/styles';
 import LevelUpTag from '../../components/LevelUpTag';
+import PickAnimatedMonCard from '../../components/PickAimatedMonCard/PickAnimatedMonCard';
+import './PickResult.less';
 
 const PickResult = ({
   pickedMons,
@@ -17,11 +20,17 @@ const PickResult = ({
   onClickMix,
   onClickEvolute
 }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [picking, setPicking] = useState(false);
+  const [pickCnt, setPickCnt] = useState(1);
 
   const handleOnClickPick = useCallback(
     (repeatCnt, pickingType) => {
       setPicking(pickingType);
+      setPickCnt(pickCnt + 1);
       onPick({ repeatCnt }).then(() => setPicking(false));
     },
     [onPick]
@@ -35,39 +44,55 @@ const PickResult = ({
   );
 
   return (
-    <ContentContainer>
+    <ContentContainer className='pick-result'>
       <h2 className='text-center' style={{ marginBottom: 24 }}>
         야호! 포켓몬을 발견했어!
         <br />
         과연 어떤 친구일까?
       </h2>
       <Row type='flex' justify='center' gutter={6}>
-        {pickedMons.map(mon => (
-          <Col xs={8} sm={6} xl={4} key={mon.monId} style={{ marginBottom: 6 }}>
-            <MonCard
+        {pickedMons.map((mon, idx) => (
+          <Col
+            xs={8}
+            sm={6}
+            xl={4}
+            key={mon.monId * pickCnt * 10000}
+            style={{ marginBottom: 6 }}
+          >
+            <PickAnimatedMonCard
+              delay={idx * 0.2}
               mon={mon}
+              id={mon.monId * pickCnt * 10000}
               codes={codes}
               prevMon={getUserCollectionByMonId(mon.monId)}
               mixable
               onClickMix={() => onClickMix(mon)}
               evolutable
               onClickEvolute={() => onClickEvolute(mon)}
+              user={user}
             />
-            {getUserCollectionByMonId(mon.monId) && (
-              <LevelUpTag
-                prevLevel={getUserCollectionByMonId(mon.monId).level}
-                level={mon.level}
-              />
-            )}
-            {!getUserCollectionByMonId(mon.monId) && (
-              <div style={{ marginTop: 12, textAlign: 'center' }}>
-                <Tag color={COLOR.DEEP_ORANGE}>NEW</Tag>
-                <p>
-                  콜렉션점수{' '}
-                  <span className='c-primary fw-700'>+{mon.mon.point}</span>
-                </p>
+            <Tween
+              duration={1}
+              from={{ scale: 0, ease: Elastic.easeOut, delay: idx * 0.2 + 2 }}
+            >
+              <div>
+                {getUserCollectionByMonId(mon.monId) && (
+                  <LevelUpTag
+                    prevLevel={getUserCollectionByMonId(mon.monId).level}
+                    level={mon.level}
+                  />
+                )}
+                {!getUserCollectionByMonId(mon.monId) && (
+                  <div style={{ marginTop: 12, textAlign: 'center' }}>
+                    <Tag color={COLOR.DEEP_ORANGE}>NEW</Tag>
+                    <p>
+                      콜렉션점수{' '}
+                      <span className='c-primary fw-700'>+{mon.mon.point}</span>
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
+            </Tween>
           </Col>
         ))}
       </Row>

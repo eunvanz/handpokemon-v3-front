@@ -19,6 +19,8 @@ const SelectDungeon = ({ onPick, user, codes }) => {
         gradeCds: [GRADE.BASIC],
         attrCds: DUNGEON[options.type].ATTR_CDS,
         repeatCnt: options.repeatCnt
+      }).finally(() => {
+        setPicking(false);
       });
     },
     [onPick]
@@ -41,7 +43,7 @@ const SelectDungeon = ({ onPick, user, codes }) => {
             >
               <div className='attr-section'>
                 {ITEM.ATTR_CDS.map(attrCd => (
-                  <AttrTag attrCd={attrCd} codes={codes} />
+                  <AttrTag key={attrCd} attrCd={attrCd} codes={codes} />
                 ))}
               </div>
               {user.pickCredit > 0 && (

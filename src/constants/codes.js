@@ -10,7 +10,8 @@ export const ROLE = {
 
 export const MASTER_CD = {
   MON_ATTRS: '03',
-  MON_GRADE: '02'
+  MON_GRADE: '02',
+  MON_RANK: '04'
 };
 
 export const ATTR = {

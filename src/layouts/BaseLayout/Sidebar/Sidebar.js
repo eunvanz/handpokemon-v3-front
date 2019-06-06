@@ -23,12 +23,8 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           avatar={<Avatar src={user ? user.profileImage : null} icon='user' />}
           title={user ? `${user.nickname}님, 안녕?` : '로그인을 해주세요.'}
         />
-        <Menu theme='dark' mode='inline'>
-          <Menu.Item
-            key='/'
-            onClick={() => onClickMenuItem('/')}
-            selectedKeys={selectedKeys}
-          >
+        <Menu theme='dark' mode='inline' selectedKeys={selectedKeys}>
+          <Menu.Item key='/' onClick={() => onClickMenuItem('/')}>
             <Icon type='home' />
             <span>홈</span>
           </Menu.Item>
@@ -49,6 +45,21 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
             </Menu.Item>
           )}
           {user && (
+            <Menu.Item key='/book' onClick={() => onClickMenuItem('/book')}>
+              <Icon type='book' />
+              <span>내 도감</span>
+            </Menu.Item>
+          )}
+          {user && (
+            <Menu.Item
+              key='/achievment'
+              onClick={() => onClickMenuItem('/achievment')}
+            >
+              <Icon type='crown' />
+              <span>내 업적</span>
+            </Menu.Item>
+          )}
+          {user && (
             <Menu.Item
               key='/giftbox'
               onClick={() => onClickMenuItem('/giftbox')}
@@ -60,7 +71,7 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           <Menu.Item key='/pick' onClick={() => onClickMenuItem('/pick')}>
             <Icon type='experiment' />
             <span>
-              손켓몬 채집
+              포켓몬 채집
               {user && (
                 <CreditTag
                   credit={user.pickCredit}
@@ -73,7 +84,7 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           </Menu.Item>
           <Menu.Item key='/battle' onClick={() => onClickMenuItem('/battle')}>
             <Icon type='fire' />
-            <span>손켓몬 시합</span>
+            <span>포켓몬 시합</span>
             {user && (
               <CreditTag
                 credit={user.battleCredit}
@@ -142,7 +153,7 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
             onClick={() => onClickMenuItem('/workshop')}
           >
             <Icon type='tool' />
-            <span>손켓몬 공방</span>
+            <span>포켓몬 공방</span>
           </Menu.Item>
           <Menu.SubMenu
             key='secret-garden'
@@ -157,7 +168,7 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
               key='/secret-garden/create-mon'
               onClick={() => onClickMenuItem('/secret-garden/create-mon')}
             >
-              <span>손켓몬 등록</span>
+              <span>포켓몬 등록</span>
             </Menu.Item>
           </Menu.SubMenu>
         </Menu>

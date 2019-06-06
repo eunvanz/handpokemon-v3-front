@@ -108,16 +108,23 @@ input[type='email'] {
   text-align: center;
 }
 
-.ant-modal-header {
+.ant-modal-header,
+.ant-drawer-header {
   background: @primary-color!important;
   color: #fff !important;
   border-bottom: none !important;
-  .ant-modal-title {
+  .ant-modal-title,
+  .ant-drawer-title {
     color: #fff !important;
   }
 }
 
-.ant-modal-close {
+.ant-drawer-header {
+  border-radius: 0 !important;
+}
+
+.ant-modal-close,
+.ant-drawer-close {
   color: rgba(255, 255, 255, 1) !important;
 }
 
@@ -144,4 +151,10 @@ input[type='email'] {
   border: none !important;
   padding: 0 5px !important;
   border-radius: 2px !important;
+}
+
+.dark-header-card {
+  .ant-card-head-title {
+    color: #fff !important;
+  }
 }

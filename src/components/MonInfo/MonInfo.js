@@ -6,20 +6,31 @@ import Cost from '../Cost/index';
 import './MonInfo.less';
 import RankTag from '../RankTag';
 import { COLOR } from '../../constants/styles';
+import {
+  getTotalFromColAndUser,
+  getBonusPctByAttrCdFromBook,
+  getTotalBurfFromColAndUser
+} from '../../libs/hpUtils';
 
-const MonInfo = ({ mon, codes, nextMon }) => {
+const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
   const thisMon = useMemo(() => mon.mon || mon, [mon]);
   const col = useMemo(() => (mon.mon ? mon : null), [mon]);
   const total = useMemo(() => {
-    if (nextMon) return nextMon.baseTotal + nextMon.addedTotal;
-    else return col ? col.baseTotal + col.addedTotal : `평균 ${thisMon.total}`;
-  }, [mon, nextMon]);
+    if (nextMon) return getTotalFromColAndUser(nextMon, user);
+    else return col ? getTotalFromColAndUser(col, user) : thisMon.total;
+  }, [user.books, mon, nextMon]);
+  const bonusPct = useMemo(() => {
+    if (!col) return 0;
+    return getBonusPctByAttrCdFromBook(col.mainAttrCd, user.books);
+  }, [mon, user.books]);
 
   return (
-    <Row className='mon-info'>
+    <Row className='mon-info' {...restProps}>
       <Col span={6}>이름</Col>
       <Col span={18}>
-        <span className='c-primary fw-700'>{thisMon.name}</span>
+        <span className='c-primary fw-700'>
+          {hideInfo ? '????' : thisMon.name}
+        </span>
       </Col>
       {col && (
         <>
@@ -51,6 +62,7 @@ const MonInfo = ({ mon, codes, nextMon }) => {
       </Col>
       <Col span={6}>전투력</Col>
       <Col span={18}>
+        {!col && '평균 '}
         <span className='c-primary fw-700'>
           {total}{' '}
           {col && (
@@ -58,6 +70,11 @@ const MonInfo = ({ mon, codes, nextMon }) => {
               (<span>{col.baseTotal}</span>
               {col.addedTotal > 0 && (
                 <span style={{ color: COLOR.ORANGE }}>+{col.addedTotal}</span>
+              )}
+              {bonusPct !== 0 && (
+                <span style={{ color: COLOR.GREEN }}>
+                  +{getTotalBurfFromColAndUser(col, user)}
+                </span>
               )}
               {nextMon && (
                 <span style={{ color: COLOR.LIGHT_BLUE }}>
@@ -72,7 +89,8 @@ const MonInfo = ({ mon, codes, nextMon }) => {
       <Col span={6}>피지컬</Col>
       <Col span={18}>
         {col ? '' : '평균 '}
-        <span className='c-primary fw-700'>{(col || thisMon).height}</span>m /{' '}
+        <span className='c-primary fw-700'>{(col || thisMon).height}</span>m /
+        {col ? ' ' : ' 평균 '}
         <span className='c-primary fw-700'>{(col || thisMon).weight}</span>kg
       </Col>
       <Col span={6}>진화</Col>
@@ -90,7 +108,7 @@ const MonInfo = ({ mon, codes, nextMon }) => {
       </Col>
       <Col span={24}>
         {thisMon.description}
-        {mon.monImages && mon.monImages.length > 0 && (
+        {!hideInfo && mon.monImages && mon.monImages.length > 0 && (
           <span>
             (designed by{' '}
             <span className='c-primary fw-700'>

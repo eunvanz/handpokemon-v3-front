@@ -20,15 +20,15 @@ const AdminLayout = ({ children, history }) => {
         tabList={[
           {
             key: '/secret-garden/mon-list',
-            tab: '손켓몬 목록'
+            tab: '포켓몬 목록'
           },
           {
             key: '/secret-garden/create-mon/new',
-            tab: '손켓몬 등록'
+            tab: '포켓몬 등록'
           },
           {
             key: '/secret-garden/create-mon-image/new',
-            tab: '손켓몬 이미지 등록'
+            tab: '포켓몬 이미지 등록'
           }
         ]}
         activeTabKey={activeTabKey}

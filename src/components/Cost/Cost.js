@@ -3,7 +3,7 @@ import { Icon } from 'antd';
 import { repeat } from '../../libs/commonUtils';
 import { COLOR } from '../../constants/styles';
 
-const Cost = ({ cost }) => {
+const Cost = ({ cost, isMock }) => {
   let result = [];
   const rest = cost % 5;
   let filledColor;
@@ -19,7 +19,12 @@ const Cost = ({ cost }) => {
   repeat(() => {
     const color = rest === 0 || rest - key >= 0 ? filledColor : emptyColor;
     result.push(
-      <Icon key={key++} type='star' theme='filled' style={{ color }} />
+      <Icon
+        key={key++}
+        type='star'
+        theme='filled'
+        style={{ color: isMock ? COLOR.LIGHT_GRAY : color }}
+      />
     );
   }, 5);
 

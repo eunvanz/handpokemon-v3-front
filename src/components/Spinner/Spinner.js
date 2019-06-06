@@ -4,7 +4,7 @@ import { isIE, isEdge } from '../../libs/commonUtils';
 import spinner from '../../imgs/spinner.svg';
 // import fireSpinner from '../../imgs/fire-spinner.svg';
 
-const Spinner = () => {
+const Spinner = props => {
   return (
     <Spin
       indicator={
@@ -14,6 +14,7 @@ const Spinner = () => {
           <img src={spinner} style={{ width: 40, height: 40 }} alt='spinner' />
         )
       }
+      {...props}
     />
   );
 };

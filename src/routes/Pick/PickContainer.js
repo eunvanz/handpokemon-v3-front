@@ -11,6 +11,7 @@ import {
 } from '../../api/requestCollection';
 import withUser from '../../hocs/withUser';
 import { proceedPickActions } from '../../libs/hpUtils';
+import MessageModal from '../../components/MessageMoal/index';
 
 class PickContainer extends PureComponent {
   state = {
@@ -27,15 +28,23 @@ class PickContainer extends PureComponent {
     } = this.props;
     if (colsToMix) {
       this.setState({ loading: true });
-      getMixedCollection(colsToMix.map(col => col.id).join(',')).then(res => {
-        proceedPickActions({
-          viewActions,
-          userActions,
-          prevUserCollections: user.collections,
-          pickedMons: res.data
+      getMixedCollection(colsToMix.map(col => col.id).join(','))
+        .then(res => {
+          proceedPickActions({
+            viewActions,
+            userActions,
+            prevUserCollections: user.collections,
+            pickedMons: res.data
+          });
+          this.setState({ loading: false });
+        })
+        .catch(err => {
+          this.setState({ loading: false });
+          MessageModal({
+            type: 'error',
+            content: err
+          });
         });
-        this.setState({ loading: false });
-      });
     } else if (colToEvolute) {
       this._handleOnClickEvolute(colToEvolute);
     }
@@ -49,15 +58,23 @@ class PickContainer extends PureComponent {
     if (attrCds) pickOptions.attrCds = attrCds;
     if (repeatCnt) pickOptions.repeatCnt = repeatCnt;
     viewActions.receiveView('prevPickOptions', pickOptions);
-    return getPick(pickOptions).then(res => {
-      proceedPickActions({
-        viewActions,
-        userActions,
-        prevUserCollections: user.collections,
-        pickedMons: res.data
+    return getPick(pickOptions)
+      .then(res => {
+        proceedPickActions({
+          viewActions,
+          userActions,
+          prevUserCollections: user.collections,
+          pickedMons: res.data
+        });
+        return Promise.resolve();
+      })
+      .catch(err => {
+        MessageModal({
+          type: 'error',
+          content: err
+        });
+        userActions.signInUserWithToken();
       });
-      return Promise.resolve();
-    });
   };
 
   _handleOnInitialize = () => {
@@ -72,7 +89,7 @@ class PickContainer extends PureComponent {
   };
 
   _handleOnClickEvolute = col => {
-    const { viewActions, user, userActions } = this.props;
+    const { viewActions, userActions, user } = this.props;
     this.setState({ loading: true });
     getEvolutedCollection(col.id).then(res => {
       proceedPickActions({

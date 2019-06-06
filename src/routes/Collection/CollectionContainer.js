@@ -4,12 +4,14 @@ import queryString from 'query-string';
 
 import CollectionView from './CollectionView';
 import withUser from '../../hocs/withUser';
-import withCodes from '../../hocs/withCodes';
 import { getCollectionsByUserId } from '../../api/requestCollection';
 import MessageModal from '../../components/MessageMoal';
 import SpinContainer from '../../components/SpinContainer';
 import withView from '../../hocs/withView';
 import { getAllMons } from '../../api/requestMon';
+import withFilter from '../../hocs/withFilter';
+import ConfirmModal from '../../components/ConfirmModal';
+import { isUserBookMon } from '../../libs/hpUtils';
 
 class CollectionContainer extends PureComponent {
   state = {
@@ -27,6 +29,9 @@ class CollectionContainer extends PureComponent {
           collections = user.collections.filter(
             item => item.monId !== colToMix.monId
           );
+          this.setState({ mode });
+        } else if (mode === 'book') {
+          collections = user.collections;
           this.setState({ mode });
         } else collections = user.collections;
         this.setState({ collections });
@@ -47,8 +52,13 @@ class CollectionContainer extends PureComponent {
 
   _handleOnMix = cols => {
     const { viewActions, history } = this.props;
-    viewActions.receiveView('colsToMix', cols);
-    history.push('/pick');
+
+    const proceed = () => {
+      viewActions.receiveView('colsToMix', cols);
+      history.push('/pick');
+    };
+
+    proceed();
   };
 
   _handleOnEvolute = col => {
@@ -58,9 +68,9 @@ class CollectionContainer extends PureComponent {
   };
 
   render() {
-    const { match } = this.props;
+    const { match, filter } = this.props;
     const { collections, mode } = this.state;
-    if (!collections) return <SpinContainer />;
+    if (!collections || !filter) return <SpinContainer />;
     return (
       <CollectionView
         {...this.props}
@@ -76,7 +86,6 @@ class CollectionContainer extends PureComponent {
 
 const wrappedCollectionView = compose(
   withUser(),
-  withCodes,
   withView([
     {
       key: 'mons',
@@ -85,8 +94,12 @@ const wrappedCollectionView = compose(
     },
     {
       key: 'colToMix'
+    },
+    {
+      key: 'defaultSelectOptions'
     }
-  ])
+  ]),
+  withFilter()
 )(CollectionContainer);
 
 export default wrappedCollectionView;

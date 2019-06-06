@@ -26,8 +26,8 @@ const ThirdStep = ({ show, onPick, startPicks, codes, disabled }) => {
       )}
       {startPicks && (
         <Row type='flex' justify='space-around' align='middle' gutter={6}>
-          {startPicks.map(pick => (
-            <Col span={8}>
+          {startPicks.map((pick, idx) => (
+            <Col span={8} key={idx}>
               <MonCard mon={pick} codes={codes} />
             </Col>
           ))}

@@ -46,13 +46,15 @@ export const DUNGEON = [
 
 export const CREDIT = {
   PICK: {
-    INTERVAL: 1000 * 20,
+    INTERVAL: 1000 * 5,
     // INTERVAL: 1000 * 60 * 20,
     MAX: 12
   },
   BATTLE: {
-    INTERVAL: 1000 * 20,
+    INTERVAL: 1000 * 5,
     // INTERVAL: 1000 * 60 * 20,
     MAX: 12
   }
 };
+
+export const BOOK_RULE = [0, 0, 0, 500, 1000, 3000];
