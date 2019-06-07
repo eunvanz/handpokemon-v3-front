@@ -13,7 +13,7 @@ class ErrorBoundary extends PureComponent {
   }
 
   componentDidCatch(error, info) {
-    console.error(error, info);
+    console.log(error, info);
   }
 
   render() {
@@ -29,7 +29,7 @@ class ErrorBoundary extends PureComponent {
             }}
           >
             <div className='text-center'>
-              <h3>희귀한 오류 발견!</h3>
+              <h2>희귀한 오류 발견!</h2>
               <div>반복될 경우 운영자에게 문의해주세요.</div>
             </div>
           </Card>
