@@ -15,16 +15,16 @@ const PickAnimatedMonCard = ({ delay, id, ...props }) => {
     TweenMax.to(wrapperEl.current, 0.1, {
       y: '+=5',
       yoyo: true,
-      repeat: 15 + delay * 10
+      repeat: 10 + delay * 10
     });
     TweenMax.to(wrapperEl.current, 0.1, {
       y: '-=5',
       yoyo: true,
-      repeat: 15 + delay * 10
+      repeat: 10 + delay * 10
     });
     TweenMax.to(wrapperEl.current, 1, {
       // scale: 1.1,
-      delay: 1.5 + delay,
+      delay: 1 + delay,
       rotationX: 360,
       transformOrigin: 'center',
       transformPerspective: 3000,

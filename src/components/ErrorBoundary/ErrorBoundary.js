@@ -5,15 +5,15 @@ import ContentContainer from '../ContentContainer/index';
 class ErrorBoundary extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: null };
   }
 
   static getDerivedStateFromError(error) {
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, info) {
-    console.log(error, info);
+    console.log(info);
   }
 
   render() {
@@ -30,7 +30,10 @@ class ErrorBoundary extends PureComponent {
           >
             <div className='text-center'>
               <h2>희귀한 오류 발견!</h2>
-              <div>반복될 경우 운영자에게 문의해주세요.</div>
+              <h3 className='c-primary'>{this.state.error.message}</h3>
+              <div style={{ marginTop: 12 }}>
+                반복될 경우 운영자에게 문의해주세요.
+              </div>
             </div>
           </Card>
         </ContentContainer>

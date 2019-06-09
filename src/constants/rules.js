@@ -46,7 +46,7 @@ export const DUNGEON = [
 
 export const CREDIT = {
   PICK: {
-    INTERVAL: 1000 * 5,
+    INTERVAL: 1000 * 1,
     // INTERVAL: 1000 * 60 * 20,
     MAX: 12
   },

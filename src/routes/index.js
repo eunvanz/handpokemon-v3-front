@@ -30,3 +30,13 @@ export const Book = Loadable({
   loader: () => import('./Book'),
   loading: SpinContainer
 });
+
+export const Achievement = Loadable({
+  loader: () => import('./Achievement'),
+  loading: SpinContainer
+});
+
+export const Ranking = Loadable({
+  loader: () => import('./Ranking'),
+  loading: SpinContainer
+});

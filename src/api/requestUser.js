@@ -1,3 +1,4 @@
+import qs from 'query-string';
 import makeRequest from './makeRequest';
 
 export const signIn = ({ email, password }) => {
@@ -18,4 +19,15 @@ export const isDupNickname = nickname => {
 
 export const signUp = user => {
   return makeRequest('post', 'users', user);
+};
+
+export const getRank = ({ curPage, perPage, orderBy }) => {
+  return makeRequest(
+    'get',
+    `users/rank?${qs.stringify({ curPage, perPage, orderBy })}`
+  );
+};
+
+export const getMyRank = ({ key }) => {
+  return makeRequest('get', `users/my-rank?key=${key}`);
 };

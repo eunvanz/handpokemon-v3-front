@@ -10,7 +10,16 @@ import { LastLocationProvider } from 'react-router-last-location';
 
 import './App.less';
 import BaseLayout from './layouts/BaseLayout';
-import { SignUp, SignIn, SecretGarden, Pick, Collection, Book } from './routes';
+import {
+  SignUp,
+  SignIn,
+  SecretGarden,
+  Pick,
+  Collection,
+  Book,
+  Achievement,
+  Ranking
+} from './routes';
 import ErrorBoundary from './components/ErrorBoundary';
 
 const ScrollToTop = withRouter(({ location, children }) => {
@@ -35,6 +44,8 @@ const App = ({ store }) => {
                   <Route path='/pick' component={Pick} />
                   <Route path='/collection/:id' component={Collection} />
                   <Route path='/book' component={Book} />
+                  <Route path='/achievement' component={Achievement} />
+                  <Route path='/ranking/:type' component={Ranking} />
                 </ErrorBoundary>
               </ScrollToTop>
             </Switch>

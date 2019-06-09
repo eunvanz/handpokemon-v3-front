@@ -12,6 +12,9 @@ import {
 import withUser from '../../hocs/withUser';
 import { proceedPickActions } from '../../libs/hpUtils';
 import MessageModal from '../../components/MessageMoal/index';
+import TitleTag from '../../components/TitleTag';
+import { ACHIEVEMENT_TYPE } from '../../constants/codes';
+import { getDetailCdNmByDetailCd } from '../../libs/codeUtils';
 
 class PickContainer extends PureComponent {
   state = {
@@ -34,7 +37,8 @@ class PickContainer extends PureComponent {
             viewActions,
             userActions,
             prevUserCollections: user.collections,
-            pickedMons: res.data
+            pickedMons: res.data,
+            achieved: res.achievements
           });
           this.setState({ loading: false });
         })
@@ -47,6 +51,66 @@ class PickContainer extends PureComponent {
         });
     } else if (colToEvolute) {
       this._handleOnClickEvolute(colToEvolute);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.achieved !== this.props.achieved) {
+      const { achieved } = this.props;
+      if (achieved) {
+        const hasIssue =
+          achieved.inserted.length + achieved.deactivated.length > 0;
+        if (hasIssue) {
+          const { inserted, deactivated } = achieved;
+          if (inserted.length > 0) {
+            MessageModal({
+              type: 'success',
+              title: '업적 달성',
+              content: (
+                <div>
+                  콜렉션 성장으로 아래의 칭호를 얻었습니다!
+                  {inserted.map(item => (
+                    <div style={{ marginTop: 12 }}>
+                      <TitleTag
+                        title={item.achievement.name}
+                        attrCd={item.achievement.attrCd}
+                        burf={item.achievement.burf.split(',')}
+                      />
+                      <span
+                        className='c-primary fw-700'
+                        style={{ marginLeft: 12 }}
+                      >
+                        +{item.achievement.reward}
+                      </span>{' '}
+                      포키머니
+                    </div>
+                  ))}
+                </div>
+              )
+            });
+          }
+          if (deactivated.length > 0) {
+            MessageModal({
+              type: 'warning',
+              title: '칭호 해제',
+              content: (
+                <div>
+                  콜렉션 변화로 아래의 칭호가 해제되었습니다!
+                  {inserted.map(item => (
+                    <div style={{ marginTop: 12 }}>
+                      <TitleTag
+                        title={item.achievement.name}
+                        attrCd={item.achievement.attrCd}
+                        burf={item.achievement.burf.split(',')}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )
+            });
+          }
+        }
+      }
     }
   }
 
@@ -64,7 +128,8 @@ class PickContainer extends PureComponent {
           viewActions,
           userActions,
           prevUserCollections: user.collections,
-          pickedMons: res.data
+          pickedMons: res.data,
+          achieved: res.achievements
         });
         return Promise.resolve();
       })
@@ -96,7 +161,8 @@ class PickContainer extends PureComponent {
         viewActions,
         userActions,
         prevUserCollections: user.collections,
-        pickedMons: res.data
+        pickedMons: res.data,
+        achieved: res.achievements
       });
       this.setState({ loading: false });
     });
@@ -132,6 +198,9 @@ const wrappedPickView = compose(
     },
     {
       key: 'colToEvolute'
+    },
+    {
+      key: 'achieved'
     }
   ]),
   withCodes,

@@ -33,7 +33,7 @@ const PickResult = ({
       setPickCnt(pickCnt + 1);
       onPick({ repeatCnt }).then(() => setPicking(false));
     },
-    [onPick]
+    [onPick, setPicking, setPickCnt, pickCnt]
   );
 
   const getUserCollectionByMonId = useCallback(
@@ -73,7 +73,7 @@ const PickResult = ({
             />
             <Tween
               duration={1}
-              from={{ scale: 0, ease: Elastic.easeOut, delay: idx * 0.2 + 2 }}
+              from={{ scale: 0, ease: Elastic.easeOut, delay: idx * 0.2 + 1.5 }}
             >
               <div>
                 {getUserCollectionByMonId(mon.monId) && (

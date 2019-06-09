@@ -52,8 +52,8 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           )}
           {user && (
             <Menu.Item
-              key='/achievment'
-              onClick={() => onClickMenuItem('/achievment')}
+              key='/achievement'
+              onClick={() => onClickMenuItem('/achievement')}
             >
               <Icon type='crown' />
               <span>내 업적</span>

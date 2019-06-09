@@ -54,10 +54,11 @@ export function replaceItem({ key, conditionKey, value, item }) {
 // ------------------------------------
 // Specialized Action Creator
 // ------------------------------------
-export const fetchAndAppendList = ({ service, key, isReset }) => {
+export const fetchAndAppendList = ({ request, key, reset }) => {
   return dispatch => {
-    return service().then(data => {
-      if (isReset) dispatch(receiveList(key, data));
+    return request().then(res => {
+      const { data } = res;
+      if (reset) dispatch(receiveList(key, data));
       else dispatch(appendList(key, data));
       return Promise.resolve(data);
     });

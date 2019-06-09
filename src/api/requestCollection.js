@@ -8,7 +8,11 @@ export const getPick = ({ repeatCnt, gradeCds, attrCds }) => {
   return makeRequest(
     'get',
     `collections/pick?repeatCnt=${repeatCnt}&gradeCds=${gradeCds}&attrCds=${attrCds}`
-  );
+  ).then(pickRes => {
+    return makeRequest('get', 'user-achievements/refresh').then(uaRes => {
+      return Promise.resolve({ data: pickRes.data, achievements: uaRes.data });
+    });
+  });
 };
 
 export const getCollectionsByUserId = userId => {
@@ -20,9 +24,23 @@ export const getUserCollectionsWithToken = () => {
 };
 
 export const getMixedCollection = collectionIds => {
-  return makeRequest('get', `collections/mix?collectionIds=${collectionIds}`);
+  return makeRequest(
+    'get',
+    `collections/mix?collectionIds=${collectionIds}`
+  ).then(pickRes => {
+    return makeRequest('get', 'user-achievements/refresh').then(uaRes => {
+      return Promise.resolve({ data: pickRes.data, achievements: uaRes.data });
+    });
+  });
 };
 
 export const getEvolutedCollection = collectionId => {
-  return makeRequest('get', `collections/evolute?collectionId=${collectionId}`);
+  return makeRequest(
+    'get',
+    `collections/evolute?collectionId=${collectionId}`
+  ).then(pickRes => {
+    return makeRequest('get', 'user-achievements/refresh').then(uaRes => {
+      return Promise.resolve({ data: pickRes.data, achievements: uaRes.data });
+    });
+  });
 };

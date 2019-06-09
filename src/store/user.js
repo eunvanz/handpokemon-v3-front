@@ -116,7 +116,8 @@ export default function userReducer(state = initialState, action) {
     case RECEIVE_USER:
       return Object.assign({}, action.payload, {
         collections: state ? state.collections : null,
-        books: state ? state.books : null
+        books: state ? state.books : null,
+        achievements: state ? state.achievements : null
       });
     case CLEAR_USER:
       return null;

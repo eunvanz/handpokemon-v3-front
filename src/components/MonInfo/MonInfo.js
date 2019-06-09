@@ -9,7 +9,8 @@ import { COLOR } from '../../constants/styles';
 import {
   getTotalFromColAndUser,
   getBonusPctByAttrCdFromBook,
-  getTotalBurfFromColAndUser
+  getTotalBurfFromColAndUser,
+  getBurfFromUserAchievements
 } from '../../libs/hpUtils';
 
 const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
@@ -18,11 +19,18 @@ const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
   const total = useMemo(() => {
     if (nextMon) return getTotalFromColAndUser(nextMon, user);
     else return col ? getTotalFromColAndUser(col, user) : thisMon.total;
-  }, [user.books, mon, nextMon]);
+  }, [user, mon, nextMon]);
   const bonusPct = useMemo(() => {
-    if (!col) return 0;
+    if (!col || !user) return 0;
     return getBonusPctByAttrCdFromBook(col.mainAttrCd, user.books);
-  }, [mon, user.books]);
+  }, [mon, user]);
+  const titleBurfTotal = useMemo(() => {
+    if (!col || !user) return 0;
+    return getBurfFromUserAchievements(user.achievements).reduce(
+      (accm, value) => accm + value,
+      0
+    );
+  }, [user]);
 
   return (
     <Row className='mon-info' {...restProps}>
@@ -65,7 +73,7 @@ const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
         {!col && '평균 '}
         <span className='c-primary fw-700'>
           {total}{' '}
-          {col && (
+          {col && user && (
             <span style={{ color: COLOR.GRAY }}>
               (<span>{col.baseTotal}</span>
               {col.addedTotal > 0 && (
@@ -74,6 +82,11 @@ const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
               {bonusPct !== 0 && (
                 <span style={{ color: COLOR.GREEN }}>
                   +{getTotalBurfFromColAndUser(col, user)}
+                </span>
+              )}
+              {titleBurfTotal > 0 && (
+                <span style={{ color: COLOR.DEEP_ORANGE }}>
+                  +{titleBurfTotal}
                 </span>
               )}
               {nextMon && (
