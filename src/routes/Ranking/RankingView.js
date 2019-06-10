@@ -13,10 +13,11 @@ const RankingView = ({
   loadNextPage,
   loading,
   list,
-  pointKey
+  pointKey,
+  showUserModal
 }) => {
   const dataSource = useMemo(() => {
-    let prevPoint = 0;
+    let prevPoint = -1;
     let equalCnt = 0;
     let result = [];
     if (myRank) {
@@ -55,7 +56,10 @@ const RankingView = ({
         dataIndex: 'nickname',
         align: 'left',
         render: (nickname, record) => (
-          <div>
+          <div
+            className='cursor-pointer'
+            onClick={() => showUserModal(record.id)}
+          >
             <Avatar
               src={record.profileImage}
               icon={!record.profileImage ? 'user' : null}
@@ -69,7 +73,6 @@ const RankingView = ({
       {
         title: '콜렉션점수',
         dataIndex: 'colPoint',
-        key: 'key',
         align: 'center',
         className: title === '콜렉션랭킹' ? null : 'hidden-max-sm',
         render: colPoint => (
@@ -84,7 +87,6 @@ const RankingView = ({
       {
         title: '시합점수',
         dataIndex: 'battlePoint',
-        key: 'key',
         align: 'center',
         className: title === '시합랭킹' ? null : 'hidden-max-sm',
         render: battlePoint => (
@@ -98,28 +100,38 @@ const RankingView = ({
       },
       {
         title: '승',
-        dataIndex: 'win',
-        key: 'key',
-        align: 'center',
-        className: 'hidden-max-sm',
-        render: win => <div>{Number(win).toLocaleString()}승</div>
-      },
-      {
-        title: '패',
-        dataIndex: 'lose',
-        key: 'key',
-        align: 'center',
-        className: 'hidden-max-sm',
-        render: lose => <div>{Number(lose).toLocaleString()}패</div>
-      },
-      {
-        title: '승률',
-        dataIndex: 'win',
-        key: 'key',
+        dataIndex: 'attackWin',
         align: 'center',
         className: 'hidden-max-sm',
         render: (win, record) => (
-          <div>{numeral(win / win + record.lose).format('0.0%')}</div>
+          <div>{Number(win + record.defenseWin).toLocaleString()}승</div>
+        )
+      },
+      {
+        title: '패',
+        dataIndex: 'attackLose',
+        align: 'center',
+        className: 'hidden-max-sm',
+        render: (lose, record) => (
+          <div>{Number(lose + record.defenseLose).toLocaleString()}패</div>
+        )
+      },
+      {
+        title: '승률',
+        dataIndex: 'attackWin',
+        key: 'winRate',
+        align: 'center',
+        className: 'hidden-max-sm',
+        render: (win, record) => (
+          <div>
+            {numeral(
+              (win + record.defenseWin) /
+                (win +
+                  record.defenseWin +
+                  record.attackLose +
+                  record.defenseLose)
+            ).format('0.0%')}
+          </div>
         )
       }
     ];

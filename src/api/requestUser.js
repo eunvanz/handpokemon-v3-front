@@ -31,3 +31,7 @@ export const getRank = ({ curPage, perPage, orderBy }) => {
 export const getMyRank = ({ key }) => {
   return makeRequest('get', `users/my-rank?key=${key}`);
 };
+
+export const getUserByUserId = userId => {
+  return makeRequest('get', `users/${userId}`);
+};

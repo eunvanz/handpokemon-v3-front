@@ -7,6 +7,7 @@ import withList from '../../hocs/withList';
 import { getRank, getMyRank } from '../../api/requestUser';
 import SpinContainer from '../../components/SpinContainer';
 import withView from '../../hocs/withView';
+import withUserModal from '../../hocs/withUserModal';
 
 const typeMap = {
   collection: 'colPoint',
@@ -34,7 +35,7 @@ class RankingContainer extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.match.params.type !== this.props.match.params.type) {
-      this._initList(typeMap[this.props.match.params.type]);
+      this._initList(this.props.match.params.type);
     }
   }
 
@@ -127,7 +128,8 @@ const wrappedRankingView = compose(
     {
       key: 'myBattleRank'
     }
-  ])
+  ]),
+  withUserModal
 )(RankingContainer);
 
 export default wrappedRankingView;

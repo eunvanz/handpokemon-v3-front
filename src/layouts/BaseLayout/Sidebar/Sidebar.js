@@ -119,6 +119,11 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
           <Menu.Item key='/shop' onClick={() => onClickMenuItem('/shop')}>
             <Icon type='shop' />
             <span>상점</span>
+            {user && (
+              <Tag className='credit-tag'>
+                {Number(user.pokemoney).toLocaleString()}P
+              </Tag>
+            )}
           </Menu.Item>
           <Menu.SubMenu
             key='community'
