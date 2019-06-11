@@ -1,11 +1,14 @@
 import React from 'react';
 import { Modal, Button, Row, Col } from 'antd';
 import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import numeral from 'numeral';
 import { getUserByUserId } from '../api/requestUser';
 import FullTitleTag from '../components/FullTitleTag';
 import imgEmpty from '../imgs/empty-mon.png';
 import SpinContainer from '../components/SpinContainer';
+import { getDetailCdNmByDetailCd } from '../libs/codeUtils';
+import withCodes from './withCodes';
 
 export default ComposedComponent => {
   class withUserModal extends React.PureComponent {
@@ -28,7 +31,7 @@ export default ComposedComponent => {
 
     render() {
       const { showModal, user } = this.state;
-      const { history } = this.props;
+      const { history, codes } = this.props;
       return (
         <div>
           <ComposedComponent
@@ -87,7 +90,12 @@ export default ComposedComponent => {
                     <Col span={6} className='fw-700'>
                       리그
                     </Col>
-                    <Col span={18}>해야함</Col>
+                    <Col span={18}>
+                      <span className='c-primary fw-700'>
+                        {getDetailCdNmByDetailCd(user.leagueCd, codes)}
+                      </span>
+                      리그
+                    </Col>
                   </Row>
                   <Row>
                     <Col span={6} className='fw-700'>
@@ -205,5 +213,8 @@ export default ComposedComponent => {
     }
   }
 
-  return withRouter(withUserModal);
+  return compose(
+    withRouter,
+    withCodes
+  )(withUserModal);
 };

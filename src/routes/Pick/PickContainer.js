@@ -13,8 +13,6 @@ import withUser from '../../hocs/withUser';
 import { proceedPickActions } from '../../libs/hpUtils';
 import MessageModal from '../../components/MessageMoal/index';
 import TitleTag from '../../components/TitleTag';
-import { ACHIEVEMENT_TYPE } from '../../constants/codes';
-import { getDetailCdNmByDetailCd } from '../../libs/codeUtils';
 
 class PickContainer extends PureComponent {
   state = {
@@ -181,6 +179,9 @@ class PickContainer extends PureComponent {
     );
   }
 }
+
+// pickedMons에 { insert, update } 방식으로 데이터가 들어있으면 채집결과 화면을 보여줌
+// 위의 조건과 함께 prevUserCollections가 세팅되어있어야함
 
 const wrappedPickView = compose(
   withView([

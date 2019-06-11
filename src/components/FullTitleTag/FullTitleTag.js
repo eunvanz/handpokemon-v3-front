@@ -5,17 +5,17 @@ import TitleTag from '../TitleTag';
 const FullTitleTag = ({ achievements }) => {
   const activatedTitles = orderBy(
     achievements,
-    item => item.achievementTypeCd,
+    item => item.achievement.achievementTypeCd,
     ['asc']
   ).filter(item => item.activated);
 
   if (activatedTitles.length > 0) {
     return activatedTitles.map(item => (
       <TitleTag
-        title={item.name}
-        attrCd={item.attrCd}
-        burf={item.burf.split(',')}
-        style={{ margin: 3 }}
+        title={item.achievement.name}
+        attrCd={item.achievement.attrCd}
+        burf={item.achievement.burf.split(',')}
+        style={{ marginRight: 3 }}
       />
     ));
   } else {

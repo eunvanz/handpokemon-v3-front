@@ -10,18 +10,19 @@ import SpinContainer from '../../components/SpinContainer';
 import withView from '../../hocs/withView';
 import { getAllMons } from '../../api/requestMon';
 import withFilter from '../../hocs/withFilter';
-import ConfirmModal from '../../components/ConfirmModal';
-import { isUserBookMon } from '../../libs/hpUtils';
+import { getUserByUserId } from '../../api/requestUser';
 
 class CollectionContainer extends PureComponent {
   state = {
     collections: null,
+    user: null,
     mode: null
   };
 
   componentDidMount() {
     const { match, user, history, colToMix, location } = this.props;
     if (match.params.id === 'user') {
+      this.setState({ user: null });
       if (user) {
         const { mode } = queryString.parse(location.search);
         let collections;
@@ -37,7 +38,11 @@ class CollectionContainer extends PureComponent {
         this.setState({ collections });
       } else history.push('/sign-in');
     } else {
-      getCollectionsByUserId(match.params.id)
+      getUserByUserId(match.params.id)
+        .then(res => {
+          this.setState({ user: res.data });
+          return getCollectionsByUserId(match.params.id);
+        })
         .then(res => {
           this.setState({ collections: res.data });
         })
@@ -68,12 +73,14 @@ class CollectionContainer extends PureComponent {
   };
 
   render() {
-    const { match, filter } = this.props;
+    const { match, filter, user, ...restProps } = this.props;
     const { collections, mode } = this.state;
     if (!collections || !filter) return <SpinContainer />;
     return (
       <CollectionView
-        {...this.props}
+        {...restProps}
+        filter={filter}
+        user={this.state.user || user}
         collections={this.props.collections || collections}
         isMyCollection={match.params.id === 'user'}
         onMix={this._handleOnMix}

@@ -91,9 +91,11 @@ const MonStat = ({ mon, nextMon, user, ...restProps }) => {
   const getBurf = useCallback(
     raw => {
       return Math.round(
-        (raw * user
-          ? getBonusPctByAttrCdFromBook(col.mainAttrCd, user.books)
-          : 1) / 100
+        (raw *
+          (user
+            ? getBonusPctByAttrCdFromBook(col.mainAttrCd, user.books)
+            : 1)) /
+          100
       );
     },
     [col, user]

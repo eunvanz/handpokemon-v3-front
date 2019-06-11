@@ -59,3 +59,8 @@ export const ACHIEVEMENT_TYPE = {
   COL: '0601',
   ATTR: '0602'
 };
+
+export const ITEM_TYPE = {
+  CREDIT: '0701',
+  PICK: '0702'
+};
