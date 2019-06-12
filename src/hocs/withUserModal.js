@@ -26,7 +26,7 @@ export default ComposedComponent => {
 
     _closeUserModal = () => {
       this.setState({ showModal: false });
-      setTimeout(() => this.setState({ user: null }), 1000);
+      setTimeout(() => this.setState({ user: null }), 100);
     };
 
     render() {

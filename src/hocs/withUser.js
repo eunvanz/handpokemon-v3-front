@@ -10,7 +10,8 @@ import {
   signInUserWithToken,
   fetchUserCollectionsWithToken,
   fetchUserBooksWithToken,
-  fetchUserAchievementsWithToken
+  fetchUserAchievementsWithToken,
+  fetchUserItemsWithToken
 } from '../store/user';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 import { isEmpty } from '../libs/commonUtils';
@@ -83,7 +84,8 @@ export default ({
         dispatch(fetchUserCollectionsWithToken()),
       fetchUserBooksWithToken: () => dispatch(fetchUserBooksWithToken()),
       fetchUserAchievementsWithToken: () =>
-        dispatch(fetchUserAchievementsWithToken())
+        dispatch(fetchUserAchievementsWithToken()),
+      fetchUserItemsWithToken: () => dispatch(fetchUserItemsWithToken())
     }
   });
 

@@ -2,6 +2,7 @@ import { signInWithToken, signIn } from '../api/requestUser';
 import { getUserCollectionsWithToken } from '../api/requestCollection';
 import { getBooksByToken } from '../api/requestBook';
 import { getUserAchievementsWithToken } from '../api/requestUserAchievement';
+import { getUserItemsWithToken } from '../api/requestUserItem';
 
 // ------------------------------------
 // Constants
@@ -11,6 +12,7 @@ export const CLEAR_USER = 'CLEAR_USER';
 export const RECEIVE_COLLECTIONS = 'RECEIVE_COLLECTIONS';
 export const RECEIVE_BOOKS = 'RECEIVE_BOOKS';
 export const RECEIVE_ACHIEVEMENTS = 'RECEIVE_ACHIEVEMENTS';
+export const RECEIVE_ITEMS = 'RECEIVE_ITEMS';
 
 // ------------------------------------
 // Actions
@@ -50,11 +52,19 @@ export function receiveUserAchievements(achievements = null) {
   };
 }
 
+export function receiveUserItems(items = null) {
+  return {
+    type: RECEIVE_ITEMS,
+    payload: items
+  };
+}
+
 const fetchUserExtraInfos = dispatch => {
   return Promise.all([
     fetchUserCollectionsWithToken()(dispatch),
     fetchUserBooksWithToken()(dispatch),
-    fetchUserAchievementsWithToken()(dispatch)
+    fetchUserAchievementsWithToken()(dispatch),
+    fetchUserItemsWithToken()(dispatch)
   ]);
 };
 
@@ -107,6 +117,15 @@ export function fetchUserAchievementsWithToken() {
   };
 }
 
+export function fetchUserItemsWithToken() {
+  return dispatch => {
+    return getUserItemsWithToken().then(res => {
+      dispatch(receiveUserItems(res.data));
+      return Promise.resolve();
+    });
+  };
+}
+
 // ------------------------------------
 // Reducer
 // ------------------------------------
@@ -117,7 +136,8 @@ export default function userReducer(state = initialState, action) {
       return Object.assign({}, action.payload, {
         collections: state ? state.collections : null,
         books: state ? state.books : null,
-        achievements: state ? state.achievements : null
+        achievements: state ? state.achievements : null,
+        items: state ? state.items : null
       });
     case CLEAR_USER:
       return null;
@@ -129,6 +149,8 @@ export default function userReducer(state = initialState, action) {
       return Object.assign({}, state || null, { books: action.payload });
     case RECEIVE_ACHIEVEMENTS:
       return Object.assign({}, state || null, { achievements: action.payload });
+    case RECEIVE_ITEMS:
+      return Object.assign({}, state || null, { items: action.payload });
     default:
       return state;
   }

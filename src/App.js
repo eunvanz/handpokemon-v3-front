@@ -18,7 +18,9 @@ import {
   Collection,
   Book,
   Achievement,
-  Ranking
+  Ranking,
+  Shop,
+  Giftbox
 } from './routes';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -46,6 +48,8 @@ const App = ({ store }) => {
                   <Route path='/book' component={Book} />
                   <Route path='/achievement' component={Achievement} />
                   <Route path='/ranking/:type' component={Ranking} />
+                  <Route path='/shop' component={Shop} />
+                  <Route path='/giftbox' component={Giftbox} />
                 </ErrorBoundary>
               </ScrollToTop>
             </Switch>

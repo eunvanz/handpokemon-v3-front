@@ -40,3 +40,13 @@ export const Ranking = Loadable({
   loader: () => import('./Ranking'),
   loading: SpinContainer
 });
+
+export const Shop = Loadable({
+  loader: () => import('./Shop'),
+  loading: SpinContainer
+});
+
+export const Giftbox = Loadable({
+  loader: () => import('./Giftbox'),
+  loading: SpinContainer
+});

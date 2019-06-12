@@ -66,6 +66,11 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
             >
               <Icon type='gift' />
               <span>내 선물함</span>
+              {user && user.items && user.items.length > 0 && (
+                <Tag className='credit-tag'>
+                  {Number(user.items.length).toLocaleString()}
+                </Tag>
+              )}
             </Menu.Item>
           )}
           <Menu.Item key='/pick' onClick={() => onClickMenuItem('/pick')}>
