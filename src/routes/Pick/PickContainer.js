@@ -50,67 +50,72 @@ class PickContainer extends PureComponent {
     } else if (colToEvolute) {
       this._handleOnClickEvolute(colToEvolute);
     }
+    this._showAchievements();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.achieved !== this.props.achieved) {
-      const { achieved } = this.props;
-      if (achieved) {
-        const hasIssue =
-          achieved.inserted.length + achieved.deactivated.length > 0;
-        if (hasIssue) {
-          const { inserted, deactivated } = achieved;
-          if (inserted.length > 0) {
-            MessageModal({
-              type: 'success',
-              title: '업적 달성',
-              content: (
-                <div>
-                  콜렉션 성장으로 아래의 칭호를 얻었습니다!
-                  {inserted.map(item => (
-                    <div style={{ marginTop: 12 }}>
-                      <TitleTag
-                        title={item.achievement.name}
-                        attrCd={item.achievement.attrCd}
-                        burf={item.achievement.burf.split(',')}
-                      />
-                      <span
-                        className='c-primary fw-700'
-                        style={{ marginLeft: 12 }}
-                      >
-                        +{item.achievement.reward}
-                      </span>{' '}
-                      포키머니
-                    </div>
-                  ))}
-                </div>
-              )
-            });
-          }
-          if (deactivated.length > 0) {
-            MessageModal({
-              type: 'warning',
-              title: '칭호 해제',
-              content: (
-                <div>
-                  콜렉션 변화로 아래의 칭호가 해제되었습니다!
-                  {inserted.map(item => (
-                    <div style={{ marginTop: 12 }}>
-                      <TitleTag
-                        title={item.achievement.name}
-                        attrCd={item.achievement.attrCd}
-                        burf={item.achievement.burf.split(',')}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )
-            });
-          }
+      this._showAchievements();
+    }
+  }
+
+  _showAchievements = () => {
+    const { achieved } = this.props;
+    if (achieved) {
+      const hasIssue =
+        achieved.inserted.length + achieved.deactivated.length > 0;
+      if (hasIssue) {
+        const { inserted, deactivated } = achieved;
+        if (inserted.length > 0) {
+          MessageModal({
+            type: 'success',
+            title: '업적 달성',
+            content: (
+              <div>
+                콜렉션 성장으로 아래의 칭호를 얻었습니다!
+                {inserted.map(item => (
+                  <div style={{ marginTop: 12 }}>
+                    <TitleTag
+                      title={item.achievement.name}
+                      attrCd={item.achievement.attrCd}
+                      buff={item.achievement.buff.split(',')}
+                    />
+                    <span
+                      className='c-primary fw-700'
+                      style={{ marginLeft: 12 }}
+                    >
+                      +{item.achievement.reward}
+                    </span>{' '}
+                    포키머니
+                  </div>
+                ))}
+              </div>
+            )
+          });
+        }
+        if (deactivated.length > 0) {
+          MessageModal({
+            type: 'warning',
+            title: '칭호 해제',
+            content: (
+              <div>
+                콜렉션 변화로 아래의 칭호가 해제되었습니다!
+                {deactivated.map(item => (
+                  <div style={{ marginTop: 12 }}>
+                    <TitleTag
+                      title={item.achievement.name}
+                      attrCd={item.achievement.attrCd}
+                      buff={item.achievement.buff.split(',')}
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          });
         }
       }
     }
-  }
+  };
 
   _handleOnPick = ({ gradeCds, attrCds, repeatCnt }) => {
     const { viewActions, userActions, prevPickOptions, user } = this.props;
@@ -181,7 +186,7 @@ class PickContainer extends PureComponent {
 }
 
 // pickedMons에 { insert, update } 방식으로 데이터가 들어있으면 채집결과 화면을 보여줌
-// 위의 조건과 함께 prevUserCollections가 세팅되어있어야함
+// 위의 조건과 함께 prevUserCollections, achieved가 세팅되어있어야함
 
 const wrappedPickView = compose(
   withView([

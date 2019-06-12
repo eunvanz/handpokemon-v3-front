@@ -112,6 +112,7 @@ const GiftboxView = ({ user, onUseItem }) => {
               onChange={setQuantity}
               value={quantity}
               max={maxQuantity}
+              min={1}
               formatter={value => `${Number(value).toLocaleString()}개`}
             />
           </>

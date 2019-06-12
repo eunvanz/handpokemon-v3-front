@@ -23,11 +23,7 @@ const SliderInput = ({
           onChange={v => onChange(v)}
           formatter={formatter}
         />
-        <Button
-          icon='vertical-align-top'
-          type='link'
-          onClick={() => onChange(max)}
-        />
+        <Button icon='vertical-align-top' onClick={() => onChange(max)} />
       </Col>
     </Row>
   );

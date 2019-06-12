@@ -4,9 +4,9 @@ import { getGradeCdFromTitle } from '../../libs/hpUtils';
 import '../GradeTag/GradeTag.less';
 import { GRADE_STYLE, ATTR_COLOR } from '../../constants/styles';
 
-const TitleTag = ({ title, attrCd, burf, style }) => {
-  const renderBurf = useCallback(burfArr => {
-    return burfArr.map((item, idx) => {
+const TitleTag = ({ title, attrCd, buff, style }) => {
+  const renderbuff = useCallback(buffArr => {
+    return buffArr.map((item, idx) => {
       const labels = ['체력', '공격', '방어', '특공', '특방', '민첩'];
       if (item > 0)
         return (
@@ -28,13 +28,13 @@ const TitleTag = ({ title, attrCd, burf, style }) => {
           style
         )}
       >
-        <Tooltip title={renderBurf(burf)}>{title}</Tooltip>
+        <Tooltip title={renderbuff(buff)}>{title}</Tooltip>
       </Tag>
     );
   } else {
     return (
       <Tag className='attr-tag' color={ATTR_COLOR[attrCd]} style={style}>
-        <Tooltip title={renderBurf(burf)}>{title}</Tooltip>
+        <Tooltip title={renderbuff(buff)}>{title}</Tooltip>
       </Tag>
     );
   }

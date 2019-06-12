@@ -44,7 +44,6 @@ export const proceedPickActions = ({
   viewActions.receiveView('pickedMons', pickedMons);
   viewActions.receiveView('achieved', achieved);
   userActions.signInUserWithToken();
-  userActions.fetchUserCollectionsWithToken();
 };
 
 export const getBonusPctByAttrCdFromBook = (attrCd, books) => {
@@ -61,8 +60,8 @@ export const getTotalFromColAndUser = (col, user) => {
     return (
       col.baseTotal +
       col.addedTotal +
-      getTotalBurfFromColAndUser(col, user) +
-      getTotalBurfFromUserAchievements(user.achievements)
+      getTotalbuffFromColAndUser(col, user) +
+      getTotalbuffFromUserAchievements(user.achievements)
     );
   } else {
     // 회원가입 시
@@ -70,7 +69,7 @@ export const getTotalFromColAndUser = (col, user) => {
   }
 };
 
-export const getTotalBurfFromColAndUser = (col, user) => {
+export const getTotalbuffFromColAndUser = (col, user) => {
   const {
     addedHp,
     baseHp,
@@ -110,19 +109,19 @@ export const isUserBookMon = (books, col) => {
   return !!books.filter(item => item.colId === col.id)[0];
 };
 
-export const getBurfFromUserAchievements = userAchievements => {
+export const getbuffFromUserAchievements = userAchievements => {
   const activated = userAchievements.filter(item => item.activated);
   return activated.reduce(
     (accm, item) => {
-      const burfs = item.achievement.burf.split(',');
-      return accm.map((item, idx) => item + Number(burfs[idx]));
+      const buffs = item.achievement.buff.split(',');
+      return accm.map((item, idx) => item + Number(buffs[idx]));
     },
     [0, 0, 0, 0, 0, 0]
   );
 };
 
-export const getTotalBurfFromUserAchievements = userAchievements => {
-  return getBurfFromUserAchievements(userAchievements).reduce(
+export const getTotalbuffFromUserAchievements = userAchievements => {
+  return getbuffFromUserAchievements(userAchievements).reduce(
     (accm, value) => accm + value,
     0
   );

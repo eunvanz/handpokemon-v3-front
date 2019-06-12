@@ -14,7 +14,7 @@ const FullTitleTag = ({ achievements }) => {
       <TitleTag
         title={item.achievement.name}
         attrCd={item.achievement.attrCd}
-        burf={item.achievement.burf.split(',')}
+        buff={item.achievement.buff.split(',')}
         style={{ marginRight: 3 }}
       />
     ));

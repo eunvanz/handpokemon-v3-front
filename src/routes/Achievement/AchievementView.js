@@ -6,7 +6,7 @@ import TitleTag from '../../components/TitleTag';
 import { ACHIEVEMENT_TYPE, MASTER_CD } from '../../constants/codes';
 import { getMasterCdGroup } from '../../libs/codeUtils';
 import { ATTR_COLOR } from '../../constants/styles';
-import { getBurfFromUserAchievements } from '../../libs/hpUtils';
+import { getbuffFromUserAchievements } from '../../libs/hpUtils';
 
 const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
   const countUserCollectionByAttrCd = useCallback(
@@ -33,12 +33,12 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
         let lastTitle = null;
         let nextStepCondition = null;
         let max = 0;
-        let burf = null;
+        let buff = null;
         filtered.forEach(item => {
           if (item.conditionValue > max) max = item.conditionValue;
           if (item.conditionValue <= user.colPoint) {
             lastTitle = item.name;
-            burf = item.burf.split(',');
+            buff = item.buff.split(',');
           } else if (!nextStepCondition)
             nextStepCondition = item.conditionValue;
         });
@@ -46,18 +46,18 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
         result.max = max;
         result.percent = (user.colPoint * 100) / max;
         result.nextStepCondition = nextStepCondition;
-        result.burf = burf;
+        result.buff = buff;
       } else if (typeCd === ACHIEVEMENT_TYPE.ATTR) {
         filtered = filtered.filter(item => item.attrCd === attrCd);
         let lastTitle = null;
         let nextStepCondition = null;
         let max = 0;
-        let burf = null;
+        let buff = null;
         filtered.forEach(item => {
           if (item.conditionValue > max) max = item.conditionValue;
           if (item.conditionValue <= countUserCollectionByAttrCd(attrCd)) {
             lastTitle = item.name;
-            burf = item.burf.split(',');
+            buff = item.buff.split(',');
           } else if (!nextStepCondition)
             nextStepCondition = item.conditionValue;
         });
@@ -65,7 +65,7 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
         result.max = max;
         result.percent = (countUserCollectionByAttrCd(attrCd) * 100) / max;
         result.nextStepCondition = nextStepCondition;
-        result.burf = burf;
+        result.buff = buff;
       }
       return result;
     },
@@ -96,7 +96,7 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
             <TitleTag
               title={title}
               attrCd={attrCd}
-              burf={getInfos(typeCd, attrCd).burf}
+              buff={getInfos(typeCd, attrCd).buff}
             />
             {isActivated(typeCd, attrCd) && (
               <span className='c-primary' style={{ marginLeft: 12 }}>
@@ -130,11 +130,11 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
     [user]
   );
 
-  const getBurf = useCallback(() => {
-    return getBurfFromUserAchievements(user.achievements);
+  const getbuff = useCallback(() => {
+    return getbuffFromUserAchievements(user.achievements);
   }, [user]);
 
-  const getBurfLabel = useCallback(idx => {
+  const getbuffLabel = useCallback(idx => {
     if (idx === 0) return '체력';
     else if (idx === 1) return '공격';
     else if (idx === 2) return '방어';
@@ -160,16 +160,16 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
                   <TitleTag
                     title={item.achievement.name}
                     attrCd={item.achievement.attrCd}
-                    burf={item.achievement.burf.split(',')}
+                    buff={item.achievement.buff.split(',')}
                     style={{ margin: 3 }}
                   />
                 ))}
             </h3>
             <Row gutter={24} style={{ marginBottom: 12 }}>
-              {getBurf().map((value, idx) => (
+              {getbuff().map((value, idx) => (
                 <Col span={12} md={8} lg={4} key={idx}>
                   <p style={{ marginBottom: 0 }}>
-                    {getBurfLabel(idx)}
+                    {getbuffLabel(idx)}
                     <span
                       className='c-primary fw-700'
                       style={{ marginLeft: 6 }}

@@ -9,8 +9,8 @@ import { COLOR } from '../../constants/styles';
 import {
   getTotalFromColAndUser,
   getBonusPctByAttrCdFromBook,
-  getTotalBurfFromColAndUser,
-  getBurfFromUserAchievements
+  getTotalbuffFromColAndUser,
+  getbuffFromUserAchievements
 } from '../../libs/hpUtils';
 
 const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
@@ -24,9 +24,9 @@ const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
     if (!col || !user) return 0;
     return getBonusPctByAttrCdFromBook(col.mainAttrCd, user.books);
   }, [mon, user]);
-  const titleBurfTotal = useMemo(() => {
+  const titlebuffTotal = useMemo(() => {
     if (!col || !user) return 0;
-    return getBurfFromUserAchievements(user.achievements).reduce(
+    return getbuffFromUserAchievements(user.achievements).reduce(
       (accm, value) => accm + value,
       0
     );
@@ -81,12 +81,12 @@ const MonInfo = ({ mon, codes, nextMon, hideInfo, user, ...restProps }) => {
               )}
               {bonusPct !== 0 && (
                 <span style={{ color: COLOR.GREEN }}>
-                  +{getTotalBurfFromColAndUser(col, user)}
+                  +{getTotalbuffFromColAndUser(col, user)}
                 </span>
               )}
-              {titleBurfTotal > 0 && (
+              {titlebuffTotal > 0 && (
                 <span style={{ color: COLOR.DEEP_ORANGE }}>
-                  +{titleBurfTotal}
+                  +{titlebuffTotal}
                 </span>
               )}
               {nextMon && (
