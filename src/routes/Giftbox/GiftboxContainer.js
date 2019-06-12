@@ -13,7 +13,7 @@ class GiftboxContainer extends PureComponent {
   _handleOnUseItem = ({ itemId, quantity }) => {
     const { viewActions, history, user } = this.props;
     return useItems({ itemId, quantity }).then(res => {
-      const { itemTypeCd, value, insert, update } = res.data;
+      const { itemTypeCd, value, pickedMons } = res.data;
       if (itemTypeCd === ITEM_TYPE.CREDIT) {
         const type = value === 'pickCredit' ? '채집' : '시합';
         MessageModal({
@@ -22,7 +22,7 @@ class GiftboxContainer extends PureComponent {
           content: `${type}크레딧이 충전되었습니다.`
         });
       } else if (itemTypeCd === ITEM_TYPE.PICK) {
-        viewActions.receiveView('pickedMons', { insert, update });
+        viewActions.receiveView('pickedMons', pickedMons);
         viewActions.receiveView('prevUserCollections', user.collections);
         history.push('/pick');
       }
