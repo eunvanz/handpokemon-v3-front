@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Card, Col, Tag } from 'antd';
+import { Card, Col } from 'antd';
 import { getMonImageUrl } from '../../libs/hpUtils';
 import './MonCard.less';
 import GradeTag from '../GradeTag';

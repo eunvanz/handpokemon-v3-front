@@ -5,7 +5,8 @@ import {
   clearList,
   removeItem,
   receiveList,
-  replaceItem
+  replaceItem,
+  appendList
 } from '../store/list';
 import SpinContainer from '../components/SpinContainer/SpinContainer';
 
@@ -60,6 +61,7 @@ export default (options = []) => ComposedComponent => {
     listActions: {
       fetchAndAppendList: ({ request, key, reset }) =>
         dispatch(fetchAndAppendList({ request, key, reset })),
+      appendList: (key, data) => dispatch(appendList(key, data)),
       clearList: key => dispatch(clearList(key)),
       removeItem: ({ key, conditionKey, value }) =>
         dispatch(removeItem({ key, conditionKey, value })),

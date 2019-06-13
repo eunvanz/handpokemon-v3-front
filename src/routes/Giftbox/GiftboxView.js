@@ -62,7 +62,7 @@ const GiftboxView = ({ user, onUseItem }) => {
       {userItems.length > 0 && (
         <Row gutter={6}>
           {userItems.map(item => (
-            <Col xs={12} sm={6} xl={4}>
+            <Col xs={12} sm={6} xl={4} key={item.id}>
               <ItemCard {...item} onClick={() => handleOnClickItemCard(item)} />
             </Col>
           ))}
