@@ -50,3 +50,8 @@ export const Giftbox = Loadable({
   loader: () => import('./Giftbox'),
   loading: SpinContainer
 });
+
+export const Workshop = Loadable({
+  loader: () => import('./Workshop'),
+  loading: SpinContainer
+});

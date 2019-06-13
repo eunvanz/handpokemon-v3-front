@@ -6,7 +6,7 @@ const PictureUploadFormItem = ({
   form,
   label,
   required,
-  requiredMessage,
+  requiredMessage = '필수항목입니다.',
   name,
   max,
   useCrop,

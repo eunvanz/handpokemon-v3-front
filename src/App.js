@@ -20,7 +20,8 @@ import {
   Achievement,
   Ranking,
   Shop,
-  Giftbox
+  Giftbox,
+  Workshop
 } from './routes';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -50,6 +51,7 @@ const App = ({ store }) => {
                   <Route path='/ranking/:type' component={Ranking} />
                   <Route path='/shop' component={Shop} />
                   <Route path='/giftbox' component={Giftbox} />
+                  <Route path='/workshop' component={Workshop} />
                 </ErrorBoundary>
               </ScrollToTop>
             </Switch>

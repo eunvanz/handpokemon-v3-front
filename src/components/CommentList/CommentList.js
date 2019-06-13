@@ -3,6 +3,7 @@ import { List, Avatar, Form, Input, Button } from 'antd';
 import SpinContainer from '../SpinContainer';
 import MessageModal from '../MessageMoal/index';
 import ConfirmModal from '../ConfirmModal/index';
+import { COLOR } from '../../constants/styles';
 
 const CommentList = ({
   comments,
@@ -13,8 +14,7 @@ const CommentList = ({
   onEdit,
   onDelete,
   parent,
-  listActions,
-  listKey
+  listActions
 }) => {
   const [editTargetId, setEditTargetId] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,17 +31,20 @@ const CommentList = ({
         onWrite(comment)
           .then(res => {
             setLoading(false);
-            listActions.appendList(listKey, [res.data]);
+            listActions.appendList('commentList', { content: [res.data] });
           })
           .catch(err => {
             MessageModal({
               type: 'error',
               content: err
             });
+          })
+          .finally(() => {
+            form.resetFields();
           });
       }
     });
-  }, [form, onWrite, parent, user, listActions, listKey]);
+  }, [form, onWrite, parent, user, listActions]);
 
   const handleOnEdit = useCallback(
     comment => {
@@ -54,8 +57,9 @@ const CommentList = ({
           onEdit(newComment)
             .then(() => {
               setLoading(false);
+              setEditTargetId(null);
               listActions.replaceItem({
-                key: listKey,
+                key: 'commentList',
                 conditionKey: 'id',
                 value: newComment.id,
                 item: newComment
@@ -70,7 +74,7 @@ const CommentList = ({
         }
       });
     },
-    [form, onEdit, listActions, listKey]
+    [form, onEdit, listActions]
   );
 
   const handleOnDelete = useCallback(
@@ -84,7 +88,7 @@ const CommentList = ({
             .then(() => {
               setLoading(false);
               listActions.removeItem({
-                key: listKey,
+                key: 'commentList',
                 conditionKey: 'id',
                 value: commentId
               });
@@ -98,7 +102,7 @@ const CommentList = ({
         }
       });
     },
-    [onDelete, listActions, listKey]
+    [onDelete, listActions]
   );
 
   const renderContent = useCallback(
@@ -108,7 +112,8 @@ const CommentList = ({
           <Form>
             <Form.Item>
               {form.getFieldDecorator('editContent', {
-                rules: [{ required: true, message: '내용을 입력해주세요.' }]
+                rules: [{ required: true, message: '내용을 입력해주세요.' }],
+                initialValue: item.content
               })(
                 <Input.TextArea
                   placeholder='내용을 입력해주세요.'
@@ -116,19 +121,19 @@ const CommentList = ({
                 />
               )}
             </Form.Item>
-            <div>
+            <div className='text-right'>
               <Button
                 type='link'
-                size='large'
+                size='small'
                 onClick={() => setEditTargetId(null)}
               >
                 취소
               </Button>
               <Button
                 type='primary'
-                size='large'
                 style={{ marginLeft: 6 }}
                 onClick={() => handleOnEdit(item)}
+                size='small'
               >
                 수정하기
               </Button>
@@ -143,16 +148,14 @@ const CommentList = ({
   );
 
   return (
-    <>
+    <div style={{ padding: 24 }}>
       {loading && <SpinContainer />}
-      {comments.length === 0 && (
-        <div className='text-center'>
-          댓글이 없습니다. 첫번째로 댓글을 남겨보세요.
-        </div>
-      )}
       <List
         itemLayout='horizontal'
         dataSource={comments}
+        locale={{
+          emptyText: '댓글이 없습니다. 첫번째로 댓글을 남겨보세요.'
+        }}
         renderItem={item => (
           <List.Item>
             <List.Item>
@@ -160,7 +163,7 @@ const CommentList = ({
                 avatar={
                   <Avatar
                     src={item.user.profileImage}
-                    icon={item.user.profileImage ? 'user' : null}
+                    icon={!item.user.profileImage ? 'user' : null}
                   />
                 }
                 title={
@@ -174,24 +177,26 @@ const CommentList = ({
                 description={
                   <>
                     {renderContent(item)}
-                    {user.id === item.userId && [
-                      <Button
-                        key='edit'
-                        size='small'
-                        onClick={() => setEditTargetId(item.id)}
-                      >
-                        수정
-                      </Button>,
-                      <Button
-                        key='delete'
-                        size='small'
-                        type='danger'
-                        onClick={() => handleOnDelete(item.id)}
-                        style={{ marginLeft: 6 }}
-                      >
-                        삭제
-                      </Button>
-                    ]}
+                    {user.id === item.userId &&
+                      editTargetId !== item.id && [
+                        <Button
+                          key='edit'
+                          size='small'
+                          onClick={() => setEditTargetId(item.id)}
+                          style={{ marginLeft: 6 }}
+                        >
+                          수정
+                        </Button>,
+                        <Button
+                          key='delete'
+                          size='small'
+                          type='danger'
+                          onClick={() => handleOnDelete(item.id)}
+                          style={{ marginLeft: 6 }}
+                        >
+                          삭제
+                        </Button>
+                      ]}
                   </>
                 }
               />
@@ -210,13 +215,13 @@ const CommentList = ({
             />
           )}
         </Form.Item>
-        <div>
-          <Button type='primary' size='large' onClick={handleOnWrite}>
+        <div className='text-right'>
+          <Button type='primary' onClick={handleOnWrite}>
             등록하기
           </Button>
         </div>
       </Form>
-    </>
+    </div>
   );
 };
 
