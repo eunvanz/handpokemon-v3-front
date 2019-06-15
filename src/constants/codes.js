@@ -64,3 +64,9 @@ export const ITEM_TYPE = {
   CREDIT: '0701',
   PICK: '0702'
 };
+
+export const ARTICLE_TYPE = {
+  NOTICE: '0902',
+  FREE: '0901',
+  GUIDE: '0903'
+};

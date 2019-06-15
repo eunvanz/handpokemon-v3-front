@@ -53,7 +53,7 @@ const App = ({ store }) => {
                   <Route path='/shop' component={Shop} />
                   <Route path='/giftbox' component={Giftbox} />
                   <Route path='/workshop' component={Workshop} />
-                  <Route path='/community' component={Community} />
+                  <Route path='/community/:type' component={Community} />
                 </ErrorBoundary>
               </ScrollToTop>
             </Switch>

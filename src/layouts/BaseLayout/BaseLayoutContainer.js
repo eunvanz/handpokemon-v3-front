@@ -30,14 +30,14 @@ class BaseLayoutContainer extends PureComponent {
 
   _handleOnChangeRoute = route => {
     const { uiActions, history } = this.props;
-    if (isScreenSize.smallerThan(SCREEN_SIZE.SM)) uiActions.toggleDrawer(false);
+    if (isScreenSize.smallerThan(SCREEN_SIZE.MD)) uiActions.toggleDrawer(false);
     history.push(route);
   };
 
   _handleRefreshUser = () => {
-    const { userActions } = this.props
-    userActions.signInUserWithToken()
-  }
+    const { userActions } = this.props;
+    userActions.signInUserWithToken();
+  };
 
   render() {
     return (
