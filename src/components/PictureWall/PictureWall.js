@@ -142,6 +142,7 @@ class PictureWall extends PureComponent {
           visible={showPreview}
           footer={null}
           onCancel={this._hidePreview}
+          width={cropOptions.cropWidth + 48}
         >
           <img alt='미리보기' style={{ width: '100%' }} src={previewImage} />
         </Modal>
@@ -155,11 +156,12 @@ class PictureWall extends PureComponent {
             cancelText='취소'
             confirmLoading={isCropping}
             maskClosable={false}
+            width={cropOptions.cropWidth + 48}
           >
             <Cropper
               ref='cropper'
               src={imageToCrop}
-              style={{ height: 470, width: '100%' }}
+              style={{ height: cropOptions.cropHeight, width: '100%' }}
               // Cropper.js options
               aspectRatio={1}
               setCanvasData={{ width: 200, height: 200 }}

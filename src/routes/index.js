@@ -55,3 +55,8 @@ export const Workshop = Loadable({
   loader: () => import('./Workshop'),
   loading: SpinContainer
 });
+
+export const Community = Loadable({
+  loader: () => import('./Community'),
+  loading: SpinContainer
+});

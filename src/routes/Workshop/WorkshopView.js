@@ -53,7 +53,11 @@ const WorkshopView = ({
         <Row gutter={6}>
           {workshopList.content.map(item => (
             <Col xs={12} sm={6} xl={4} key={item.id}>
-              <WorkshopCard workshop={item} onClickLike={onClickLike} />
+              <WorkshopCard
+                workshop={item}
+                onClickLike={onClickLike}
+                user={user}
+              />
             </Col>
           ))}
         </Row>

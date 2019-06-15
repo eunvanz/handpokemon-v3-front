@@ -1,9 +1,14 @@
 import React, { memo, useCallback, useState } from 'react';
 import { List, Avatar, Form, Input, Button } from 'antd';
+import moment from 'moment';
+import 'moment/locale/ko';
 import SpinContainer from '../SpinContainer';
 import MessageModal from '../MessageMoal/index';
 import ConfirmModal from '../ConfirmModal/index';
+import './CommentList.less';
 import { COLOR } from '../../constants/styles';
+
+moment.locale('ko');
 
 const CommentList = ({
   comments,
@@ -151,6 +156,7 @@ const CommentList = ({
     <div style={{ padding: 24 }}>
       {loading && <SpinContainer />}
       <List
+        className='comment-list'
         itemLayout='horizontal'
         dataSource={comments}
         locale={{
@@ -158,68 +164,71 @@ const CommentList = ({
         }}
         renderItem={item => (
           <List.Item>
-            <List.Item>
-              <List.Item.Meta
-                avatar={
-                  <Avatar
-                    src={item.user.profileImage}
-                    icon={!item.user.profileImage ? 'user' : null}
-                  />
-                }
-                title={
-                  <h4
-                    className='cursor-pointer c-primary'
-                    onClick={() => onClickUser(item)}
-                  >
-                    {item.user.nickname}
-                  </h4>
-                }
-                description={
-                  <>
-                    {renderContent(item)}
-                    {user.id === item.userId &&
-                      editTargetId !== item.id && [
-                        <Button
-                          key='edit'
-                          size='small'
-                          onClick={() => setEditTargetId(item.id)}
-                          style={{ marginLeft: 6 }}
-                        >
-                          수정
-                        </Button>,
-                        <Button
-                          key='delete'
-                          size='small'
-                          type='danger'
-                          onClick={() => handleOnDelete(item.id)}
-                          style={{ marginLeft: 6 }}
-                        >
-                          삭제
-                        </Button>
-                      ]}
-                  </>
-                }
-              />
-            </List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  src={item.user.profileImage}
+                  icon={!item.user.profileImage ? 'user' : null}
+                />
+              }
+              title={
+                <h4
+                  className='cursor-pointer c-primary'
+                  onClick={() => onClickUser(item.user)}
+                >
+                  {item.user.nickname}{' '}
+                  <span style={{ color: COLOR.GRAY }}>
+                    · {moment(item.createdAt).fromNow()}
+                  </span>
+                </h4>
+              }
+              description={
+                <>
+                  {renderContent(item)}
+                  {user.id === item.userId &&
+                    editTargetId !== item.id && [
+                      <Button
+                        key='edit'
+                        size='small'
+                        onClick={() => setEditTargetId(item.id)}
+                        style={{ marginLeft: 6 }}
+                      >
+                        수정
+                      </Button>,
+                      <Button
+                        key='delete'
+                        size='small'
+                        type='danger'
+                        onClick={() => handleOnDelete(item.id)}
+                        style={{ marginLeft: 6 }}
+                      >
+                        삭제
+                      </Button>
+                    ]}
+                </>
+              }
+            />
           </List.Item>
         )}
       />
-      <Form>
+      <Form style={{ marginTop: 24 }}>
         <Form.Item>
           {form.getFieldDecorator('content', {
             rules: [{ required: true, message: '내용을 입력해주세요.' }]
           })(
             <Input.TextArea
-              placeholder='내용을 입력해주세요.'
+              placeholder='댓글을 작성해주세요.'
               onPressEnter={handleOnWrite}
             />
           )}
         </Form.Item>
-        <div className='text-right'>
-          <Button type='primary' onClick={handleOnWrite}>
-            등록하기
-          </Button>
-        </div>
+        {form.getFieldValue('content') && (
+          <div className='text-right'>
+            <Button type='primary' onClick={handleOnWrite}>
+              등록하기
+            </Button>
+          </div>
+        )}
       </Form>
     </div>
   );

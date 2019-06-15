@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable';
+import compact from 'lodash/compact';
 import { ROLE, GRADE } from '../constants/codes';
 
 export const isAdminUser = user => {
@@ -125,4 +127,10 @@ export const getTotalbuffFromUserAchievements = userAchievements => {
     (accm, value) => accm + value,
     0
   );
+};
+
+export const modifyDeepInList = ({ listAction, list, id, depth, value }) => {
+  const originItem = list.filter(item => item.id === id)[0];
+  if (!originItem) throw new Error('해당되는 아이템이 없습니다.');
+  fromJS(originItem).setIn(depth, value);
 };

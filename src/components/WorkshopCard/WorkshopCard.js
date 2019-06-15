@@ -1,10 +1,10 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
-import { Card, Modal, Button, Divider } from 'antd';
-import LikeButton from '../LikeButton';
+import React, { memo, useState, useEffect, useCallback } from 'react';
+import { Card, Modal, Divider } from 'antd';
 import WrappedCommentList from '../WrappedCommentList';
+import LikeButton from '../LikeButton/index';
 
 const WorkshopModal = memo(
-  ({ visible, onCancel, workshop, user, likeLoading, onClickLike }) => {
+  ({ visible, onCancel, workshop, onClickLike, likeLoading, user }) => {
     const [renderCommentList, setRenderCommentList] = useState(false);
     useEffect(() => {
       if (visible) {
@@ -19,7 +19,6 @@ const WorkshopModal = memo(
         visible={visible}
         title='작품정보'
         onCancel={onCancel}
-        width={360}
         footer={null}
         bodyStyle={{ padding: 0 }}
       >
@@ -29,13 +28,15 @@ const WorkshopModal = memo(
             style={{ maxWidth: 250, margin: 'auto', marginBottom: 24 }}
             alt='공작소 이미지'
           />
-          <LikeButton
-            user={user}
-            likes={workshop.likes}
-            loading={likeLoading}
-            onClick={onClickLike}
-            style={{ marginBottom: 24 }}
-          />
+          <div>
+            <LikeButton
+              onClick={onClickLike}
+              loading={likeLoading}
+              likes={workshop.likes}
+              user={user}
+              style={{ marginBottom: 12 }}
+            />
+          </div>
           <h3 className='c-primary'>{workshop.monName}</h3>
           <p>
             Designed by{' '}
@@ -59,13 +60,14 @@ const WorkshopModal = memo(
 const WorkshopCard = ({ workshop, user, onClickLike }) => {
   const [showModal, setShowModal] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
-
-  const handleOnClickLike = useCallback(() => {
-    setLikeLoading(true);
-    onClickLike(workshop).then(() => {
-      setLikeLoading(false);
-    });
-  }, [workshop, onClickLike]);
+  const handleOnClickLike = useCallback(
+    e => {
+      e.stopPropagation();
+      setLikeLoading(true);
+      onClickLike(workshop).then(() => setLikeLoading(false));
+    },
+    [onClickLike, workshop]
+  );
 
   return (
     <>
@@ -83,10 +85,10 @@ const WorkshopCard = ({ workshop, user, onClickLike }) => {
         onClick={() => setShowModal(true)}
       >
         <LikeButton
-          user={user}
-          likes={workshop.likes}
-          loading={likeLoading}
           onClick={handleOnClickLike}
+          loading={likeLoading}
+          likes={workshop.likes}
+          user={user}
           style={{ marginBottom: 12 }}
         />
         <h4 className='c-primary'>{workshop.monName}</h4>
@@ -97,8 +99,8 @@ const WorkshopCard = ({ workshop, user, onClickLike }) => {
         onCancel={() => setShowModal(false)}
         workshop={workshop}
         user={user}
-        likeLoading={likeLoading}
         onClickLike={handleOnClickLike}
+        likeLoading={likeLoading}
       />
     </>
   );

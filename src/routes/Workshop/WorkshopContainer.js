@@ -17,7 +17,7 @@ class WorkshopContainer extends PureComponent {
   };
 
   _handleOnClickLike = workshop => {
-    const { user, history } = this.props;
+    const { user, history, listActions } = this.props;
     if (!user) return history.push('/sign-in');
     const userLike = workshop.likes.filter(like => like.userId === user.id)[0];
     if (!userLike) {
@@ -25,9 +25,31 @@ class WorkshopContainer extends PureComponent {
         userId: user.id,
         workshopId: workshop.id
       };
-      return postLike(newLike);
+      return postLike(newLike).then(res => {
+        const newWorkshop = Object.assign({}, workshop, {
+          likes: workshop.likes.concat([res.data])
+        });
+        listActions.replaceItem({
+          key: 'workshopList',
+          conditionKey: 'id',
+          value: workshop.id,
+          item: newWorkshop
+        });
+        return Promise.resolve();
+      });
     } else {
-      return deleteLikeById(userLike.id);
+      return deleteLikeById(userLike.id).then(() => {
+        const newWorkshop = Object.assign({}, workshop, {
+          likes: workshop.likes.filter(item => item.id !== userLike.id)
+        });
+        listActions.replaceItem({
+          key: 'workshopList',
+          conditionKey: 'id',
+          value: workshop.id,
+          item: newWorkshop
+        });
+        return Promise.resolve();
+      });
     }
   };
 
