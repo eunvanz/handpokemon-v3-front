@@ -1,10 +1,19 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { Card, Modal, Divider } from 'antd';
+import { Card, Modal, Divider, Button } from 'antd';
+import moment from 'moment';
 import WrappedCommentList from '../WrappedCommentList';
 import LikeButton from '../LikeButton/index';
 
 const WorkshopModal = memo(
-  ({ visible, onCancel, workshop, onClickLike, likeLoading, user }) => {
+  ({
+    visible,
+    onCancel,
+    workshop,
+    onClickLike,
+    likeLoading,
+    user,
+    onClickDelete
+  }) => {
     const [renderCommentList, setRenderCommentList] = useState(false);
     useEffect(() => {
       if (visible) {
@@ -36,13 +45,24 @@ const WorkshopModal = memo(
               user={user}
               style={{ marginBottom: 12 }}
             />
+            {user && workshop.userId === user.id && (
+              <Button
+                type='danger'
+                style={{ marginLeft: 6 }}
+                onClick={onClickDelete}
+              >
+                삭제
+              </Button>
+            )}
           </div>
           <h3 className='c-primary'>{workshop.monName}</h3>
           <p>
             Designed by{' '}
             <big className='c-primary fw-700'>{workshop.designer}</big>
           </p>
-          <span>{workshop.createdAt.slice(0, 10)}</span>
+          <span>
+            @ {moment(workshop.createdAt).format('YYYY.M.DD a h:mm:ss')}
+          </span>
         </div>
         <Divider style={{ margin: 0 }} />
         <div>
@@ -57,7 +77,7 @@ const WorkshopModal = memo(
   }
 );
 
-const WorkshopCard = ({ workshop, user, onClickLike }) => {
+const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
   const [showModal, setShowModal] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const handleOnClickLike = useCallback(
@@ -81,6 +101,7 @@ const WorkshopCard = ({ workshop, user, onClickLike }) => {
             />
           </div>
         }
+        style={{ cursor: 'pointer' }}
         bodyStyle={{ textAlign: 'center', padding: 12 }}
         onClick={() => setShowModal(true)}
       >
@@ -89,6 +110,7 @@ const WorkshopCard = ({ workshop, user, onClickLike }) => {
           loading={likeLoading}
           likes={workshop.likes}
           user={user}
+          size='small'
           style={{ marginBottom: 12 }}
         />
         <h4 className='c-primary'>{workshop.monName}</h4>
@@ -101,6 +123,7 @@ const WorkshopCard = ({ workshop, user, onClickLike }) => {
         user={user}
         onClickLike={handleOnClickLike}
         likeLoading={likeLoading}
+        onClickDelete={onClickDelete}
       />
     </>
   );
