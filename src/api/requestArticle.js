@@ -16,7 +16,7 @@ export const putArticle = article => {
   return makeRequest('put', `articles/${article.id}`, article);
 };
 
-export const deleteArticle = id => {
+export const deleteArticleById = id => {
   return makeRequest('delete', `articles/${id}`);
 };
 

@@ -1,8 +1,8 @@
 import { fromJS } from 'immutable';
-import compact from 'lodash/compact';
 import { ROLE, GRADE } from '../constants/codes';
 
 export const isAdminUser = user => {
+  if (!user) return false;
   return user.role === ROLE.ADMIN;
 };
 

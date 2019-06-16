@@ -8,6 +8,8 @@ import { COLOR } from '../../constants/styles';
 import './ArticleCard.less';
 import LikeButton from '../LikeButton/index';
 import ArticleCommentList from '../ArticleCommentList';
+import ConfirmModal from '../ConfirmModal/index';
+import MessageModal from '../MessageMoal/index';
 
 moment.locale('ko');
 
@@ -21,10 +23,14 @@ const ArticleCard = ({
   form,
   onWriteComment,
   onEditComment,
-  onDeleteComment
+  onDeleteComment,
+  onClickEdit,
+  onDelete,
+  onRemoveItem
 }) => {
   const [showContent, setShowContent] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const handleOnClickMore = useCallback(() => {
     if (!showContent) {
@@ -56,6 +62,32 @@ const ArticleCard = ({
       setLikeLoading(false);
     });
   }, [article, user, onReplaceItem, onClickLike]);
+
+  const handleOnClickDelete = useCallback(() => {
+    ConfirmModal({
+      title: '게시물삭제',
+      content: '정말 게시물을 삭제하시겠습니까?',
+      onOk: () => {
+        setDeleting(true);
+        onDelete(article)
+          .then(() => {
+            setDeleting(false);
+            MessageModal({
+              type: 'success',
+              title: '게시물삭제',
+              content: '게시물이 삭제되었습니다.'
+            });
+            onRemoveItem(article);
+          })
+          .catch(err => {
+            MessageModal({
+              type: 'error',
+              content: err
+            });
+          });
+      }
+    });
+  }, [article, onDelete]);
 
   return (
     <Card className='article-card' style={{ marginTop: 24 }}>
@@ -119,6 +151,25 @@ const ArticleCard = ({
                 likes={article.likes}
                 loading={likeLoading}
               />
+              {user && article.user.id === user.id && (
+                <Button
+                  onClick={() => onClickEdit(article)}
+                  style={{ marginLeft: 6 }}
+                  disabled={deleting}
+                >
+                  수정
+                </Button>
+              )}
+              {user && article.user.id === user.id && (
+                <Button
+                  type='danger'
+                  onClick={handleOnClickDelete}
+                  style={{ marginLeft: 6 }}
+                  loading={deleting}
+                >
+                  삭제
+                </Button>
+              )}
             </div>
             <ArticleCommentList
               article={article}

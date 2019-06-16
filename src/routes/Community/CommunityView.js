@@ -29,10 +29,14 @@ const CommunityView = ({
   loadingMorePage,
   codes,
   refresh,
-  refreshing
+  refreshing,
+  onEdit,
+  onDelete,
+  onRemoveItem
 }) => {
   const [showForm, setShowForm] = useState(false);
   const [hideForm, setHideForm] = useState(false);
+  const [articleToEdit, setArticleToEdit] = useState(false);
   const titleInput = useRef(null);
 
   useEffect(() => {
@@ -42,7 +46,7 @@ const CommunityView = ({
     } else {
       setHideForm(false);
     }
-  }, [categoryCd]);
+  }, [categoryCd, user]);
 
   const handleOnClickForm = useCallback(() => {
     if (!user) return history.push('/sign-in');
@@ -60,10 +64,25 @@ const CommunityView = ({
   );
 
   const handleOnSubmit = useCallback(() => {
-    onSubmit();
-    setShowForm(false);
-    form.resetFields();
-  }, [onSubmit, form]);
+    if (!articleToEdit) {
+      onSubmit().then(() => {
+        setShowForm(false);
+        form.resetFields();
+      });
+    } else {
+      onEdit(articleToEdit).then(() => {
+        setShowForm(false);
+        form.resetFields();
+        setArticleToEdit(false);
+      });
+    }
+  }, [onSubmit, form, articleToEdit, onEdit]);
+
+  const handleOnClickEdit = useCallback(article => {
+    setArticleToEdit(article);
+    setShowForm(true);
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <ContentContainer>
@@ -91,7 +110,8 @@ const CommunityView = ({
             <Form>
               <Form.Item>
                 {form.getFieldDecorator('title', {
-                  rules: [{ required: true, message: '제목을 입력해주세요.' }]
+                  rules: [{ required: true, message: '제목을 입력해주세요.' }],
+                  initialValue: articleToEdit ? articleToEdit.title : undefined
                 })(
                   <Input
                     size='large'
@@ -103,7 +123,10 @@ const CommunityView = ({
               <Form.Item>
                 {form.getFieldDecorator('content', {
                   rules: [{ required: true, message: '본문을 입력해주세요.' }],
-                  valuePropName: 'model'
+                  valuePropName: 'model',
+                  initialValue: articleToEdit
+                    ? articleToEdit.content
+                    : undefined
                 })(
                   <Editor
                     placeholder='본문을 입력해주세요.'
@@ -150,6 +173,10 @@ const CommunityView = ({
             onWriteComment={onWriteComment}
             onEditComment={onEditComment}
             onDeleteComment={onDeleteComment}
+            onClickEdit={handleOnClickEdit}
+            onEdit={onEdit}
+            onDelete={onDelete}
+            onRemoveItem={onRemoveItem}
           />
         ))}
       </WaypointListContainer>

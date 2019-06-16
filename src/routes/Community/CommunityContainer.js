@@ -7,7 +7,9 @@ import withForm from '../../hocs/withForm';
 import {
   postArticle,
   getArticlesByCategoryCd,
-  increaseArticleViewsById
+  increaseArticleViewsById,
+  putArticle,
+  deleteArticleById
 } from '../../api/requestArticle';
 import { ARTICLE_TYPE } from '../../constants/codes';
 import withList from '../../hocs/withList';
@@ -78,9 +80,9 @@ class CommunityContainer extends PureComponent {
 
   _handleOnSubmit = async () => {
     try {
-      const { form, match, user, history, listActions } = this.props;
+      const { form, match, user, history } = this.props;
       if (!user) return history.push('/sign-in');
-      form.validateFields(async (err, values) => {
+      form.validateFields(['title', 'content'], async (err, values) => {
         if (!err) {
           this.setState({ submitting: true });
           const categoryCd = typeMap[match.params.type];
@@ -90,6 +92,12 @@ class CommunityContainer extends PureComponent {
           await postArticle(article);
           this._loadList({ curPage: 1, reset: true });
           this.setState({ submitting: false });
+          MessageModal({
+            type: 'success',
+            title: '등록완료',
+            content: '게시물이 등록되었습니다.'
+          });
+          return Promise.resolve();
         }
       });
     } catch (error) {
@@ -98,7 +106,50 @@ class CommunityContainer extends PureComponent {
         content: error
       });
       this.setState({ submitting: false });
+      return Promise.reject(error);
     }
+  };
+
+  _handleOnEdit = async article => {
+    try {
+      const { form, listActions } = this.props;
+      form.validateFields(['title', 'content'], async (err, values) => {
+        try {
+          if (!err) {
+            this.setState({ submitting: true });
+            const newArticle = Object.assign({}, article, values);
+            await putArticle(newArticle);
+            listActions.replaceItem({
+              key: 'articleList',
+              conditionKey: 'id',
+              value: article.id,
+              item: newArticle
+            });
+            this.setState({ submitting: false });
+            MessageModal({
+              type: 'success',
+              title: '수정완료',
+              content: '게시물이 수정되었습니다.'
+            });
+            return Promise.resolve();
+          }
+        } catch (error) {
+          console.log('error', error);
+          throw new Error(error);
+        }
+      });
+    } catch (error) {
+      MessageModal({
+        type: 'error',
+        content: error
+      });
+      this.setState({ submitting: false });
+      return Promise.reject(error);
+    }
+  };
+
+  _handleOnDelete = article => {
+    return deleteArticleById(article.id);
   };
 
   _handleOnIncrementViews = article => {
@@ -112,6 +163,15 @@ class CommunityContainer extends PureComponent {
       conditionKey: 'id',
       value: item.id,
       item
+    });
+  };
+
+  _handleOnRemoveItem = item => {
+    const { listActions } = this.props;
+    listActions.removeItem({
+      key: 'articleList',
+      conditionKey: 'id',
+      value: item.id
     });
   };
 
@@ -158,6 +218,9 @@ class CommunityContainer extends PureComponent {
         loadingMorePage={this.state.loadingMorePage}
         refresh={this._refresh}
         refreshing={this.state.refreshing}
+        onEdit={this._handleOnEdit}
+        onDelete={this._handleOnDelete}
+        onRemoveItem={this._handleOnRemoveItem}
       />
     );
   }
