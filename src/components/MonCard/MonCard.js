@@ -71,7 +71,7 @@ const MonCard = ({
         </>
       );
     }
-  }, [mon, hideInfo, isMock, codes]);
+  }, [mon, isMock, codes]);
 
   const Wrapper = useMemo(() => {
     if (withWrapper) {
@@ -90,7 +90,7 @@ const MonCard = ({
     } else {
       return ({ children, ...props }) => <div {...props}>{children}</div>;
     }
-  }, [withWrapper, restProps.children, mon]);
+  }, [withWrapper, mon]);
 
   const checkIsEvolutable = useCallback(() => {
     if (!mon.nextMons || mon.nextMons.length === 0) return false;

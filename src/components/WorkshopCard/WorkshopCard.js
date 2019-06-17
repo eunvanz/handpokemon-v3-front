@@ -3,6 +3,7 @@ import { Card, Modal, Divider, Button } from 'antd';
 import moment from 'moment';
 import WrappedCommentList from '../WrappedCommentList';
 import LikeButton from '../LikeButton/index';
+import { COLOR } from '../../constants/styles';
 
 const WorkshopModal = memo(
   ({
@@ -32,6 +33,7 @@ const WorkshopModal = memo(
         onCancel={onCancel}
         footer={null}
         bodyStyle={{ padding: 0 }}
+        centered
       >
         <div style={{ padding: 24, textAlign: 'center' }}>
           <img
@@ -60,11 +62,11 @@ const WorkshopModal = memo(
           </div>
           <h3 className='c-primary'>{workshop.monName}</h3>
           <p>
-            Designed by{' '}
-            <big className='c-primary fw-700'>{workshop.designer}</big>
+            <span style={{ color: COLOR.GRAY }}>Designed by </span>
+            <big className='c-primary'>{workshop.designer}</big>
           </p>
-          <span>
-            @ {moment(workshop.createdAt).format('YYYY.M.DD a h:mm:ss')}
+          <span style={{ color: COLOR.GRAY }}>
+            @ {moment(workshop.createdAt).fromNow()}
           </span>
         </div>
         <Divider style={{ margin: 0 }} />
@@ -116,8 +118,10 @@ const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
           size='small'
           style={{ marginBottom: 12 }}
         />
-        <h4 className='c-primary'>{workshop.monName}</h4>
-        Designed by<h4 className='c-primary'>{workshop.designer}</h4>
+        <div>
+          <small style={{ color: COLOR.GRAY }}>Designed by</small>
+          <h4 className='c-primary'>{workshop.designer}</h4>
+        </div>
       </Card>
       <WorkshopModal
         visible={showModal}

@@ -45,49 +45,73 @@ const ArticleCard = ({
     }
   }, [incrementViews, onReplaceItem, article, showContent]);
 
-  const handleOnClickLike = useCallback(() => {
-    setLikeLoading(true);
-    onClickLike({ article, user }).then(res => {
-      if (res.data) {
-        const newArticle = Object.assign({}, article, {
-          likes: article.likes.concat([res.data])
-        });
-        onReplaceItem(newArticle);
-      } else {
-        const newArticle = Object.assign({}, article, {
-          likes: article.likes.filter(like => like.userId !== user.id)
-        });
-        onReplaceItem(newArticle);
-      }
-      setLikeLoading(false);
-    });
-  }, [article, user, onReplaceItem, onClickLike]);
-
-  const handleOnClickDelete = useCallback(() => {
-    ConfirmModal({
-      title: '게시물삭제',
-      content: '정말 게시물을 삭제하시겠습니까?',
-      onOk: () => {
-        setDeleting(true);
-        onDelete(article)
-          .then(() => {
-            setDeleting(false);
-            MessageModal({
-              type: 'success',
-              title: '게시물삭제',
-              content: '게시물이 삭제되었습니다.'
-            });
-            onRemoveItem(article);
-          })
-          .catch(err => {
-            MessageModal({
-              type: 'error',
-              content: err
-            });
+  const handleOnClickLike = useCallback(
+    e => {
+      e.stopPropagation();
+      setLikeLoading(true);
+      onClickLike({ article, user }).then(res => {
+        if (res.data) {
+          const newArticle = Object.assign({}, article, {
+            likes: article.likes.concat([res.data])
           });
-      }
-    });
-  }, [article, onDelete]);
+          onReplaceItem(newArticle);
+        } else {
+          const newArticle = Object.assign({}, article, {
+            likes: article.likes.filter(like => like.userId !== user.id)
+          });
+          onReplaceItem(newArticle);
+        }
+        setLikeLoading(false);
+      });
+    },
+    [article, user, onReplaceItem, onClickLike]
+  );
+
+  const handleOnClickDelete = useCallback(
+    e => {
+      e.stopPropagation();
+      ConfirmModal({
+        title: '게시물삭제',
+        content: '정말 게시물을 삭제하시겠습니까?',
+        onOk: () => {
+          setDeleting(true);
+          onDelete(article)
+            .then(() => {
+              setDeleting(false);
+              MessageModal({
+                type: 'success',
+                title: '게시물삭제',
+                content: '게시물이 삭제되었습니다.'
+              });
+              onRemoveItem(article);
+            })
+            .catch(err => {
+              MessageModal({
+                type: 'error',
+                content: err
+              });
+            });
+        }
+      });
+    },
+    [article, onDelete, onRemoveItem]
+  );
+
+  const handleOnClickNickname = useCallback(
+    e => {
+      e.stopPropagation();
+      showUserModal(article.user.id);
+    },
+    [showUserModal, article]
+  );
+
+  const handleOnClickEdit = useCallback(
+    e => {
+      e.stopPropagation();
+      onClickEdit(article);
+    },
+    [onClickEdit, article]
+  );
 
   return (
     <Card className='article-card' style={{ marginTop: 24 }}>
@@ -106,12 +130,12 @@ const ArticleCard = ({
             by{' '}
             <span
               className='cursor-pointer c-primary'
-              onClick={() => showUserModal(article.user.id)}
+              onClick={handleOnClickNickname}
             >
               {article.user.nickname}
             </span>{' '}
-            <span className='created-date hidden-max-sm'>
-              @ {moment(article.createdAt).format('YYYY.M.DD a h:mm:ss')}
+            <span className='created-date'>
+              @ {moment(article.createdAt).fromNow()}
             </span>
             <span className='meta-info'>
               {' '}
@@ -130,6 +154,8 @@ const ArticleCard = ({
             ellipsis='...'
             trimRight
             baseOn='letters'
+            className='cursor-pointer'
+            onClick={handleOnClickMore}
           />
         )}
         {showContent && <FroalaEditorView model={article.content} />}
@@ -144,7 +170,7 @@ const ArticleCard = ({
         </div>
         {showContent && (
           <>
-            <div className='text-center'>
+            <div className='text-center' style={{ marginBottom: 24 }}>
               <LikeButton
                 onClick={handleOnClickLike}
                 user={user}
@@ -153,7 +179,7 @@ const ArticleCard = ({
               />
               {user && article.user.id === user.id && (
                 <Button
-                  onClick={() => onClickEdit(article)}
+                  onClick={handleOnClickEdit}
                   style={{ marginLeft: 6 }}
                   disabled={deleting}
                 >

@@ -35,6 +35,7 @@ const Editor = props => {
     <FroalaEditor
       tag='text-area'
       config={{
+        key: 'vA2C7D6F6oF4I4E3C7A3B5A4B2B3H4bvtgnvakebzB9idF6fA-8==',
         placeholderText: '내용을 입력해주세요.',
         language: 'ko',
         imageUploadParam: 'file',

@@ -51,7 +51,7 @@ const MonModal = ({
     } else {
       onClickMix(mon);
     }
-  }, [mon, user]);
+  }, [mon, user, onClickMix]);
 
   const handleOnClickEvolute = useCallback(() => {
     if (isUserBookMon(user.books, mon)) {
@@ -75,7 +75,7 @@ const MonModal = ({
     } else {
       onClickEvolute(mon);
     }
-  }, [mon, user]);
+  }, [mon, user, onClickEvolute]);
 
   return (
     <Modal

@@ -192,18 +192,16 @@ const CommentList = ({
                         size='small'
                         onClick={() => setEditTargetId(item.id)}
                         style={{ marginLeft: 6 }}
-                      >
-                        수정
-                      </Button>,
+                        icon='edit'
+                      />,
                       <Button
                         key='delete'
                         size='small'
                         type='danger'
                         onClick={() => handleOnDelete(item.id)}
                         style={{ marginLeft: 6 }}
-                      >
-                        삭제
-                      </Button>
+                        icon='delete'
+                      />
                     ]}
                 </>
               }
@@ -213,9 +211,7 @@ const CommentList = ({
       />
       <Form style={{ marginTop: 24 }}>
         <Form.Item>
-          {form.getFieldDecorator('content', {
-            rules: [{ required: true, message: '내용을 입력해주세요.' }]
-          })(
+          {form.getFieldDecorator('content')(
             <Input.TextArea
               placeholder='댓글을 작성해주세요.'
               onPressEnter={handleOnWrite}
