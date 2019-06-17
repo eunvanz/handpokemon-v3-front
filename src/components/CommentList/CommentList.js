@@ -172,15 +172,17 @@ const CommentList = ({
                 />
               }
               title={
-                <h4
-                  className='cursor-pointer c-primary'
-                  onClick={() => onClickUser(item.user)}
-                >
-                  {item.user.nickname}{' '}
+                <div>
+                  <span
+                    className='cursor-pointer c-primary'
+                    onClick={() => onClickUser(item.user)}
+                  >
+                    {item.user.nickname}
+                  </span>{' '}
                   <span style={{ color: COLOR.GRAY }}>
                     · {moment(item.createdAt).fromNow()}
                   </span>
-                </h4>
+                </div>
               }
               description={
                 <>

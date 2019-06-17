@@ -10,31 +10,6 @@ const PickAnimatedMonCard = ({ delay, id, ...props }) => {
   const [hidden, setHidden] = useState(true);
   const wrapperEl = useRef(null);
 
-  useEffect(() => {
-    setHidden(true);
-    TweenMax.to(wrapperEl.current, 0.1, {
-      y: '+=5',
-      yoyo: true,
-      repeat: 10 + delay * 10
-    });
-    TweenMax.to(wrapperEl.current, 0.1, {
-      y: '-=5',
-      yoyo: true,
-      repeat: 10 + delay * 10
-    });
-    TweenMax.to(wrapperEl.current, 1, {
-      // scale: 1.1,
-      delay: 1 + delay,
-      rotationX: 360,
-      transformOrigin: 'center',
-      transformPerspective: 3000,
-      onStart: burst
-    });
-    return () => {
-      TweenMax.killTweensOf(wrapperEl.current);
-    };
-  }, [wrapperEl, delay]);
-
   const burst = useCallback(() => {
     setTimeout(() => setHidden(false), 500);
     setTimeout(() => {
@@ -59,6 +34,31 @@ const PickAnimatedMonCard = ({ delay, id, ...props }) => {
       }
     }, 500);
   }, [id, props.mon]);
+
+  useEffect(() => {
+    setHidden(true);
+    TweenMax.to(wrapperEl.current, 0.1, {
+      y: '+=5',
+      yoyo: true,
+      repeat: 10 + delay * 10
+    });
+    TweenMax.to(wrapperEl.current, 0.1, {
+      y: '-=5',
+      yoyo: true,
+      repeat: 10 + delay * 10
+    });
+    TweenMax.to(wrapperEl.current, 1, {
+      // scale: 1.1,
+      delay: 1 + delay,
+      rotationX: 360,
+      transformOrigin: 'center',
+      transformPerspective: 3000,
+      onStart: burst
+    });
+    return () => {
+      TweenMax.killTweensOf(wrapperEl.current);
+    };
+  }, [wrapperEl, delay, burst]);
 
   return (
     // <Tween
