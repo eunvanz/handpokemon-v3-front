@@ -5,6 +5,8 @@ import WorkshopCard from '../../components/WorkshopCard';
 import PictureUploadFormItem from '../../components/PictureUploadFormItem';
 import WaypointListContainer from '../../components/WaypointListContainer';
 import Spinner from '../../components/Spinner/index';
+import ConfirmModal from '../../components/ConfirmModal/index';
+import MessageModal from '../../components/MessageMoal/index';
 
 const WorkshopView = ({
   workshopList,
@@ -15,13 +17,35 @@ const WorkshopView = ({
   history,
   isSubmitting,
   loadNextPage,
-  loading
+  loading,
+  onDelete
 }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const handleOnSubmitWork = useCallback(() => {
     onSubmitWork();
     setShowRegisterModal(false);
   }, [onSubmitWork, setShowRegisterModal]);
+  const handleOnClickDelete = useCallback(
+    workshop => {
+      ConfirmModal({
+        title: '작품삭제',
+        content: '정말로 작품을 삭제하시겠습니까?',
+        onOk: () => {
+          setDeleting(true);
+          onDelete(workshop).then(() => {
+            setDeleting(false);
+            MessageModal({
+              type: 'success',
+              title: '삭제완료',
+              content: '작품이 삭제되었습니다.'
+            });
+          });
+        }
+      });
+    },
+    [onDelete]
+  );
   return (
     <ContentContainer>
       <Card style={{ marginBottom: 12 }}>
@@ -57,6 +81,8 @@ const WorkshopView = ({
                 workshop={item}
                 onClickLike={onClickLike}
                 user={user}
+                onClickDelete={handleOnClickDelete}
+                deleting={deleting}
               />
             </Col>
           ))}

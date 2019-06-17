@@ -3,7 +3,11 @@ import { compose } from 'redux';
 
 import WorkshopView from './WorkshopView';
 import withList from '../../hocs/withList';
-import { getAllWorkshops, postWorkshop } from '../../api/requestWorkshop';
+import {
+  getAllWorkshops,
+  postWorkshop,
+  deleteWorkshopById
+} from '../../api/requestWorkshop';
 import { postLike, deleteLikeById } from '../../api/requestLike';
 import withForm from '../../hocs/withForm';
 import { postFile } from '../../api/requestFile';
@@ -106,6 +110,18 @@ class WorkshopContainer extends PureComponent {
     });
   };
 
+  _handleOnDelete = workshop => {
+    const { listActions } = this.props;
+    return deleteWorkshopById(workshop.id).then(() => {
+      listActions.removeItem({
+        key: 'workshopList',
+        conditionKey: 'id',
+        value: workshop.id
+      });
+      return Promise.resolve();
+    });
+  };
+
   render() {
     return (
       <WorkshopView
@@ -115,6 +131,7 @@ class WorkshopContainer extends PureComponent {
         loading={this.state.loading}
         loadNextPage={this._handleLoadNextPage}
         onSubmitWork={this._handleOnSubmitWork}
+        onDelete={this._handleOnDelete}
       />
     );
   }

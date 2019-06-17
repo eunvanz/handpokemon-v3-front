@@ -12,9 +12,11 @@ const WorkshopModal = memo(
     onClickLike,
     likeLoading,
     user,
-    onClickDelete
+    onClickDelete,
+    deleting
   }) => {
     const [renderCommentList, setRenderCommentList] = useState(false);
+
     useEffect(() => {
       if (visible) {
         setRenderCommentList(true);
@@ -49,7 +51,8 @@ const WorkshopModal = memo(
               <Button
                 type='danger'
                 style={{ marginLeft: 6 }}
-                onClick={onClickDelete}
+                onClick={() => onClickDelete(workshop)}
+                loading={deleting}
               >
                 삭제
               </Button>

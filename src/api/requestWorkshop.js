@@ -7,3 +7,7 @@ export const getAllWorkshops = ({ perPage, curPage }) => {
 export const postWorkshop = data => {
   return makeRequest('post', 'workshops', data);
 };
+
+export const deleteWorkshopById = id => {
+  return makeRequest('delete', `workshops/${id}`);
+};
