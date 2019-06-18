@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Card, Col } from 'antd';
+import { Card, Col, Button, Icon } from 'antd';
 import { getMonImageUrl } from '../../libs/hpUtils';
 import './MonCard.less';
 import GradeTag from '../GradeTag';
@@ -25,9 +25,19 @@ const MonCard = ({
   overlay,
   bottomComponent,
   user,
+  toggleFavorite,
   ...restProps
 }) => {
   const [showMonModal, setShowMonModal] = useState(false);
+  const [favorite, setFavorite] = useState(mon && mon.favorite === 1);
+
+  const handleOnClickFavorite = useCallback(
+    e => {
+      e.stopPropagation();
+      toggleFavorite(mon).then(() => setFavorite(!favorite));
+    },
+    [toggleFavorite, mon, favorite]
+  );
 
   const renderCover = useCallback(() => {
     if (!hideInfo && !isMock) {
@@ -38,6 +48,14 @@ const MonCard = ({
             alt='손켓몬 이미지'
             style={{ width: '100%' }}
           />
+          {mon && mon.mon && (
+            <Icon
+              onClick={handleOnClickFavorite}
+              className='favorite-btn cursor-pointer'
+              type='heart'
+              theme={favorite ? 'filled' : 'outlined'}
+            />
+          )}
         </div>
       );
     } else {
@@ -47,7 +65,7 @@ const MonCard = ({
         </div>
       );
     }
-  }, [mon, hideInfo, isMock]);
+  }, [mon, hideInfo, isMock, favorite, handleOnClickFavorite]);
 
   const renderAttr = useCallback(() => {
     if (!isMock) {

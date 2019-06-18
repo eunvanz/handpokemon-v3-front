@@ -26,7 +26,8 @@ const CollectionView = ({
   onEvolute,
   filter,
   filterActions,
-  defaultSelectOptions
+  defaultSelectOptions,
+  monCardProps
 }) => {
   const [list, setList] = useState([]);
   const [initialList, setInitialList] = useState([]);
@@ -325,6 +326,7 @@ const CollectionView = ({
           evolutable={isMyCollection}
           onClickEvolute={onEvolute}
           user={user}
+          monCardProps={monCardProps}
         />
       )}
       <FloatingFilterDrawer

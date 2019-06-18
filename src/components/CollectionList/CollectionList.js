@@ -14,7 +14,8 @@ const CollectionList = ({
   selectOptions,
   evolutable,
   onClickEvolute,
-  user
+  user,
+  monCardProps
 }) => {
   const [page, setPage] = useState(1);
 
@@ -64,6 +65,7 @@ const CollectionList = ({
             bottomComponent={
               selectable ? <BottomTotal col={col} user={user} /> : null
             }
+            {...monCardProps}
           />
         ))}
         {list.length >= 24 && (

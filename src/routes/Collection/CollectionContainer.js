@@ -11,6 +11,7 @@ import withView from '../../hocs/withView';
 import { getAllMons } from '../../api/requestMon';
 import withFilter from '../../hocs/withFilter';
 import { getUserByUserId } from '../../api/requestUser';
+import withMonCardProps from '../../hocs/withMonCardProps';
 
 class CollectionContainer extends PureComponent {
   state = {
@@ -20,22 +21,31 @@ class CollectionContainer extends PureComponent {
   };
 
   componentDidMount() {
-    const { match, user, history, colToMix, location } = this.props;
+    const {
+      match,
+      user,
+      history,
+      colToMix,
+      location,
+      userActions
+    } = this.props;
     if (match.params.id === 'user') {
       this.setState({ user: null });
       if (user) {
-        const { mode } = queryString.parse(location.search);
-        let collections;
-        if (mode === 'mix' && colToMix) {
-          collections = user.collections.filter(
-            item => item.monId !== colToMix.monId
-          );
-          this.setState({ mode });
-        } else if (mode === 'book') {
-          collections = user.collections;
-          this.setState({ mode });
-        } else collections = user.collections;
-        this.setState({ collections });
+        userActions.fetchUserCollectionsWithToken().then(() => {
+          const { mode } = queryString.parse(location.search);
+          let collections;
+          if (mode === 'mix' && colToMix) {
+            collections = user.collections.filter(
+              item => item.monId !== colToMix.monId
+            );
+            this.setState({ mode });
+          } else if (mode === 'book') {
+            collections = user.collections;
+            this.setState({ mode });
+          } else collections = user.collections;
+          this.setState({ collections });
+        });
       } else history.push('/sign-in');
     } else {
       getUserByUserId(match.params.id)
@@ -106,7 +116,8 @@ const wrappedCollectionView = compose(
       key: 'defaultSelectOptions'
     }
   ]),
-  withFilter()
+  withFilter(),
+  withMonCardProps
 )(CollectionContainer);
 
 export default wrappedCollectionView;

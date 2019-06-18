@@ -44,3 +44,7 @@ export const getEvolutedCollection = collectionId => {
     });
   });
 };
+
+export const putCollection = collection => {
+  return makeRequest('put', `collections/${collection.id}`, collection);
+};
