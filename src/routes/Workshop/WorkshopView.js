@@ -18,7 +18,8 @@ const WorkshopView = ({
   isSubmitting,
   loadNextPage,
   loading,
-  onDelete
+  onDelete,
+  onRegisterAsMonImage
 }) => {
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -83,6 +84,7 @@ const WorkshopView = ({
                 user={user}
                 onClickDelete={handleOnClickDelete}
                 deleting={deleting}
+                onRegisterAsMonImage={onRegisterAsMonImage}
               />
             </Col>
           ))}

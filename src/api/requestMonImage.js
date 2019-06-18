@@ -19,3 +19,7 @@ export const putMonImage = monImage => {
 export const getMonImagesEmptyMon = () => {
   return makeRequest('get', `mon-images/empty-mon`);
 };
+
+export const postMonImageFromWorkshop = workshop => {
+  return makeRequest('post', `mon-images/workshop-to-mon-image`, workshop);
+};

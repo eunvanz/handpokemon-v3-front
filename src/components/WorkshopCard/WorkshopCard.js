@@ -1,9 +1,11 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
-import { Card, Modal, Divider, Button } from 'antd';
+import { Card, Modal, Divider, Button, Tag } from 'antd';
 import moment from 'moment';
 import WrappedCommentList from '../WrappedCommentList';
 import LikeButton from '../LikeButton/index';
 import { COLOR } from '../../constants/styles';
+import './WorkshopCard.less';
+import { isAdminUser } from '../../libs/hpUtils';
 
 const WorkshopModal = memo(
   ({
@@ -14,9 +16,11 @@ const WorkshopModal = memo(
     likeLoading,
     user,
     onClickDelete,
-    deleting
+    deleting,
+    onRegisterAsMonImage
   }) => {
     const [renderCommentList, setRenderCommentList] = useState(false);
+    const [registering, setRegistering] = useState(false);
 
     useEffect(() => {
       if (visible) {
@@ -25,6 +29,13 @@ const WorkshopModal = memo(
         setRenderCommentList(false);
       }
     }, [visible, setRenderCommentList]);
+
+    const handleOnRegisterAsMonImage = useCallback(() => {
+      setRegistering(true);
+      onRegisterAsMonImage(workshop).then(() => {
+        setRegistering(false);
+      });
+    }, [onRegisterAsMonImage, workshop]);
 
     return (
       <Modal
@@ -49,7 +60,7 @@ const WorkshopModal = memo(
               user={user}
               style={{ marginBottom: 12 }}
             />
-            {user && workshop.userId === user.id && (
+            {user && workshop.userId === user.id && !workshop.registered && (
               <Button
                 type='danger'
                 style={{ marginLeft: 6 }}
@@ -57,6 +68,15 @@ const WorkshopModal = memo(
                 loading={deleting}
               >
                 삭제
+              </Button>
+            )}
+            {user && isAdminUser(user) && !workshop.registered && (
+              <Button
+                style={{ marginLeft: 6 }}
+                onClick={handleOnRegisterAsMonImage}
+                loading={registering}
+              >
+                이미지로 등록
               </Button>
             )}
           </div>
@@ -82,7 +102,14 @@ const WorkshopModal = memo(
   }
 );
 
-const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
+const WorkshopCard = ({
+  workshop,
+  user,
+  onClickLike,
+  onClickDelete,
+  deleting,
+  onRegisterAsMonImage
+}) => {
   const [showModal, setShowModal] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const handleOnClickLike = useCallback(
@@ -96,6 +123,11 @@ const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
 
   return (
     <>
+      {!!workshop.registered && (
+        <Tag className='registered-tag' color={COLOR.RED}>
+          등록완료
+        </Tag>
+      )}
       <Card
         cover={
           <div style={{ position: 'relative', padding: 6 }}>
@@ -107,7 +139,7 @@ const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
           </div>
         }
         style={{ cursor: 'pointer' }}
-        bodyStyle={{ textAlign: 'center', padding: 12 }}
+        bodyStyle={{ textAlign: 'center', padding: 6 }}
         onClick={() => setShowModal(true)}
       >
         <LikeButton
@@ -116,7 +148,7 @@ const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
           likes={workshop.likes}
           user={user}
           size='small'
-          style={{ marginBottom: 12 }}
+          style={{ marginBottom: 6 }}
         />
         <div>
           <small style={{ color: COLOR.GRAY }}>Designed by</small>
@@ -131,6 +163,8 @@ const WorkshopCard = ({ workshop, user, onClickLike, onClickDelete }) => {
         onClickLike={handleOnClickLike}
         likeLoading={likeLoading}
         onClickDelete={onClickDelete}
+        deleting={deleting}
+        onRegisterAsMonImage={onRegisterAsMonImage}
       />
     </>
   );

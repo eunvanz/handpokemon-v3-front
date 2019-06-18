@@ -13,6 +13,7 @@ import withForm from '../../hocs/withForm';
 import { postFile } from '../../api/requestFile';
 import MessageModal from '../../components/MessageMoal';
 import withUser from '../../hocs/withUser';
+import { postMonImageFromWorkshop } from '../../api/requestMonImage';
 
 class WorkshopContainer extends PureComponent {
   state = {
@@ -122,6 +123,19 @@ class WorkshopContainer extends PureComponent {
     });
   };
 
+  _handleOnRegisterAsMonImage = workshop => {
+    const { listActions } = this.props;
+    return postMonImageFromWorkshop(workshop).then(() => {
+      listActions.replaceItem({
+        key: 'workshopList',
+        conditionKey: 'id',
+        value: workshop.id,
+        item: Object.assign({}, workshop, { registered: 1 })
+      });
+      return Promise.resolve();
+    });
+  };
+
   render() {
     return (
       <WorkshopView
@@ -132,6 +146,7 @@ class WorkshopContainer extends PureComponent {
         loadNextPage={this._handleLoadNextPage}
         onSubmitWork={this._handleOnSubmitWork}
         onDelete={this._handleOnDelete}
+        onRegisterAsMonImage={this._handleOnRegisterAsMonImage}
       />
     );
   }
