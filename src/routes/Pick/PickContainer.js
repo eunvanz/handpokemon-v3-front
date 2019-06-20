@@ -13,6 +13,7 @@ import withUser from '../../hocs/withUser';
 import { proceedPickActions } from '../../libs/hpUtils';
 import MessageModal from '../../components/MessageMoal/index';
 import TitleTag from '../../components/TitleTag';
+import withMonCardProps from '../../hocs/withMonCardProps';
 
 class PickContainer extends PureComponent {
   state = {
@@ -210,7 +211,8 @@ const wrappedPickView = compose(
     }
   ]),
   withCodes,
-  withUser({ required: true })
+  withUser({ required: true }),
+  withMonCardProps
 )(PickContainer);
 
 export default wrappedPickView;

@@ -18,7 +18,8 @@ const PickResult = ({
   prevUserCollections,
   prevPickOptions,
   onClickMix,
-  onClickEvolute
+  onClickEvolute,
+  monCardProps
 }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -70,6 +71,7 @@ const PickResult = ({
               evolutable
               onClickEvolute={() => onClickEvolute(mon)}
               user={user}
+              {...monCardProps}
             />
             <Tween
               duration={1}

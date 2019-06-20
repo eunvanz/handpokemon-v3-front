@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Card, Col, Button, Icon } from 'antd';
+import { Card, Col, Icon } from 'antd';
 import { getMonImageUrl } from '../../libs/hpUtils';
 import './MonCard.less';
 import GradeTag from '../GradeTag';
@@ -9,6 +9,7 @@ import imgEmpty from '../../imgs/empty-mon.png';
 import MonModal from '../MonModal';
 import RankTag from '../RankTag';
 import LevelTag from '../LevelTag';
+import { COLOR } from '../../constants/styles';
 
 const MonCard = ({
   mon,
@@ -53,7 +54,10 @@ const MonCard = ({
               onClick={handleOnClickFavorite}
               className='favorite-btn cursor-pointer'
               type='heart'
-              theme={favorite ? 'filled' : 'outlined'}
+              theme='filled'
+              style={{
+                color: favorite ? COLOR.RED : COLOR.GRAY
+              }}
             />
           )}
         </div>

@@ -14,7 +14,8 @@ const PickView = ({
   prevPickOptions,
   onClickMix,
   onClickEvolute,
-  loading
+  loading,
+  monCardProps
 }) => {
   return (
     <div>
@@ -34,6 +35,7 @@ const PickView = ({
           prevPickOptions={prevPickOptions}
           onClickMix={onClickMix}
           onClickEvolute={onClickEvolute}
+          monCardProps={monCardProps}
         />
       )}
     </div>

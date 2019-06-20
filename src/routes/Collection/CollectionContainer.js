@@ -14,11 +14,14 @@ import { getUserByUserId } from '../../api/requestUser';
 import withMonCardProps from '../../hocs/withMonCardProps';
 
 class CollectionContainer extends PureComponent {
-  state = {
-    collections: null,
-    user: null,
-    mode: null
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      collections: props.user ? props.user.collections : null,
+      user: null,
+      mode: null
+    };
+  }
 
   componentDidMount() {
     const {

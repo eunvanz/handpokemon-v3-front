@@ -40,83 +40,6 @@ const CollectionView = ({
   );
   const [proceeding, setProceeding] = useState(false);
 
-  useEffect(() => {
-    // 모드별 initialList 세팅
-    if (mode === 'mix') {
-      setInitialList(collections);
-      handleOnClickMix(
-        user.collections.filter(item => item.monId === colToMix.monId)[0]
-      );
-    } else if (mode === 'book') {
-      setInitialList(
-        collections.filter(
-          item => user.books.map(book => book.colId).indexOf(item.id) < 0
-        )
-      );
-    } else {
-      const initialList = getInitialList();
-      setInitialList(initialList);
-      setList(initialList);
-    }
-  }, [mode]);
-
-  useEffect(() => {
-    const filteredList = getFilteredList(initialList);
-    setList(filteredList);
-  }, [filter, initialList]);
-
-  const getFilteredList = useCallback(
-    sourceList => {
-      const filteredList = sourceList.filter(item => {
-        const isCol = !!item.mon;
-        const thisMon = item.mon || item;
-        const isMatchHasCondition = () => {
-          if (filter.has.indexOf('Y') > -1 && isCol) return true;
-          if (filter.has.indexOf('N') > -1 && !isCol) return true;
-          return false;
-        };
-        const isMatchEvolutableCondition = () => {
-          const nextMon = item.nextMons ? item.nextMons[0] : null;
-          if (
-            filter.evolutable.indexOf('Y') > -1 &&
-            nextMon &&
-            item.level >= nextMon.requiredLv
-          ) {
-            return true;
-          }
-
-          if (
-            filter.evolutable.indexOf('N') > -1 &&
-            ((nextMon && item.level < nextMon.requiredLv) || !nextMon)
-          ) {
-            return true;
-          }
-          return false;
-        };
-        const isMatchingSubAttrCd = () => {
-          if (filter.subAttrCd.indexOf('') > -1 && !item.subAttrCd) return true;
-          return filter.subAttrCd.indexOf(item.subAttrCd) > -1;
-        };
-        const isMatchingRankCd = () => {
-          if (filter.rankCd.indexOf('') > -1 && !item.rankCd) return true;
-          return filter.rankCd.indexOf(item.rankCd) > -1;
-        };
-        return (
-          filter.gradeCd.indexOf(thisMon.gradeCd) > -1 &&
-          (filter.mainAttrCd.indexOf(item.mainAttrCd) > -1 ||
-            isMatchingSubAttrCd()) &&
-          filter.cost.indexOf(thisMon.cost) > -1 &&
-          filter.generation.indexOf(thisMon.generation) > -1 &&
-          isMatchingRankCd() &&
-          isMatchHasCondition() &&
-          isMatchEvolutableCondition()
-        );
-      });
-      return filteredList;
-    },
-    [filter]
-  );
-
   const getInitialList = useCallback(() => {
     return mons.map(item => {
       const collection = collections.filter(col => col.monId === item.id)[0];
@@ -127,19 +50,6 @@ const CollectionView = ({
       }
     });
   }, [collections, mons]);
-
-  const monCounts = useMemo(() => {
-    const result = [];
-    getDetailCdsInMasterCdGroup(MASTER_CD.MON_GRADE, codes).forEach(gradeCd => {
-      const item = { total: 0, cnt: 0, key: gradeCd };
-      item.cnt = collections.filter(
-        item => item.mon.gradeCd === gradeCd
-      ).length;
-      item.total = mons.filter(item => item.gradeCd === gradeCd).length;
-      result.push(item);
-    });
-    return result;
-  }, [mons, collections, codes]);
 
   const handleOnClickMix = useCallback(
     col => {
@@ -204,6 +114,96 @@ const CollectionView = ({
     },
     [collections, getInitialList, onMix, user.books]
   );
+
+  useEffect(() => {
+    // 모드별 initialList 세팅
+    if (mode === 'mix') {
+      setInitialList(collections);
+      handleOnClickMix(
+        user.collections.filter(item => item.monId === colToMix.monId)[0]
+      );
+    } else if (mode === 'book') {
+      setInitialList(
+        collections.filter(
+          item => user.books.map(book => book.colId).indexOf(item.id) < 0
+        )
+      );
+    } else {
+      const initialList = getInitialList();
+      setInitialList(initialList);
+      setList(initialList);
+    }
+  }, [mode, collections, user, colToMix, getInitialList, handleOnClickMix]);
+
+  const getFilteredList = useCallback(
+    sourceList => {
+      const filteredList = sourceList.filter(item => {
+        const isCol = !!item.mon;
+        const thisMon = item.mon || item;
+        const isMatchHasCondition = () => {
+          if (filter.has.indexOf('Y') > -1 && isCol) return true;
+          if (filter.has.indexOf('N') > -1 && !isCol) return true;
+          return false;
+        };
+        const isMatchEvolutableCondition = () => {
+          const nextMon = item.nextMons ? item.nextMons[0] : null;
+          if (
+            filter.evolutable.indexOf('Y') > -1 &&
+            nextMon &&
+            item.level >= nextMon.requiredLv
+          ) {
+            return true;
+          }
+
+          if (
+            filter.evolutable.indexOf('N') > -1 &&
+            ((nextMon && item.level < nextMon.requiredLv) || !nextMon)
+          ) {
+            return true;
+          }
+          return false;
+        };
+        const isMatchingSubAttrCd = () => {
+          if (filter.subAttrCd.indexOf('') > -1 && !item.subAttrCd) return true;
+          return filter.subAttrCd.indexOf(item.subAttrCd) > -1;
+        };
+        const isMatchingRankCd = () => {
+          if (filter.rankCd.indexOf('') > -1 && !item.rankCd) return true;
+          return filter.rankCd.indexOf(item.rankCd) > -1;
+        };
+        return (
+          filter.gradeCd.indexOf(thisMon.gradeCd) > -1 &&
+          (filter.mainAttrCd.indexOf(item.mainAttrCd) > -1 ||
+            isMatchingSubAttrCd()) &&
+          filter.cost.indexOf(thisMon.cost) > -1 &&
+          filter.generation.indexOf(thisMon.generation) > -1 &&
+          isMatchingRankCd() &&
+          isMatchHasCondition() &&
+          isMatchEvolutableCondition()
+        );
+      });
+      return filteredList;
+    },
+    [filter]
+  );
+
+  useEffect(() => {
+    const filteredList = getFilteredList(initialList);
+    setList(filteredList);
+  }, [filter, initialList, getFilteredList]);
+
+  const monCounts = useMemo(() => {
+    const result = [];
+    getDetailCdsInMasterCdGroup(MASTER_CD.MON_GRADE, codes).forEach(gradeCd => {
+      const item = { total: 0, cnt: 0, key: gradeCd };
+      item.cnt = collections.filter(
+        item => item.mon.gradeCd === gradeCd
+      ).length;
+      item.total = mons.filter(item => item.gradeCd === gradeCd).length;
+      result.push(item);
+    });
+    return result;
+  }, [mons, collections, codes]);
 
   const onChangeFilter = useCallback(
     (type, checkedList) => {

@@ -186,7 +186,7 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
         </Col>
       </Row>
       <Row gutter={12}>
-        <Col sm={12} lg={6}>
+        <Col xs={24} sm={12} md={8} xl={6}>
           <Card
             title={
               <div>
@@ -219,7 +219,7 @@ const AchievementView = ({ achievements, user, codes, onClickActivate }) => {
         </Col>
         {getMasterCdGroup(MASTER_CD.MON_ATTRS, codes).map(item => {
           return (
-            <Col sm={12} lg={6}>
+            <Col xs={24} sm={12} md={8} xl={6}>
               <Card
                 className='dark-header-card'
                 title={

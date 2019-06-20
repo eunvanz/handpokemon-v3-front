@@ -10,10 +10,13 @@ const SidebarView = ({ user, history, onChangeRoute, refreshUser }) => {
     setSelectedKeys([history.location.pathname]);
   }, [history.location.pathname]);
 
-  const onClickMenuItem = useCallback(key => {
-    setSelectedKeys([key]);
-    onChangeRoute(key);
-  }, []);
+  const onClickMenuItem = useCallback(
+    key => {
+      setSelectedKeys([key]);
+      onChangeRoute(key);
+    },
+    [onChangeRoute]
+  );
 
   return (
     <div className='hp-sidebar-mask'>
