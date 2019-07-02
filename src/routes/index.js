@@ -60,3 +60,13 @@ export const Community = Loadable({
   loader: () => import('./Community'),
   loading: SpinContainer
 });
+
+export const Battle = Loadable({
+  loader: () => import('./Battle'),
+  loading: SpinContainer
+});
+
+export const Defense = Loadable({
+  loader: () => import('./Defense'),
+  loading: SpinContainer
+});

@@ -39,6 +39,7 @@ export default (
         ),
         generation: [1, 2, 3, 4, 5, 6, 7, 8],
         evolutable: ['Y', 'N'],
+        defense: ['Y', 'N'],
         disabled: []
       };
       filterActions.receiveFilter(basicFilter);

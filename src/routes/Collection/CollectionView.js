@@ -1,5 +1,6 @@
 import React, { memo, useState, useCallback, useMemo, useEffect } from 'react';
 import { Row, Card, Progress, Col } from 'antd';
+import orderBy from 'lodash/orderBy';
 import ContentContainer from '../../components/ContentContainer/index';
 import {
   getDetailCdsInMasterCdGroup,
@@ -27,21 +28,23 @@ const CollectionView = ({
   filter,
   filterActions,
   defaultSelectOptions,
-  monCardProps
+  monCardProps,
+  history
 }) => {
   const [list, setList] = useState([]);
   const [initialList, setInitialList] = useState([]);
   const [selectable, setSelectable] = useState(
-    mode === 'mix' || mode === 'book'
+    mode === 'mix' || mode === 'book' || mode === 'defense'
   );
   const [selectedMons, setSelectedMons] = useState([]);
   const [selectOptions, setSelectOptions] = useState(
-    mode === 'book' ? defaultSelectOptions : null
+    // { message, onSelect, onCancel }
+    ['book', 'defense'].includes(mode) ? defaultSelectOptions : null
   );
   const [proceeding, setProceeding] = useState(false);
 
   const getInitialList = useCallback(() => {
-    return mons.map(item => {
+    const list = mons.map(item => {
       const collection = collections.filter(col => col.monId === item.id)[0];
       if (collection) {
         return collection;
@@ -49,7 +52,15 @@ const CollectionView = ({
         return item;
       }
     });
-  }, [collections, mons]);
+    if (selectedMons.length > 0) {
+      // selectedMons에 존재하는 콜렉션을 앞쪽에 정렬
+      return orderBy(list, item =>
+        selectedMons.filter(selectedMon => selectedMon.id !== item.id)
+      );
+    } else {
+      return list;
+    }
+  }, [collections, mons, selectedMons]);
 
   const handleOnClickMix = useCallback(
     col => {
@@ -163,6 +174,16 @@ const CollectionView = ({
           }
           return false;
         };
+        const isMatchDefenseCondition = () => {
+          if (filter.defense.indexOf('Y') > -1 && item.defense === 1) {
+            return true;
+          }
+
+          if (filter.defense.indexOf('N') > -1 && item.defense === 0) {
+            return true;
+          }
+          return false;
+        };
         const isMatchingSubAttrCd = () => {
           if (filter.subAttrCd.indexOf('') > -1 && !item.subAttrCd) return true;
           return filter.subAttrCd.indexOf(item.subAttrCd) > -1;
@@ -179,7 +200,8 @@ const CollectionView = ({
           filter.generation.indexOf(thisMon.generation) > -1 &&
           isMatchingRankCd() &&
           isMatchHasCondition() &&
-          isMatchEvolutableCondition()
+          isMatchEvolutableCondition() &&
+          isMatchDefenseCondition()
         );
       });
       return filteredList;
@@ -246,6 +268,10 @@ const CollectionView = ({
       evolutable: [
         { label: '가능', value: 'Y' },
         { label: '불가능', value: 'N' }
+      ],
+      defense: [
+        { label: '배치됨', value: 'Y' },
+        { label: '배치안됨', value: 'N' }
       ]
     };
   }, [codes]);
@@ -322,11 +348,12 @@ const CollectionView = ({
           list={list}
           codes={codes}
           onClickMix={handleOnClickMix}
-          mixable={isMyCollection}
-          evolutable={isMyCollection}
+          mixable={isMyCollection && mode !== 'defense'}
+          evolutable={isMyCollection && mode !== 'defense'}
           onClickEvolute={onEvolute}
           user={user}
           monCardProps={monCardProps}
+          selectedMons={selectedMons}
         />
       )}
       <FloatingFilterDrawer

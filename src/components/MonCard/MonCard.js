@@ -27,6 +27,8 @@ const MonCard = ({
   bottomComponent,
   user,
   toggleFavorite,
+  selectable,
+  selected,
   ...restProps
 }) => {
   const [showMonModal, setShowMonModal] = useState(false);
@@ -39,6 +41,11 @@ const MonCard = ({
     },
     [toggleFavorite, mon, favorite]
   );
+
+  const handleOnClickInfo = useCallback(e => {
+    e.stopPropagation();
+    setShowMonModal(true);
+  }, []);
 
   const renderCover = useCallback(() => {
     if (!hideInfo && !isMock) {
@@ -60,6 +67,14 @@ const MonCard = ({
               }}
             />
           )}
+          {selectable && (
+            <Icon
+              onClick={handleOnClickInfo}
+              className='info-btn cursor-pointer'
+              type='info-circle'
+              theme='filled'
+            />
+          )}
         </div>
       );
     } else {
@@ -69,7 +84,15 @@ const MonCard = ({
         </div>
       );
     }
-  }, [mon, hideInfo, isMock, favorite, handleOnClickFavorite]);
+  }, [
+    mon,
+    hideInfo,
+    isMock,
+    favorite,
+    handleOnClickFavorite,
+    selectable,
+    handleOnClickInfo
+  ]);
 
   const renderAttr = useCallback(() => {
     if (!isMock) {
@@ -147,6 +170,8 @@ const MonCard = ({
         cover={renderCover()}
         onClick={onClick ? onClick : () => setShowMonModal(true)}
         className='mon-card'
+        style={{ border: selected ? `1px solid ${COLOR.PRIMARY}` : null }}
+        bordered={selected}
       >
         {overlay && (
           <div className='hp-overlay'>

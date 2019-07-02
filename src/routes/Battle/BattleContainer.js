@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { compose } from 'redux';
 
 import BattleView from './BattleView';
+import withView from '../../hocs/withView';
 
 class BattleContainer extends PureComponent {
   render() {
@@ -9,6 +10,6 @@ class BattleContainer extends PureComponent {
   }
 }
 
-const wrappedBattleView = compose()(BattleContainer);
+const wrappedBattleView = compose(withView())(BattleContainer);
 
 export default wrappedBattleView;

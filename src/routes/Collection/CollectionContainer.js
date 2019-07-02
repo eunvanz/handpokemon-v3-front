@@ -16,10 +16,11 @@ import withMonCardProps from '../../hocs/withMonCardProps';
 class CollectionContainer extends PureComponent {
   constructor(props) {
     super(props);
+    const { mode } = queryString.parse(props.location.search);
     this.state = {
       collections: props.user ? props.user.collections : null,
       user: null,
-      mode: null
+      mode // null, mix, book, defense
     };
   }
 
@@ -43,7 +44,7 @@ class CollectionContainer extends PureComponent {
               item => item.monId !== colToMix.monId
             );
             this.setState({ mode });
-          } else if (mode === 'book') {
+          } else if (mode === 'book' || mode === 'defense') {
             collections = user.collections;
             this.setState({ mode });
           } else collections = user.collections;

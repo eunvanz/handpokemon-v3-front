@@ -93,6 +93,16 @@ const FloatingFilterDrawer = ({
             disabled={filter.disabled.indexOf('evolutable') > -1}
           />
         </Collapse.Panel>
+        <Collapse.Panel header='수비배치여부' key='defense'>
+          <CheckGroup
+            optionList={optionLists.defense}
+            onChangeCheckedList={checkedList =>
+              onChange('defense', checkedList)
+            }
+            checkedList={filter.defense}
+            disabled={filter.disabled.indexOf('defense') > -1}
+          />
+        </Collapse.Panel>
       </Collapse>
     </FloatingDrawer>
   );

@@ -113,7 +113,15 @@ const BookView = ({
       }
       return result;
     },
-    [user, codes, onClickAddMon, unlockedBooks]
+    [
+      user,
+      codes,
+      books,
+      onClickAddMon,
+      unlockedBooks,
+      onClickChangeMon,
+      onClickUnlockBook
+    ]
   );
 
   return (

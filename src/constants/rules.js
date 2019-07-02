@@ -58,3 +58,22 @@ export const CREDIT = {
 };
 
 export const BOOK_RULE = [0, 0, 0, 500, 1000, 3000];
+
+export const LEAGUE_RULE = {
+  '0801': {
+    maxCost: 11,
+    cut: 100
+  }
+  // '0802': {
+  //   maxCost: 12,
+  //   cut: 100
+  // },
+  // '0803': {
+  //   maxCost: 13,
+  //   cut: 100
+  // },
+  // '0804': {
+  //   maxCost: 14,
+  //   cut: 100
+  // },
+};

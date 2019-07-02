@@ -22,7 +22,9 @@ import {
   Shop,
   Giftbox,
   Workshop,
-  Community
+  Community,
+  Battle,
+  Defense
 } from './routes';
 import ErrorBoundary from './components/ErrorBoundary';
 
@@ -54,6 +56,8 @@ const App = ({ store }) => {
                   <Route path='/giftbox' component={Giftbox} />
                   <Route path='/workshop' component={Workshop} />
                   <Route path='/community/:type' component={Community} />
+                  <Route path='/battle' component={Battle} />
+                  <Route path='/defense' component={Defense} />
                 </ErrorBoundary>
               </ScrollToTop>
             </Switch>

@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useMemo } from 'react';
 import { Row, Card, Affix, Button, Col, Empty } from 'antd';
 import { Waypoint } from 'react-waypoint';
 import MonCard from '../../components/MonCard';
@@ -11,17 +11,26 @@ const CollectionList = ({
   mixable,
   onClickMix,
   selectable,
-  selectOptions,
+  selectOptions, // { message, onSelect, onCancel }
   evolutable,
   onClickEvolute,
   user,
-  monCardProps
+  monCardProps,
+  selectedMons
 }) => {
   const [page, setPage] = useState(1);
 
   const onLoadNextPage = useCallback(() => {
     setPage(page + 1);
-  }, [list, page]);
+  }, [page]);
+
+  // selectable일 때 카드 클릭 시 이벤트 핸들러
+  const handleOnClickMonCard = useCallback(
+    mon => {
+      selectOptions.onSelect(mon);
+    },
+    [selectOptions]
+  );
 
   return (
     <>
@@ -59,13 +68,15 @@ const CollectionList = ({
             onClickEvolute={onClickEvolute}
             mixable={mixable}
             evolutable={evolutable}
-            onClick={selectable ? () => selectOptions.onSelect(col) : null}
+            onClick={selectable ? () => handleOnClickMonCard(col) : null}
             hideInfo={isEmpty(col.mon)}
             user={user}
+            selectable={selectable}
             bottomComponent={
               selectable ? <BottomTotal col={col} user={user} /> : null
             }
             {...monCardProps}
+            selected={selectedMons.filter(mon => mon.id === col.id).length > 0}
           />
         ))}
         {list.length >= 24 && (
